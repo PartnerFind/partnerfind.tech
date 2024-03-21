@@ -9,6 +9,8 @@
     "moduleDetection": "force",
     "isolatedModules": true,
 
+    // "allowImportingTsExtensions": true,
+
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
