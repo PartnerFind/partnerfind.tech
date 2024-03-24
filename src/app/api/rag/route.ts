@@ -75,7 +75,7 @@ export async function POST(request: Request, res: NextApiResponse) {
         try {
           const groqCompletion: Groq.Chat.ChatCompletion = await groq.chat.completions.create(groqParams);
           return NextResponse.json(
-            { generation: `${groqCompletion.choices[0]?.message?.content || ""}` }, 
+            { generation: `${groqCompletion.choices[0]?.message?.content ?? ""}` }, 
             { status: 200 }
           )
         } catch (err: any) {
