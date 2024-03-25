@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
 import Groq from 'groq-sdk';
-// import { env } from "@/env"
+import { env } from "@/env"
 
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
@@ -14,7 +14,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          api_key: process.env.TAVILY_API_KEY,
+          api_key: env.TAVILY_API_KEY,
           query: tavilyPrompt,
           search_depth: 'basic',
           include_images: false,
