@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
-import Groq from 'groq-sdk';
+import Groq from 'groq-sdk'; 
+import { elaborateCompanies } from '@/server/db/schema';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
+const db = drizzle(sql);
 
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
@@ -79,6 +85,19 @@ export async function POST(request: Request, res: NextApiResponse) {
         // Call groq API and return the response
         try {
           const groqCompletion: Groq.Chat.ChatCompletion = await groq.chat.completions.create(groqParams);
+          console.log("Seeding database");
+          await db.insert(elaborateCompanies).values([
+            {
+              category: groqCompletion.choices[0]?.message?.content.category,
+              name: groqCompletion.choices[0]?.message?.content.name,
+              type: groqCompletion.choices[0]?.message?.content.type,
+              description: groqCompletion.choices[0]?.message?.content.description,
+              resources: groqCompletion.choices[0]?.message?.content.resources,
+              phonenumber: groqCompletion.choices[0]?.message?.content.phoneNumber,
+              email: groqCompletion.choices[0]?.message?.content.email,
+              genpage: groqCompletion.choices[0]?.message?.content.genpage.summary,
+            },
+          ]);
           return NextResponse.json(
             { generation: `${groqCompletion.choices[0]?.message?.content ?? ""}` }, 
             { status: 200 }
