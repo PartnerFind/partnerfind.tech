@@ -1,17 +1,20 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
-import * as schema from "./schema";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { baseCompanies } from '@/server/db/schema';
 
 /**
- * Cache the database connection in development. This avoids creating a new connection on every HMR
- * update.
+ * Cache the Neon database connection in development. This avoids creating a new connection on every HMR update.
  */
 const globalForDb = globalThis as unknown as {
-  conn: postgres.Sql | undefined;
+  conn: ReturnType<typeof neon> | undefined;
 };
 
-const conn = globalForDb.conn ?? postgres(process.env.DATABASE_URL || "");
-if (process.env.NODE_ENV !== "production") globalForDb.conn = conn;
+const sql = globalForDb.conn ?? neon(process.env.DATABASE_URL!); // Accessing DATABASE_URL from env
+if (process.env.NODE_ENV !== "production") globalForDb.conn = sql;
 
-export const db = drizzle(conn, { schema });
+const db = drizzle(sql);
+
+const allCompanies = await db.select().from(baseCompanies);
+
+console.log(allCompanies);
+
