@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
 import Groq from 'groq-sdk';
-import { env } from "@/env"
 
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
     // First thing, call tavily api and pass in data
-    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}. list me the contact info: phone number and email. Then tell me the abbr. type: (NPO:non profit org, FPO:for profit org, GA:Government Association, LB:Local Business, CB:Corporate Business). Then tell me the industry it is in, and a brief description and the resources they could provide to a high school.`
+    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}. list me the phone number and email,tell me the abbr. type: (NPO:non profit org, FPO:for profit org, GA:Government Association, LB:Local Business, CB:Corporate Business) tell me the industry it is in, brief description, and resources they could provide to a high school.Remove all the \\n and extra spaces from the response`
+   
+    console.log(tavilyPrompt)
+    console.log(tavilyPrompt.length)
+
     try {
       const tavilyAPI = await fetch('https://api.tavily.com/search', {
         method: 'POST',
@@ -14,10 +17,10 @@ export async function POST(request: Request, res: NextApiResponse) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          api_key: env.TAVILY_API_KEY,
+          api_key: process.env.TAVILY_API_KEY,
           query: tavilyPrompt,
           search_depth: 'basic',
-          include_images: false,
+          include_images: true,
           include_answer: true,
           include_raw_content: false,
           max_results: 1,
@@ -27,17 +30,25 @@ export async function POST(request: Request, res: NextApiResponse) {
       if (tavilyAPI.ok) {
         // If tavily API is successful, call groq API and pass in the response from tavily
         const tavilyResponse = await tavilyAPI.json();
+        console.log(tavilyResponse.answer)
         const groq = new Groq();
 
         let groqPrompt = `I am an administrator at my high school and need insightful information on potential community partners near me. 
-          I have used tavily API to scrape and find organizations and their info for me. I want you to take this info and compile it into JSON struture, with the final key in the array being all of the info compiled into a nicely and neatly formatted analysis page for my website. 
-          I want you to give a detailed analysis on the resources that the organization can provide that you will be given, and also come up with and infer potential reasons to or not to partner with this organization and how it will be beneficial for the school. 
-          Furthemore, come up with how we can work with the organization such as giving a process (directions) by contacting the specific number and email, reaching out to them, and then talking about how we can acquire their resources for our school. 
+          I have used tavily API to scrape and find organizations and their info for me. I want you to take this info and compile it into JSON struture, 
+      with the final key in the array being all of the info compiled into a nicely and neatly formatted analysis page for my website. 
+          I want you to give a detailed analysis on the resources that the organization can provide that you will be given, and also come up with and infer potential reasons to or 
+      not to partner with this organization and how it will be beneficial for the school. 
+          Furthemore, come up with how we can work with the organization such as giving a process (directions) by contacting the specific number and email, reaching out to them, 
+      and then talking about how we can acquire their resources for our school. 
           here is the tavilyAPI completion:  
-          "answer": "${tavilyResponse.answer}"  If for some reason you can't do something, omit the little apology statement from the text as I want the response to go straight to the static site and look as professional and consistently generated as possible. 
-          Make absolute sure your response is in this exact JSON format, with the array and key: value structure, since we will be storing some important info, so make the response in this EXACT array format (key:value):
+          "answer": "${tavilyResponse.answer}"  make sure to remove the extra \n and other discrepencies If for some reason you can't do something, omit the little apology statement 
+      from the text as I want the response to go straight to the static site and look as professional and consistently generated as possible. 
+          Make absolute sure your response is in this EXACT JSON format, with the array and key: value structure, since we will be storing some important info, so make the response in 
+      this EXACT array format (key:value):
+      the genpage data value below should have no \n or extra spaces, just a block of text that is formatted perfectly for a website
           {
-          "phonenumber": "(format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis)"
+          "phonenumber": "(format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after 
+      the parenthesis)"
           "email": "(whatever the email is)"
           "name": "(exact business name from Tavily completion)"
           "type": "(the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)"
@@ -52,8 +63,9 @@ export async function POST(request: Request, res: NextApiResponse) {
             "process" : "(list out directions and the process I should follow to partner with this organization)"
             }
           }
-          
-          Do not put any text outside of the array, simply give me the JSON array that I am asking for with an extensively detailed analysis for the genpage nest JSON in which you will not put any divisions within the key values, making the values a continous string/block of text and thought.`;
+ 
+          Do not put any text outside of the array, simply give me the EXACT JSON array that I am asking for with an extensively detailed analysis for the genpage nest JSON 
+      in which you will not put any divisions within the key values, making the values a continous string/block of text and thought.`;
 
           const groqParams = {
             messages: [

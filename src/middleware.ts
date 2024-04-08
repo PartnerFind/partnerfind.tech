@@ -6,7 +6,7 @@ export default authMiddleware({
 
   // Prevent the specified routes from accessing
   // authentication information:
-  ignoredRoutes: ['/api/rag'],
+  ignoredRoutes: ['/api/(.*)'],
 });
  
 export const config = {
@@ -18,5 +18,5 @@ export const config = {
   //   // Re-include any files in the api or trpc folders that might have an extension
   //   "/(api|trpc)(.*)"
   // ]
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"]
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"] // actuak docs version
 };
