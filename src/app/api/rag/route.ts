@@ -23,7 +23,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           include_images: true,
           include_answer: true,
           include_raw_content: false,
-          max_results: 1,
+          max_results: 5, // trying this out
         }),
       });
         
