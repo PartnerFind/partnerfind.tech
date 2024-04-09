@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
 import Groq from 'groq-sdk'; 
-import { elaborateCompanies } from '@/server/db/schema';
+import { elaborateCompanies } from '../../../server/db/schema'; // TODO: @ later
+import { baseCompanies } from '../../../server/db/schema'; // TODO: @ later
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import {config} from 'dotenv';
@@ -89,20 +90,23 @@ export async function POST(request: Request, res: NextApiResponse) {
 
         // Call groq API and return the response
         try {
-          const groqCompletion: Groq.Chat.ChatCompletion = await groq.chat.completions.create(groqParams);
-          console.log("Seeding database");
-          await db.insert(elaborateCompanies).values([
-            {
-              category: groqCompletion.choices[0]?.message?.content.category,
-              name: groqCompletion.choices[0]?.message?.content.name,
-              type: groqCompletion.choices[0]?.message?.content.type,
-              description: groqCompletion.choices[0]?.message?.content.description,
-              resources: groqCompletion.choices[0]?.message?.content.resources,
-              phonenumber: groqCompletion.choices[0]?.message?.content.phoneNumber,
-              email: groqCompletion.choices[0]?.message?.content.email,
-              genpage: groqCompletion.choices[0]?.message?.content.genpage.summary,
-            },
-          ]);
+          const groqCompletion: any = await groq.chat.completions.create(groqParams);
+          
+          // await db.insert(elaborateCompanies).values([
+          //   {
+          //     category: groqCompletion.choices[0]?.message?.content.category,
+          //     name: groqCompletion.choices[0]?.message?.content.name,
+          //     type: groqCompletion.choices[0]?.message?.content.type,
+          //     description: groqCompletion.choices[0]?.message?.content.description,
+          //     resources: groqCompletion.choices[0]?.message?.content.resources,
+          //     phonenumber: groqCompletion.choices[0]?.message?.content.phoneNumber,
+          //     email: groqCompletion.choices[0]?.message?.content.email,
+          //     genpage: groqCompletion.choices[0]?.message?.content.genpage.summary,
+          //   },
+          // ]);
+          
+          console.log(await db.select().from(baseCompanies))
+
           return NextResponse.json(
             { generation: `${groqCompletion.choices[0]?.message?.content ?? ""}` }, 
             { status: 200 }

@@ -7,6 +7,7 @@ config ({
     path: '.env',
 });
 
+console.log(process.env.DATABASE_URL!);
 const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
 
 const db = drizzle(sql);
