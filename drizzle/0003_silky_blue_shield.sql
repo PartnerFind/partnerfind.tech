@@ -1,0 +1,1 @@
+ALTER TABLE "elaborateCompanies" ALTER COLUMN "genpage" SET DATA TYPE jsonb;
