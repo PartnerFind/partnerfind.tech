@@ -12,7 +12,7 @@ const db = drizzle(sql);
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
     // First thing, call tavily api and pass in data
-    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}. list me the phone number and email,tell me the abbr. type: (NPO:non profit org, FPO:for profit org, GA:Government Association, LB:Local Business, CB:Corporate Business) tell me the industry it is in, brief description, and resources they could provide to a high school.Remove all the \\n and extra spaces from the response`
+    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the phone number and their contact email(if none leave blank),tell me the abbr. type:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in,brief description,and resources they could provide to a high school`;
 
     try {
       const tavilyAPI = await fetch('https://api.tavily.com/search', {
@@ -46,12 +46,12 @@ export async function POST(request: Request, res: NextApiResponse) {
           "answer": "${tavilyResponse.answer.replace(/\\n/g, '')}" If for some reason you can't do something, omit the little apology statement from the text as I want the response to go straight to the static site and look as professional and consistently generated as possible. 
           
           NOTE: Make sure the response is a valid JSON object, meaning no escape sequences, and do this through generating the completion in only one line. 
-          Make absolute sure your response is in this exact JSON format, with the array and key: value structure, since we will be storing some important info, so make the response in this EXACT array format (key:value):
+          Make absolute sure your response is in this exact JSON schema below:
           
           {
             "name": "", // (exact business name from Tavily completion)
             "phonenumber": "", // (format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis)
-            "email": "", // (whatever the email is)"name": "", // (exact business name from Tavily completion)
+            "email": "", // Leave blank if no email is provided (or tavily says none)
             "type": "", // (the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)
             "resources": "", // (very brief list of resources they provide for highschool students)
             "description": "", // (extremely brief and concise description of the organization)
@@ -67,7 +67,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           `
         const groqParams: any = {
           messages: [
-            { role: 'system', content: 'You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences.' },
+            { role: 'system', content: 'You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences. Use the schema provided by the user' },
             { role: "user", content: groqPrompt }
           ],
           model: "mixtral-8x7b-32768",
@@ -98,11 +98,11 @@ export async function POST(request: Request, res: NextApiResponse) {
             },
           ]);
 
-          const allCompanies = await db.select({
-            genpage: elaborateCompanies.genpage,
-          }).from(elaborateCompanies);
+          // const allCompanies = await db.select({
+          //   genpage: elaborateCompanies.genpage,
+          // }).from(elaborateCompanies);
 
-          console.log(allCompanies)
+          // console.log(allCompanies)
           
           return NextResponse.json(
             { generation: parsedGroqCompletion }, 

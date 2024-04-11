@@ -1,7 +1,6 @@
 import { pgTable, serial, text, doublePrecision, json, jsonb } from 'drizzle-orm/pg-core';
 import { customType } from 'drizzle-orm/pg-core';
 
-
 export const baseCompanies = pgTable('baseCompanies', {
   category: text('category'),
   name: text('name'),
@@ -13,6 +12,7 @@ export const baseCompanies = pgTable('baseCompanies', {
 });
 
 export const elaborateCompanies = pgTable('elaborateCompanies', {
+  // id: serial('id'),
   category: text('category'),
   name: text('name'),
   type: text('type'),
@@ -21,5 +21,6 @@ export const elaborateCompanies = pgTable('elaborateCompanies', {
   phonenumber: text('phonenumber'),
   email: text('email'),
   genpage: json('genpage').default({ flaws: "flaws", process: "process", reasons: "reasons", summary: "summary", resources: "resources"}),
-});
-
+})
+// .primaryKey(['id'])
+;
