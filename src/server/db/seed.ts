@@ -1,4 +1,5 @@
 import {baseCompanies} from './schema';
+import {elaborateCompanies} from './schema';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import * as schema from './schema';
