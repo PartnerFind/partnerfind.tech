@@ -1,5 +1,9 @@
 import { AuthPageNavbar } from '@/components/auth-page-navbar';
 
+export const metadata = {
+  title: "PartnerFind | Auth"
+};
+
 export default function AuthLayout({
   children,
 }: {

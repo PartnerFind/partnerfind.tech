@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { elaborateCompanies } from '@/server/db/schema';
 import { db } from '@/server/index';
 import Groq from 'groq-sdk';

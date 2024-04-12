@@ -10,7 +10,6 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "PartnerFind | Home",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
