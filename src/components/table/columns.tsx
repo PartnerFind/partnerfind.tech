@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 // This type is used to define the shape of our data.
-export type Partner = {
+export type ColumnsPartner = {
   category: string
   name: string
   type: string
@@ -21,7 +21,7 @@ export type Partner = {
   add_partner: boolean
 }
 
-export const columns: ColumnDef<Partner>[] = [
+export const columns: ColumnDef<ColumnsPartner>[] = [
   {
     accessorKey: "category",
     header: "Category",
