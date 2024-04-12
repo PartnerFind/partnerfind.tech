@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import { baseCompanies } from './db/schema';
 import { elaborateCompanies } from './db/schema';
 import { config } from 'dotenv';
+import { currentUser } from '@clerk/nextjs';
 
 config ({
     path: '.env',
@@ -10,6 +11,8 @@ config ({
 
 const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
 const db = drizzle(sql);
+
+//const user = await currentUser();
 
 //Object of the entire table
 const Companies = await db.select().from(elaborateCompanies);
@@ -30,7 +33,7 @@ const allData = await db.select({
 
 
 //Object for the Company Bombay Bazar
-const bombayBazar = allData.find(item => item.name == "Bombay Bazar");
+const bombayBazar = allData.find(item => item.name === "Bombay Bazar");
 
 
 //By running the following you can print each part of the Bombay Bazar object such as its description, type, category and each individual part of its genpage
@@ -41,11 +44,11 @@ const bombayBazar = allData.find(item => item.name == "Bombay Bazar");
 // console.log(bombayBazar?.resources);
 // console.log(bombayBazar?.phonenumber);
 // console.log(bombayBazar?.email);
-// console.log(bombayBazar?.genpage.summary);
-// console.log(bombayBazar?.genpage.resources);
-// console.log(bombayBazar?.genpage.reasons);
-// console.log(bombayBazar?.genpage.flaws);
-// console.log(bombayBazar?.genpage.process);
+// console.log(bombayBazar?.genpage?.summary);
+// console.log(bombayBazar?.genpage?.resources);
+// console.log(bombayBazar?.genpage?.reasons);
+// console.log(bombayBazar?.genpage?.flaws);
+// console.log(bombayBazar?.genpage?.process);
 
 
 //If you want to create an object by the id in the table do the following, which selects the Company that is in the first row of the table

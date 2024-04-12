@@ -21,3 +21,12 @@ export const elaborateCompanies = pgTable('elaborateCompanies', {
   email: text('email'),
   genpage: json('genpage').default({ flaws: "flaws", process: "process", reasons: "reasons", summary: "summary", resources: "resources"}),
 });
+
+export const userCompanies = pgTable('userCompanies', {
+  userID: text('userID').primaryKey(),
+  name: text('name'),
+  note: text('note'),
+});
+
+
+

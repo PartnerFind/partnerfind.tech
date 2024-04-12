@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
-import { elaborateCompanies } from '../../../server/db/schema'; // TODO: @ later
-import { baseCompanies } from '../../../server/db/schema'; // TODO: @ later
+import { elaborateCompanies } from '@/server/db/schema'; // TODO: @ later
+import { baseCompanies } from '@/server/db/schema'; // TODO: @ later
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import Groq from 'groq-sdk'; 
@@ -12,7 +12,7 @@ const db = drizzle(sql);
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
     // First thing, call tavily api and pass in data
-    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the phone number and their contact email(if none leave blank),tell me the abbr. type:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in,brief description,and resources they could provide to a high school`;
+    let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the phone number and their contact email(if none leave blank),tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in,brief description,and resources they could provide to a high school`;
     
     // Check if the length exceeds 400 characters
     if (tavilyPrompt.length > 399) {
@@ -31,11 +31,11 @@ export async function POST(request: Request, res: NextApiResponse) {
         body: JSON.stringify({
           api_key: process.env.TAVILY_API_KEY,
           query: tavilyPrompt,
-          search_depth: 'basic',
+          search_depth: 'advanced',
           include_images: true,
           include_answer: true,
           include_raw_content: false,
-          max_results: 5, // trying this out
+          max_results: 10, // trying this out
         }),
       });
       
@@ -73,15 +73,17 @@ export async function POST(request: Request, res: NextApiResponse) {
             }
           }
 
-          make sure there is 1 valid phonenumber in the field, and one VALID email in the field.If Tavily provides a string a nonvalid email, leave the email field blank
+          inside of the genpage field, make sure each subfield is around 350 characters of descriptive content
+          even if Tavily formats the phonenumber incorrectly, make sure it is in this format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis
+          make sure there is 1 valid phonenumber with the given format above in the field, and one VALID email in the field.If Tavily provides a string a nonvalid email, leave the email field blank
           `
         const groqParams: any = {
           messages: [
-            { role: 'system', content: 'You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences. Use the schema provided by the user' },
+            { role: 'system', content: 'You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences. Use the schema provided by the user.' },
             { role: "user", content: groqPrompt }
           ],
           model: "mixtral-8x7b-32768",
-          temperature: 0.1,
+          temperature: 0.075,
           stream: false,
           response_format: {
               type: "json_object"

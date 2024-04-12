@@ -43,6 +43,27 @@
       "when": 1712859261017,
       "tag": "0005_superb_ben_parker",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1712892019889,
+      "tag": "0006_foamy_luminals",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1712892100556,
+      "tag": "0007_mature_killer_shrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1712897093064,
+      "tag": "0008_magenta_blacklash",
+      "breakpoints": true
     }
   ]
 }
