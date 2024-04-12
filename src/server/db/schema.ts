@@ -22,7 +22,12 @@ export const elaborateCompanies = pgTable('elaborateCompanies', {
   genpage: json('genpage').default({ flaws: "flaws", process: "process", reasons: "reasons", summary: "summary", resources: "resources"}),
 });
 
-export const userCompanies = pgTable('userCompanies', {
+export const userFavorites = pgTable('userFavorites', {
+  userID: text('userID').primaryKey(),
+  name: text('name'),
+});
+
+export const partnerNotes = pgTable('partnerNotes', {
   userID: text('userID').primaryKey(),
   name: text('name'),
   note: text('note'),

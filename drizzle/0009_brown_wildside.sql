@@ -1,0 +1,1 @@
+ALTER TABLE "userCompanies" DROP COLUMN IF EXISTS "note";

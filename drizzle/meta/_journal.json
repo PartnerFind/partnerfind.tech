@@ -64,6 +64,20 @@
       "when": 1712897093064,
       "tag": "0008_magenta_blacklash",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1712934406012,
+      "tag": "0009_brown_wildside",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1712934446690,
+      "tag": "0010_melted_cannonball",
+      "breakpoints": true
     }
   ]
 }
