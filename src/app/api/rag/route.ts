@@ -13,6 +13,14 @@ export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();
     // First thing, call tavily api and pass in data
     let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the phone number and their contact email(if none leave blank),tell me the abbr. type:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in,brief description,and resources they could provide to a high school`;
+    
+    // Check if the length exceeds 400 characters
+    if (tavilyPrompt.length > 399) {
+      return NextResponse.json(
+        { error: 'The prompt length exceeds the maximum limit of 400 characters.' },
+        { status: 400 } // todo: a status code for frontend to handle
+      );
+    }
 
     try {
       const tavilyAPI = await fetch('https://api.tavily.com/search', {
@@ -30,7 +38,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           max_results: 5, // trying this out
         }),
       });
-        
+      
       if (tavilyAPI.ok) {
         // If tavily API is successful, call groq API and pass in the response from tavily
         const tavilyResponse = await tavilyAPI.json();
@@ -87,37 +95,55 @@ export async function POST(request: Request, res: NextApiResponse) {
           let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
           parsedGroqCompletion = await JSON.parse(parsedGroqCompletion);
           
-          await db.insert(elaborateCompanies).values([
-            {
-              name: parsedGroqCompletion.name,
-              phonenumber: parsedGroqCompletion.phonenumber,
-              email: parsedGroqCompletion.email,
-              type: parsedGroqCompletion.type,
-              resources: parsedGroqCompletion.resources,
-              description: parsedGroqCompletion.description,
-              category: parsedGroqCompletion.category,
-              genpage: parsedGroqCompletion.genpage,
-            },
-          ]);
-          
+          try {
+            await db.insert(elaborateCompanies).values([
+              {
+                name: parsedGroqCompletion.name,
+                phonenumber: parsedGroqCompletion.phonenumber,
+                email: parsedGroqCompletion.email,
+                type: parsedGroqCompletion.type,
+                resources: parsedGroqCompletion.resources,
+                description: parsedGroqCompletion.description,
+                category: parsedGroqCompletion.category,
+                genpage: parsedGroqCompletion.genpage,
+              },
+            ]);
+          } catch (err: any) {
+            // Check if the error code indicates a duplicate key violation
+            if (err.code === '23505') {
+              return NextResponse.json(
+                { error: `Duplicate DB entry: ${err.message}` },
+                { status: 409 } // todo: a status code for frontend to handle
+              );
+            } else {
+              // For other errors, return a 500 status
+              console.error(err);
+              return NextResponse.json(
+                { error: `Error adding to DB: ${err.message}` },
+                { status: 500 }
+              );
+            }
+          }
+
           return NextResponse.json(
             { generation: parsedGroqCompletion }, 
-            { status: 200 }
+            { status: 200 } // todo: a status code for frontend to handle
           )
         } catch (err: any) {
           console.error(err)
           return NextResponse.json(
-            { error: `Failed to query Groq / or DB error | ${err.name}` }, 
+            { error: `Failed to query Groq API | ${err.message}` }, 
             { status: 500 }
           )
-        }       
+        }
       } else {
         return new NextResponse(`Failed to query tavily | ${tavilyAPI.statusText}`, {
           status: 500,
         })
       }
     } catch (err: any) {
-      return new NextResponse(`Failed to query RAG | ${err.name}`, {
+      console.error(err)
+      return new NextResponse(`Failed to query Tavily (RAG) | ${err.message}`, {
         status: 500,
       })
     }
