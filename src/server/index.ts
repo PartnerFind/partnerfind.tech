@@ -16,7 +16,7 @@ export const db = drizzle(sql);
 
 //Object of the entire table
 const Companies = await db.select().from(elaborateCompanies);
-//console.log(Companies);
+console.log(Companies);
 
 
 //Full data for the elaborateCompanies table, using this table you can create objects for each individual row (aka Company)
