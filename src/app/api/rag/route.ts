@@ -1,13 +1,8 @@
 import { NextResponse } from 'next/server';
 import { NextApiResponse } from 'next';
-import { elaborateCompanies } from '@/server/db/schema'; // TODO: @ later
-import { baseCompanies } from '@/server/db/schema'; // TODO: @ later
-import { drizzle } from 'drizzle-orm/neon-http';
-import { neon } from '@neondatabase/serverless';
-import Groq from 'groq-sdk'; 
-
-const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+import { elaborateCompanies } from '@/server/db/schema';
+import { db } from '@/server/index';
+import Groq from 'groq-sdk';
 
 export async function POST(request: Request, res: NextApiResponse) {
     const data: any = await request.json();

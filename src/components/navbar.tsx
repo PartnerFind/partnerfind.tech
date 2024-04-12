@@ -5,7 +5,8 @@ import { SignedIn, SignedOut } from '@clerk/nextjs'
 import Link from "next/link";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu"
 import UserButton from "@/components/user-button"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button"
+import { Home } from "lucide-react"
 
 import SignInAndSignUp from "@/components/signin-and-signup"
 
@@ -19,7 +20,8 @@ export function Navbar() {
                             <div>
                                 <div className="flex items-center">
                                     <Link href="/">
-                                        <Button size="xlg">Home</Button>
+                                    
+                                        <Button size="xlg"><Home /> Home</Button>
                                     </Link>
                                 </div>
                             </div>

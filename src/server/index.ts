@@ -10,7 +10,7 @@ config ({
 });
 
 const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+export const db = drizzle(sql);
 
 //const user = await currentUser();
 

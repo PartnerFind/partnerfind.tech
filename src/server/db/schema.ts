@@ -1,5 +1,4 @@
-import { pgTable, serial, text, doublePrecision, json, jsonb } from 'drizzle-orm/pg-core';
-import { customType } from 'drizzle-orm/pg-core';
+import { pgTable, text, json } from 'drizzle-orm/pg-core';
 
 export const baseCompanies = pgTable('baseCompanies', {
   category: text('category'),
@@ -32,6 +31,3 @@ export const partnerNotes = pgTable('partnerNotes', {
   name: text('name'),
   note: text('note'),
 });
-
-
-
