@@ -49,9 +49,9 @@ export async function POST(request: Request, res: NextApiResponse) {
           Make absolute sure your response is in this exact JSON schema below:
           
           {
-            "name": "", // (exact business name from Tavily completion)
-            "phonenumber": "", // (format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis)
-            "email": "", // Leave blank if no email is provided (or tavily says none)
+            "name": "", // (the business name)
+            "phonenumber": "", // There should ONLY be a SINGLE phone number here(format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis)
+            "email": "", // Leave blank if no VALID email is provided / tavily provides a nonvalid email
             "type": "", // (the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)
             "resources": "", // (very brief list of resources they provide for highschool students)
             "description": "", // (extremely brief and concise description of the organization)
@@ -64,6 +64,8 @@ export async function POST(request: Request, res: NextApiResponse) {
               "process" : "" // (list out directions and the process I should follow to partner with this organization)
             }
           }
+
+          make sure there is 1 valid phonenumber in the field, and one VALID email in the field.If Tavily provides a string a nonvalid email, leave the email field blank
           `
         const groqParams: any = {
           messages: [
@@ -97,12 +99,6 @@ export async function POST(request: Request, res: NextApiResponse) {
               genpage: parsedGroqCompletion.genpage,
             },
           ]);
-
-          // const allCompanies = await db.select({
-          //   genpage: elaborateCompanies.genpage,
-          // }).from(elaborateCompanies);
-
-          // console.log(allCompanies)
           
           return NextResponse.json(
             { generation: parsedGroqCompletion }, 
@@ -111,7 +107,7 @@ export async function POST(request: Request, res: NextApiResponse) {
         } catch (err: any) {
           console.error(err)
           return NextResponse.json(
-            { error: `Failed to query Groq | ${err.name}` }, 
+            { error: `Failed to query Groq / or DB error | ${err.name}` }, 
             { status: 500 }
           )
         }       

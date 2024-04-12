@@ -12,15 +12,12 @@ export const baseCompanies = pgTable('baseCompanies', {
 });
 
 export const elaborateCompanies = pgTable('elaborateCompanies', {
-  // id: serial('id'),
   category: text('category'),
-  name: text('name'),
+  name: text('name').primaryKey(),
   type: text('type'),
   description: text('description'),
   resources: text('resources'),
   phonenumber: text('phonenumber'),
   email: text('email'),
   genpage: json('genpage').default({ flaws: "flaws", process: "process", reasons: "reasons", summary: "summary", resources: "resources"}),
-})
-// .primaryKey(['id'])
-;
+});
