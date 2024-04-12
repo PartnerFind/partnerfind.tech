@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTable } from "@/components/table/data-table-pagination";
+import { DataTable } from "@/components/table/data-table";
 import { ColumnsPartner, columns } from "@/components/table/columns";
 import { useState, useEffect } from "react";
 
@@ -41,7 +41,7 @@ export default function ExploreTable() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={ columns } data={ data } />
     </div>
   );
 }
