@@ -5,34 +5,40 @@ import { ColumnsPartnerDef, columns } from "@/components/table/columns";
 import { useState, useEffect } from "react";
 import { useAuth } from '@clerk/clerk-react';
 
+interface Item1 {
+  category: string;
+  name: string;
+  type: string;
+  description: string;
+  resources: string;
+  phonenumber: string;
+  email: string;
+}
+
+interface Item2 {
+  userID: string
+  name: string;
+}
+
 async function fetchAllTableData(userId: string): Promise<any> { // fetch all the partners as well as user specific partners list
   try {
-    const getAllRows = await fetch(`/api/db/fetch-all-rows`, { next: { revalidate: 10 } }); // this request should be cached with a lifetime of 10 seconds
+    const options: RequestInit = {
+      // next: { revalidate: 0 }, // this request is also cached with a lifetime of 10 seconds
+      // cache: 'no-store', // don't cache the response
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify({ userID: userId }), // Pass the user ID to the backend
+    };
 
+    const getAllRows = await fetch('/api/db/fetch-all-rows-with-user', options); 
     if (getAllRows.ok) {
       const info = await getAllRows.json();
-      const options = {
-        next: { revalidate: 10 }, // this request is also cached with a lifetime of 10 seconds
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userID: userId }), // Pass the PayPal invoice ID to the backend
-      };
-
-      const getUserPartners = await fetch('/api/db/fetch-user-partners', options,);
-      let getUserPartnersRes = await getUserPartners.json();
-      if (getUserPartners.ok) {
-        let data: ColumnsPartnerDef = {
-          "globalPartners": info?.data,
-          "userPartners": getUserPartnersRes?.list,
-        }
-        return data;
-      } else {
-        throw new Error("Error fetching user specific partners.");
-      };
+     
+      return info;
     } else {
-      throw new Error("Error fetching rows.");
+      throw new Error("Error fetching rows from DB.");
     }
   } catch (error) {
     console.error("An error occurred while fetching from the DB:", error);
@@ -43,7 +49,7 @@ async function fetchAllTableData(userId: string): Promise<any> { // fetch all th
 }
 
 export default function ExploreTable() {
-  const [data, setData] = useState<any>([]);
+  const [info, setInfo] = useState<any>([]);
   const { userId } = useAuth(); // get current logged in user ID
 
   useEffect(() => {
@@ -51,7 +57,7 @@ export default function ExploreTable() {
       try {
         if (userId) {
           const newData = await fetchAllTableData(userId);
-          setData(newData);
+          setInfo(newData);
         }
       } catch (error) {
         console.error("An error occurred while fetching from the DB:", error);
@@ -59,14 +65,14 @@ export default function ExploreTable() {
       }
     }
 
-    if (data.length === 0) { // Check if data is empty before fetching
+    if (info.length === 0) { // Check if data is empty before fetching
       fetchDataAndUpdateState();
     }
-  }, [data]); // Only re-run effect if data changes
+  }, [info]); // Only re-run effect if data changes
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={ columns } data={ data?.globalPartners } />
+      <DataTable columns={ columns } data={ info } />
     </div>
   );
 }

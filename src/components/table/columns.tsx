@@ -2,38 +2,28 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { useState } from "react"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
-export type ColumnsPartnerDef = {
-  globalPartners: {
-    category: string
-    name: string
-    type: string
-    description: string
-    resources: string
-    phonenumber: string
-    email: string
-    genpage: {
-      summary: string
-      resources: string
-      reasons: string
-      flaws: string
-      process: string
-    }
+export type ColumnsPartnerDef = { // shadcn table might need to take in a single key object? idk
+  data: {
+    category: string;
+    name: string;
+    type: string;
+    description: string;
+    resources: string;
+    phonenumber: string;
+    email: string;
+    userID?: string;
   }[],
-  userPartners: {
-    userID: string,
-    name: string
-  }[],  
 }
 
 export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   {
-    accessorKey: "globalPartners.category",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
@@ -47,7 +37,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
     cell: ({ row }) => {
       const category = categories.find(
-        (category) => category.value === row.getValue("globalPartners.category")
+        (category) => category.value === row.getValue("category")
       )
 
       if (!category) {
@@ -65,7 +55,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "globalPartners.name",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -81,21 +71,21 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] font-medium">
-            {row.getValue("globalPartners.name")}
+            {row.getValue("name")}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: "globalPartners.type",
+    accessorKey: "type",
     header: "Type",
   },
   {
-    accessorKey: "globalPartners.description",
+    accessorKey: "description",
     header: "Description",
     cell: ({ row }) => {
-      let description: string = row.getValue("globalPartners.description");
+      let description: string = row.getValue("description");
       if (description.length > 200) {
         // If description is more than 200 characters, truncate and add an ellipise (...), but make sure to not slice on spaces
         let truncatedDescription = description.slice(0, 197); 
@@ -115,14 +105,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "globalPartners.resources",
+    accessorKey: "resources",
     header: "Resources",
   },
   {
-    accessorKey: "globalPartners.phonenumber",
+    accessorKey: "phonenumber",
     header: "Phone Number",
     cell: ({ row }) => {
-      let phonenumber: string = row.getValue("globalPartners.phonenumber"); // todo format
+      let phonenumber: string = row.getValue("phonenumber"); // todo format
       if (!phonenumber) {
         return null;
       } else {
@@ -137,10 +127,10 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "globalPartners.email",
+    accessorKey: "email",
     header: "Email",
     cell: ({ row }) => {
-      let email: string = row.getValue("globalPartners.email");
+      let email: string = row.getValue("email");
       if (!email) {
         return null;
       } else {
@@ -154,41 +144,41 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       }
     },
   },
-  {
-    accessorKey: "userPartners.add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
-    header: "Add Partner to List", // make a cell here with the checkboxes ^^^
-    cell: ({ row }) => {
-      // let rowName = row.getValue("name"); // Get the name of the row
+  // {
+  //   accessorKey: "userPartners.add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
+  //   header: "Add Partner to List", // make a cell here with the checkboxes ^^^
+  //   cell: ({ row }) => {
+  //     // let rowName = row.getValue("name"); // Get the name of the row
 
-      // let initalChecked: boolean = false;
-      // const [checked, setChecked] = useState(false);
+  //     // let initalChecked: boolean = false;
+  //     // const [checked, setChecked] = useState(false);
 
-      // const handleCheckboxChange = async () => {
-      //   if (checked) {
-      //     try {
-      //       const response = await fetch(`/api/db/getClerkUserID`);
-      //       if (response.ok) {
-      //         const getUserID = await response.json();
-      //         const userID = getUserID?.clerkUserID;
-      //         console.log("UserID:", userID); // Log the userID
-      //       } else {
-      //         throw new Error("Error fetching user ID.");
-      //       }
-      //     } catch (error) {
-      //       console.error("An error occurred while fetching the user ID:", error);
-      //       alert("An error occurred while fetching the user ID");
-      //       throw error;
-      //     }
-      //   }
-      //   setChecked(!checked);
-      // };
+  //     // const handleCheckboxChange = async () => {
+  //     //   if (checked) {
+  //     //     try {
+  //     //       const response = await fetch(`/api/db/getClerkUserID`);
+  //     //       if (response.ok) {
+  //     //         const getUserID = await response.json();
+  //     //         const userID = getUserID?.clerkUserID;
+  //     //         console.log("UserID:", userID); // Log the userID
+  //     //       } else {
+  //     //         throw new Error("Error fetching user ID.");
+  //     //       }
+  //     //     } catch (error) {
+  //     //       console.error("An error occurred while fetching the user ID:", error);
+  //     //       alert("An error occurred while fetching the user ID");
+  //     //       throw error;
+  //     //     }
+  //     //   }
+  //     //   setChecked(!checked);
+  //     // };
       
-      // let add_partner_toggle: string = row.getValue("add_partner");
+  //     // let add_partner_toggle: string = row.getValue("add_partner");
 
-      return (
-        // <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
-        <Checkbox />
-      );
-    },
-  },
+  //     return (
+  //       // <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
+  //       <Checkbox />
+  //     );
+  //   },
+  // },
 ]
