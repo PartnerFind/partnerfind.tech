@@ -4,12 +4,13 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useState, useEffect } from "react"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Checkbox } from "@/components/ui/checkbox"
 import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
 export type ColumnsPartnerDef = { // shadcn table might need to take in a single key object? idk
-  userID: string;
+  // userID: string;
   data: {
     category: string;
     name: string;
@@ -24,7 +25,7 @@ export type ColumnsPartnerDef = { // shadcn table might need to take in a single
 
 export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   {
-    accessorKey: "data.category",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
@@ -38,7 +39,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
     cell: ({ row }) => {
       const category = categories.find(
-        (category) => category.value === row.getValue("data.category")
+        (category) => category.value === row.getValue("category")
       )
 
       if (!category) {
@@ -56,7 +57,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "data.name", // todo: add Link to specific pages here
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -69,24 +70,31 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       )
     },
     cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[200px] font-medium">
-            {row.getValue("data.name")}
-          </span>
+      let name: string = row.getValue("name");
+      if (!name) {
+        return null;
+      } else {
+        return (
+          <div className="flex space-x-4">
+            <span className="max-w-[275px] font-medium">
+              <a className="font-medium" href={`/partners/${name}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
+                {name}
+              </a>
+            </span>
         </div>
-      )
+        );
+      }
     },
   },
   {
-    accessorKey: "data.type",
+    accessorKey: "type",
     header: "Type",
   },
   {
-    accessorKey: "data.description",
+    accessorKey: "description",
     header: "Description",
     cell: ({ row }) => {
-      let description: string = row.getValue("data.description");
+      let description: string = row.getValue("description");
       if (description.length > 200) {
         // If description is more than 200 characters, truncate and add an ellipise (...), but make sure to not slice on spaces
         let truncatedDescription = description.slice(0, 197); 
@@ -106,16 +114,16 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "data.resources",
+    accessorKey: "resources",
     header: "Resources",
   },
   {
-    accessorKey: "data.phonenumber",
+    accessorKey: "phonenumber",
     header: "Phone Number",
     cell: ({ row }) => {
-      let phonenumber: string = row.getValue("data.phonenumber");
+      let phonenumber: string = row.getValue("phonenumber");
       if (!phonenumber) {
-        return null;
+        return "Not Available";
       } else {
         function formatPhoneNumber(phoneNumber: string) {
           // Remove any non-digit characters
@@ -138,12 +146,12 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "data.email",
+    accessorKey: "email",
     header: "Email",
     cell: ({ row }) => {
-      let email: string = row.getValue("data.email");
+      let email: string = row.getValue("email");
       if (!email) {
-        return null;
+        return "Not Available";
       } else {
         email = email.toLowerCase();
 
@@ -156,47 +164,41 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "data.userID",
-    header: "In my List?",
+    accessorKey: "userID",
+    header: `In my List?`,
+    size: 500,
     cell: ({ row }) => {
       const [checked, setChecked] = useState(false);
+      const [loading, setLoading] = useState(true); // loading state
 
       useEffect(() => {
         // if the field is empty, null or does not exist, set the checkbox to false
-        if (!row.getValue("data.userID") || row.getValue("data.userID") === "" || row.getValue("data.userID") === "null") {
+        if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
           setChecked(false);
         } else { // if it exists, then set checkbox to true
           setChecked(true);
         }
+        setLoading(false); // Set loading to false after checking the row value
       }, [row]);
 
       const handleCheckboxChange = async () => {
-        
+        let clerkUserID = null;
 
-        if (!checked) {
-          
-          // try {
-          // const options = {
-          //   next: { revalidate: 0 }, // make sure its fresh every call
-          //   method: 'POST',
-          //   headers: {
-          //       'Content-Type': 'application/json',
-          //   }, 
-          //   body: JSON.stringify({ data: { userID: row.getValue("data.userID"), name: row.getValue("data.name") } }), // Pass the user ID and name fields to the backend
-          // };
-          //   console.log(row.getValue("data.userID"), "userid");
-          //   console.log(row.getValue("data.name"), "name")
-          //   const addToList = await fetch(`/api/db/addToList`, options);
-          //   if (addToList.ok) {
-          //     setChecked(true);
-          //   } else {
-          //     throw new Error("Error adding user ID and name.");
-          //   }
-          // } catch (error) {
-          //   throw new Error("An error occurred while adding user ID and name.");
-          // }
-          setChecked(true)
-        } else if (checked) {
+        try {
+          const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+          };
+          const getClerkUserID = await fetch(`/api/getClerkUserID`, options);
+          let getClerkUserIDResponse = await getClerkUserID.json();
+          clerkUserID = getClerkUserIDResponse?.userID;
+        } catch (error) {
+          throw new Error("An error occurred while querying userID.");
+        }
+
+        if (!checked) { // user wants to add to their list
           try {
             const options = {
               next: { revalidate: 0 }, // make sure its fresh every call
@@ -204,10 +206,30 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               headers: {
                   'Content-Type': 'application/json',
               }, 
-              body: JSON.stringify({ data: { userID: row.getValue("data.userID"), name: row.getValue("data.name") } }), // Pass the user ID and name fields to the backend
+              body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
             };
-            console.log(row.getValue("data.userID"), "userid");
-            console.log(row.getValue("data.name"), "name")
+
+            const addToList = await fetch(`/api/db/addToList`, options);
+            if (addToList.ok) {
+              setChecked(true);
+            } else {
+              throw new Error("Error adding user ID and name.");
+            }
+          } catch (error) {
+            throw new Error("An error occurred while adding user ID and name.");
+          }
+          setChecked(true)
+        } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
+          try {
+            const options = {
+              next: { revalidate: 0 }, // make sure its fresh every call
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              }, 
+              body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+            };
+
             const removeFromList = await fetch(`/api/db/removeFromList`, options);
             if (removeFromList.ok) {
               setChecked(false);
@@ -221,7 +243,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       };
       
       return (
-        <Checkbox checked = { checked } onCheckedChange={ handleCheckboxChange }/>
+        <div className="flex items-center">
+          {/* Conditional rendering of skeleton or checkbox based on loading state */}
+          {loading ? (
+              <Skeleton className="w-5 h-5 rounded-sm border"/>
+          ) : (
+            <Checkbox className="w-5 h-5" checked={ checked } onCheckedChange={ handleCheckboxChange } />
+          )}
+        </div>
       );
     },
   },

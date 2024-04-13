@@ -23,9 +23,6 @@ export async function POST(req: Request, res: NextApiResponse) {
         )
     }
 
-    //await db.insert(userFavorites).values([{userID: userID, name: "", },]);   Adds to database with userID and empty name based on what name you want to put in
-    //  Deletes database for the current user and name of row selected to remove
-
     let Companies = null;
     try {
         Companies = await db.select().from(elaborateCompanies);
@@ -43,8 +40,7 @@ export async function POST(req: Request, res: NextApiResponse) {
     });
     
     // Add userID to each company object if there's a match based on company name as well as add userID at the tippy top of data (so we can use in db calls)
-    const updatedCompanies = { 
-        userID,
+    const updatedCompanies = {
         data: formattedCompanies.map(company => {
             const matchingUser = userList.find(user => user.name === company.name);
             return matchingUser ? { ...company, userID: matchingUser.userID } : company;

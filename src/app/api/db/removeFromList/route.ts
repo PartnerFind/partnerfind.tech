@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextApiResponse } from 'next';
-import { sql as s } from 'drizzle-orm';
 import { db } from '@/server/index';
 import { userFavorites } from '@/server/db/schema';
 import { eq, and } from "drizzle-orm";
@@ -10,12 +9,12 @@ export const revalidate = 0
 
 export async function POST(req: Request, res: NextApiResponse) {
     let data = await req.json()
-    const userID = data.userID;
-    const name = data.name;
+    const userID = data.data.userID;
+    const name = data.data.name;
 
     let removeFromUserList = null;
     try {
-        removeFromUserList = await db.delete(userFavorites).where(and(eq(userFavorites.userID, userID),eq(userFavorites.name, ""))); // Deletes database entry for the current user and name of row selected
+        removeFromUserList = await db.delete(userFavorites).where(and(eq(userFavorites.userID, userID), eq(userFavorites.name, name))); // Deletes database entry for the current user and name of row selected
 
     } catch (err: any) {
         console.error(err)

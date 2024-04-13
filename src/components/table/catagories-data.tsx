@@ -21,7 +21,7 @@ export const categories = [
     },
     {
         value: "GA",
-        label: "Government Associated (GA)",
+        label: "Government Association (GA)",
         icon: Landmark
     },
     {

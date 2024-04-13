@@ -92,7 +92,14 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             <CardContent className="grid gap-4">
                                 <p>
                                     <strong className="underline" style={{ color: '#22B357' }}>Email:</strong>
-                                    <a href={`mailto:${data.ragData.email}`} className="underline"><br/>{data.ragData.email}</a>
+                                    {data.ragData.email ? (
+                                        <a href={`mailto:${data.ragData.email}`} className="underline">
+                                        <br />
+                                        {data.ragData.email}
+                                        </a>
+                                    ) : (
+                                        " Not Available"
+                                    )}
                                 </p>
                                 <div className="relative">
                                     <div className="absolute inset-0 flex items-center">
