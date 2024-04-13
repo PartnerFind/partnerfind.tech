@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/navbar";
-
 export const metadata = {
   title: "PartnerFind | Home"
 };
@@ -11,7 +9,6 @@ export default function LandingLayout({
 }) {
   return (
     <div>
-      {/* <Navbar/> */}
       { children }
     </div>
   );

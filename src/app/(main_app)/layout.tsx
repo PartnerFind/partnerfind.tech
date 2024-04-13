@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster"
 
 export default function MainAppLayout({

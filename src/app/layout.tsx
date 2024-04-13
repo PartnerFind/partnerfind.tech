@@ -1,5 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { twMerge } from "tailwind-merge";
+import { Navbar } from "@/components/navbar";
 import "@/styles/globals.css";
 
 import { fontSans } from "@/lib/fonts"
@@ -20,6 +21,7 @@ export default function RootLayout({
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable
           )}>
+          <Navbar/> 
           <main>
             {children}
           </main>
