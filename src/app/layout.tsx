@@ -2,12 +2,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { twMerge } from "tailwind-merge";
 import "@/styles/globals.css";
 
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+import { fontSans } from "@/lib/fonts"
 
 export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
@@ -21,8 +16,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
-          {children}
+        <body className={twMerge(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}>
+          <main>
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>

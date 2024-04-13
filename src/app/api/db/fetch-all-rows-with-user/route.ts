@@ -24,7 +24,7 @@ export async function POST(req: Request, res: NextApiResponse) {
     }
 
     //await db.insert(userFavorites).values([{userID: userID, name: "", },]);   Adds to database with userID and empty name based on what name you want to put in
-    //await db.delete(userFavorites).where(s`${userFavorites.userID} = ${userID} AND ${userFavorites.name} = ${""}`); Deletes database for the current user and name of row selected to remove
+    //  Deletes database for the current user and name of row selected to remove
 
     let Companies = null;
     try {
@@ -47,6 +47,6 @@ export async function POST(req: Request, res: NextApiResponse) {
         const matchingUser = userList.find(user => user.name === company.name);
         return matchingUser ? { ...company, userID: matchingUser.userID } : company;
     });
-
+    
     return NextResponse.json({ data: updatedCompanies });
 }

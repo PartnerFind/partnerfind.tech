@@ -13,7 +13,7 @@ export async function POST(request: Request, res: NextApiResponse) {
     if (tavilyPrompt.length > 399) {
       return NextResponse.json(
         { error: 'The prompt length exceeds the maximum limit of 400 characters.' },
-        { status: 400 } // todo: a status code for frontend to handle
+        { status: 400 }
       );
     }
 
@@ -109,7 +109,7 @@ export async function POST(request: Request, res: NextApiResponse) {
             if (err.code === '23505') {
               return NextResponse.json(
                 { error: `Duplicate DB entry: ${err.message}` },
-                { status: 409 } // todo: a status code for frontend to handle
+                { status: 206 } // 409 status code causes error messages and etc
               );
             } else {
               // For other errors, return a 500 status
@@ -123,7 +123,7 @@ export async function POST(request: Request, res: NextApiResponse) {
 
           return NextResponse.json(
             { generation: parsedGroqCompletion }, 
-            { status: 200 } // todo: a status code for frontend to handle
+            { status: 200 }
           )
         } catch (err: any) {
           console.error(err)

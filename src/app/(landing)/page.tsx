@@ -1,4 +1,6 @@
-export default function HomePage() {
+import React from 'react';
+
+const HomePage = (): React.JSX.Element => {
   return (
     <>
       <div>
@@ -15,3 +17,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default HomePage;

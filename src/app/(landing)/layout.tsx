@@ -11,7 +11,7 @@ export default function LandingLayout({
 }) {
   return (
     <div>
-      <Navbar/>
+      {/* <Navbar/> */}
       { children }
     </div>
   );

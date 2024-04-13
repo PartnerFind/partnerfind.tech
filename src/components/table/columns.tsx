@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -112,10 +112,20 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     accessorKey: "phonenumber",
     header: "Phone Number",
     cell: ({ row }) => {
-      let phonenumber: string = row.getValue("phonenumber"); // todo format
+      let phonenumber: string = row.getValue("phonenumber");
       if (!phonenumber) {
         return null;
       } else {
+        function formatPhoneNumber(phoneNumber: string) {
+          // Remove any non-digit characters
+          const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+      
+          // Format the phone number
+          const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
+      
+          return formatted;
+      }
+      phonenumber = formatPhoneNumber(phonenumber);
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
@@ -144,41 +154,74 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       }
     },
   },
-  // {
-  //   accessorKey: "userPartners.add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
-  //   header: "Add Partner to List", // make a cell here with the checkboxes ^^^
-  //   cell: ({ row }) => {
-  //     // let rowName = row.getValue("name"); // Get the name of the row
+  {
+    accessorKey: "userID",
+    header: "In my List?",
+    cell: ({ row }) => {
+      const [checked, setChecked] = useState(false);
 
-  //     // let initalChecked: boolean = false;
-  //     // const [checked, setChecked] = useState(false);
+      useEffect(() => {
+        // if the field is empty, null or does not exist, set the checkbox to false
+        if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
+          setChecked(false);
+        } else { // if it exists, then set checkbox to true
+          setChecked(true);
+        }
+      }, [row]);
 
-  //     // const handleCheckboxChange = async () => {
-  //     //   if (checked) {
-  //     //     try {
-  //     //       const response = await fetch(`/api/db/getClerkUserID`);
-  //     //       if (response.ok) {
-  //     //         const getUserID = await response.json();
-  //     //         const userID = getUserID?.clerkUserID;
-  //     //         console.log("UserID:", userID); // Log the userID
-  //     //       } else {
-  //     //         throw new Error("Error fetching user ID.");
-  //     //       }
-  //     //     } catch (error) {
-  //     //       console.error("An error occurred while fetching the user ID:", error);
-  //     //       alert("An error occurred while fetching the user ID");
-  //     //       throw error;
-  //     //     }
-  //     //   }
-  //     //   setChecked(!checked);
-  //     // };
+      const handleCheckboxChange = async () => {
+        
+
+        if (!checked) {
+          
+          // try {
+          // const options = {
+          //   next: { revalidate: 0 }, // make sure its fresh every call
+          //   method: 'POST',
+          //   headers: {
+          //       'Content-Type': 'application/json',
+          //   }, 
+          //   body: JSON.stringify({ data: { userID: row.getValue("userID"), name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+          // };
+          //   console.log(row.getValue("userID"), "userid");
+          //   console.log(row.getValue("name"), "name")
+          //   const addToList = await fetch(`/api/db/addToList`, options);
+          //   if (addToList.ok) {
+          //     setChecked(true);
+          //   } else {
+          //     throw new Error("Error adding user ID and name.");
+          //   }
+          // } catch (error) {
+          //   throw new Error("An error occurred while adding user ID and name.");
+          // }
+          setChecked(true)
+        } else if (checked) {
+          try {
+            const options = {
+              next: { revalidate: 0 }, // make sure its fresh every call
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              }, 
+              body: JSON.stringify({ data: { userID: row.getValue("userID"), name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+            };
+            console.log(row.getValue("userID"), "userid");
+            console.log(row.getValue("name"), "name")
+            const removeFromList = await fetch(`/api/db/removeFromList`, options);
+            if (removeFromList.ok) {
+              setChecked(false);
+            } else {
+              throw new Error("Error removing user ID and name.");
+            }
+          } catch (error) {
+            throw new Error("An error occurred while removing user ID and name.");
+          }
+        }
+      };
       
-  //     // let add_partner_toggle: string = row.getValue("add_partner");
-
-  //     return (
-  //       // <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
-  //       <Checkbox />
-  //     );
-  //   },
-  // },
+      return (
+        <Checkbox checked = { checked } onCheckedChange={ handleCheckboxChange }/>
+      );
+    },
+  },
 ]

@@ -28,6 +28,7 @@ const config = {
     "@typescript-eslint/no-floating-promises": "warn",
     "@typescript-eslint/no-empty-interface": "warn",
     "@typescript-eslint/no-unsafe-return": "warn",
+    "react-hooks/rules-of-hooks": "warn",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
