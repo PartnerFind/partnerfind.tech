@@ -3,6 +3,7 @@ import type { NextApiResponse } from 'next';
 import { sql as s } from 'drizzle-orm';
 import { db } from '@/server/index';
 import { userFavorites } from '@/server/db/schema';
+import { eq, and } from "drizzle-orm";
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -14,7 +15,7 @@ export async function POST(req: Request, res: NextApiResponse) {
 
     let removeFromUserList = null;
     try {
-        removeFromUserList = await db.delete(userFavorites).where(s`${userFavorites.userID} = ${userID} AND ${name} = ${""}`); // Deletes database entry for the current user and name of row selected
+        removeFromUserList = await db.delete(userFavorites).where(and(eq(userFavorites.userID, userID),eq(userFavorites.name, ""))); // Deletes database entry for the current user and name of row selected
 
     } catch (err: any) {
         console.error(err)
