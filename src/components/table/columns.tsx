@@ -1,6 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
 export type ColumnsPartner = {
@@ -25,11 +29,58 @@ export type ColumnsPartner = {
 export const columns: ColumnDef<ColumnsPartner>[] = [
   {
     accessorKey: "category",
-    header: "Category",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const category = categories.find(
+        (category) => category.value === row.getValue("category")
+      )
+
+      if (!category) {
+        return null
+      }
+
+      return (
+        <div className="flex w-[100px] items-center">
+          <span>{category.label}</span>
+        </div>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[200px] font-medium">
+            {row.getValue("name")}
+          </span>
+        </div>
+      )
+    },
   },
   {
     accessorKey: "type",
@@ -65,13 +116,18 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
   {
     accessorKey: "phonenumber",
     header: "Phone Number",
-    size: 200,
     cell: ({ row }) => {
       let phonenumber: string = row.getValue("phonenumber");
       if (!phonenumber) {
         return null;
       } else {
-        return phonenumber;
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("phonenumber")}
+            </span>
+          </div>
+        )
       }
     },
   },
@@ -86,7 +142,7 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
         email = email.toLowerCase();
 
         return (
-          <a href={`mailto:${email}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
+          <a className="font-medium" href={`mailto:${email}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
             {email}
           </a>
         );
@@ -94,7 +150,7 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "add_partner", // todo
-    header: "Add Partner to List",
+    accessorKey: "add_partner", // todo: add checkboxes (for toggling) and use radix apis for flow
+    header: "Add Partner to List", // make a cell here with the checkboxes ^^^
   },
 ]

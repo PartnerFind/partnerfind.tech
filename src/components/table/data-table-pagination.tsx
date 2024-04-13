@@ -1,7 +1,6 @@
 "use client"
 
 import {
-  ColumnDef,
   Table
 } from "@tanstack/react-table"
 
