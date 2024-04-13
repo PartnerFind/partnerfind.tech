@@ -42,8 +42,7 @@ async function fetchAllTableData(userId: string): Promise<any> { // fetch all th
     }
   } catch (error) {
     console.error("An error occurred while fetching from the DB:", error);
-    let s = `An error occurred while fetching from the DB. ${error}`
-    alert(s);
+    alert("An error occurred while fetching from the DB.");
     throw error;
   }
 }
