@@ -1,4 +1,4 @@
-import { pgTable, text, json } from 'drizzle-orm/pg-core';
+import { pgTable, text, json, serial } from 'drizzle-orm/pg-core';
 
 export const baseCompanies = pgTable('baseCompanies', {
   category: text('category'),
@@ -22,12 +22,14 @@ export const elaborateCompanies = pgTable('elaborateCompanies', {
 });
 
 export const userFavorites = pgTable('userFavorites', {
-  userID: text('userID').primaryKey(),
+  userID: text('userID'),
   name: text('name'),
+  id: serial('id').primaryKey(),
 });
 
 export const partnerNotes = pgTable('partnerNotes', {
-  userID: text('userID').primaryKey(),
+  userID: text('userID'),
   name: text('name'),
   note: text('note'),
+  id: serial('id').primaryKey(),
 });

@@ -2,8 +2,10 @@ import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { baseCompanies } from './db/schema';
 import { elaborateCompanies } from './db/schema';
+import { userFavorites } from './db/schema';
 import { config } from 'dotenv';
 import { currentUser } from '@clerk/nextjs';
+import { sql as s } from 'drizzle-orm';
 
 config ({
     path: '.env',
@@ -11,6 +13,19 @@ config ({
 
 const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
 export const db = drizzle(sql);
+
+async function selectCompanies(withName: boolean) {
+    return db.select({
+        name: elaborateCompanies.name, 
+        ... (withName ? { name: elaborateCompanies.name } : {}),
+    }).from(elaborateCompanies);
+}
+
+//const userList = await selectCompanies(true);
+
+//const usersIS = await db.select().from(elaborateCompanies).where(s`${elaborateCompanies.name} = ${"Bombay Bazar"}`)
+
+//console.log(usersIS);
 
 // //const user = await currentUser();
 

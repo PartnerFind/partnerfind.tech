@@ -8,8 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
-export type ColumnsPartner = {
-  data: {
+export type ColumnsPartnerDef = {
+  globalPartners: {
     category: string
     name: string
     type: string
@@ -24,29 +24,16 @@ export type ColumnsPartner = {
       flaws: string
       process: string
     }
-  }[]
+  }[],
+  userPartners: {
+    userID: string,
+    name: string
+  }[],  
 }
 
-let userID = null;
-
-try {
-  const response = await fetch(`/api/db/getClerkUserID`);
-  if (response.ok) {
-    const getUserID = await response.json();
-    userID = getUserID?.clerkUserID;
-  } else {
-    throw new Error("Error fetching user ID.");
-  }
-} catch (error) {
-  console.error("An error occurred while fetching the user ID:", error);
-  alert("An error occurred while fetching the user ID");
-  throw error;
-}
-
-
-export const columns: ColumnDef<ColumnsPartner>[] = [
+export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   {
-    accessorKey: "category",
+    accessorKey: "globalPartners.category",
     header: ({ column }) => {
       return (
         <Button
@@ -60,7 +47,7 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
     cell: ({ row }) => {
       const category = categories.find(
-        (category) => category.value === row.getValue("category")
+        (category) => category.value === row.getValue("globalPartners.category")
       )
 
       if (!category) {
@@ -78,7 +65,7 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "globalPartners.name",
     header: ({ column }) => {
       return (
         <Button
@@ -94,21 +81,21 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] font-medium">
-            {row.getValue("name")}
+            {row.getValue("globalPartners.name")}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: "type",
+    accessorKey: "globalPartners.type",
     header: "Type",
   },
   {
-    accessorKey: "description",
+    accessorKey: "globalPartners.description",
     header: "Description",
     cell: ({ row }) => {
-      let description: string = row.getValue("description");
+      let description: string = row.getValue("globalPartners.description");
       if (description.length > 200) {
         // If description is more than 200 characters, truncate and add an ellipise (...), but make sure to not slice on spaces
         let truncatedDescription = description.slice(0, 197); 
@@ -128,21 +115,21 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "resources",
+    accessorKey: "globalPartners.resources",
     header: "Resources",
   },
   {
-    accessorKey: "phonenumber",
+    accessorKey: "globalPartners.phonenumber",
     header: "Phone Number",
     cell: ({ row }) => {
-      let phonenumber: string = row.getValue("phonenumber");
+      let phonenumber: string = row.getValue("globalPartners.phonenumber"); // todo format
       if (!phonenumber) {
         return null;
       } else {
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              {row.getValue("phonenumber")}
+              { phonenumber }
             </span>
           </div>
         )
@@ -150,10 +137,10 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: "globalPartners.email",
     header: "Email",
     cell: ({ row }) => {
-      let email: string = row.getValue("email");
+      let email: string = row.getValue("globalPartners.email");
       if (!email) {
         return null;
       } else {
@@ -168,34 +155,39 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
+    accessorKey: "userPartners.add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
     header: "Add Partner to List", // make a cell here with the checkboxes ^^^
     cell: ({ row }) => {
-      const [checked, setChecked] = useState(false);
+      // let rowName = row.getValue("name"); // Get the name of the row
 
-      const handleCheckboxChange = async () => {
-        if (checked) {
-          try {
-            const response = await fetch(`/api/db/getClerkUserID`);
-            if (response.ok) {
-              const getUserID = await response.json();
-              const userID = getUserID?.clerkUserID;
-              console.log("UserID:", userID); // Log the userID
-            } else {
-              throw new Error("Error fetching user ID.");
-            }
-          } catch (error) {
-            console.error("An error occurred while fetching the user ID:", error);
-            alert("An error occurred while fetching the user ID");
-            throw error;
-          }
-        }
-        setChecked(!checked);
-      };
+      // let initalChecked: boolean = false;
+      // const [checked, setChecked] = useState(false);
+
+      // const handleCheckboxChange = async () => {
+      //   if (checked) {
+      //     try {
+      //       const response = await fetch(`/api/db/getClerkUserID`);
+      //       if (response.ok) {
+      //         const getUserID = await response.json();
+      //         const userID = getUserID?.clerkUserID;
+      //         console.log("UserID:", userID); // Log the userID
+      //       } else {
+      //         throw new Error("Error fetching user ID.");
+      //       }
+      //     } catch (error) {
+      //       console.error("An error occurred while fetching the user ID:", error);
+      //       alert("An error occurred while fetching the user ID");
+      //       throw error;
+      //     }
+      //   }
+      //   setChecked(!checked);
+      // };
       
-      let add_partner_toggle: string = row.getValue("add_partner");
+      // let add_partner_toggle: string = row.getValue("add_partner");
+
       return (
-        <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
+        // <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
+        <Checkbox />
       );
     },
   },

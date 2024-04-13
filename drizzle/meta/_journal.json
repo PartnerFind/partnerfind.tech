@@ -5,78 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1712579318299,
-      "tag": "0000_rich_hannibal_king",
+      "when": 1712986332712,
+      "tag": "0000_typical_colossus",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1712579763173,
-      "tag": "0001_tiresome_robbie_robertson",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1712580088294,
-      "tag": "0002_tan_toad_men",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1712772335587,
-      "tag": "0003_silky_blue_shield",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1712802014449,
-      "tag": "0004_nosy_jigsaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1712859261017,
-      "tag": "0005_superb_ben_parker",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1712892019889,
-      "tag": "0006_foamy_luminals",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1712892100556,
-      "tag": "0007_mature_killer_shrike",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "5",
-      "when": 1712897093064,
-      "tag": "0008_magenta_blacklash",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "5",
-      "when": 1712934406012,
-      "tag": "0009_brown_wildside",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "5",
-      "when": 1712934446690,
-      "tag": "0010_melted_cannonball",
+      "when": 1712986723304,
+      "tag": "0001_complete_sleeper",
       "breakpoints": true
     }
   ]
