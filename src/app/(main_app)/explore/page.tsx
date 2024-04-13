@@ -1,4 +1,5 @@
 import ExploreTable from './explore-table';
+import { auth } from '@clerk/nextjs';
 
 export const metadata = {
     title: "PartnerFind | Explore"
@@ -29,11 +30,16 @@ async function fetchAllTableData(userId: string) { // fetch all the partners as 
 }
 
 export default async function ExplorePage() {
-    const userId = 'user_2e1CYrk8OQu5f2qAiW58hmE35ev';
-    const data = await fetchAllTableData(userId);
+    let data: string | null = null;
+    const { userId } : { userId: string | null } = auth();
+    
+    if (userId !== null) {
+        data = await fetchAllTableData(userId);
+    }
+    
     return (
         <>
-            <ExploreTable data={ data } />
+            <ExploreTable data={data || ''} />
         </>
     );
 }

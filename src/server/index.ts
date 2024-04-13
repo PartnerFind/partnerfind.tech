@@ -36,7 +36,6 @@ async function selectCompanies(withName: boolean) {
 
 // //Full data for the elaborateCompanies table, using this table you can create objects for each individual row (aka Company)
 // const allData = await db.select({
-//   genpage: elaborateCompanies.genpage as any,
 //   category: elaborateCompanies.category,
 //   name: elaborateCompanies.name,
 //   type: elaborateCompanies.type,
@@ -44,6 +43,7 @@ async function selectCompanies(withName: boolean) {
 //   resources: elaborateCompanies.resources,
 //   phonenumber: elaborateCompanies.phonenumber,
 //   email: elaborateCompanies.email,
+//   genpage: elaborateCompanies.genpage as any,
 // }).from(elaborateCompanies).execute();
 
 

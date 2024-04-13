@@ -9,6 +9,7 @@ import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
 export type ColumnsPartnerDef = { // shadcn table might need to take in a single key object? idk
+  userID: string;
   data: {
     category: string;
     name: string;
@@ -17,13 +18,13 @@ export type ColumnsPartnerDef = { // shadcn table might need to take in a single
     resources: string;
     phonenumber: string;
     email: string;
-    userID?: string;
-  }[],
+    userID?: string; // userID is optional
+  }
 }
 
 export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   {
-    accessorKey: "category",
+    accessorKey: "data.category",
     header: ({ column }) => {
       return (
         <Button
@@ -37,7 +38,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
     cell: ({ row }) => {
       const category = categories.find(
-        (category) => category.value === row.getValue("category")
+        (category) => category.value === row.getValue("data.category")
       )
 
       if (!category) {
@@ -55,7 +56,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "data.name", // todo: add Link to specific pages here
     header: ({ column }) => {
       return (
         <Button
@@ -71,21 +72,21 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] font-medium">
-            {row.getValue("name")}
+            {row.getValue("data.name")}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: "type",
+    accessorKey: "data.type",
     header: "Type",
   },
   {
-    accessorKey: "description",
+    accessorKey: "data.description",
     header: "Description",
     cell: ({ row }) => {
-      let description: string = row.getValue("description");
+      let description: string = row.getValue("data.description");
       if (description.length > 200) {
         // If description is more than 200 characters, truncate and add an ellipise (...), but make sure to not slice on spaces
         let truncatedDescription = description.slice(0, 197); 
@@ -105,14 +106,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "resources",
+    accessorKey: "data.resources",
     header: "Resources",
   },
   {
-    accessorKey: "phonenumber",
+    accessorKey: "data.phonenumber",
     header: "Phone Number",
     cell: ({ row }) => {
-      let phonenumber: string = row.getValue("phonenumber");
+      let phonenumber: string = row.getValue("data.phonenumber");
       if (!phonenumber) {
         return null;
       } else {
@@ -124,7 +125,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
       
           return formatted;
-      }
+        }
       phonenumber = formatPhoneNumber(phonenumber);
         return (
           <div className="flex space-x-2">
@@ -137,10 +138,10 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: "data.email",
     header: "Email",
     cell: ({ row }) => {
-      let email: string = row.getValue("email");
+      let email: string = row.getValue("data.email");
       if (!email) {
         return null;
       } else {
@@ -155,14 +156,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     },
   },
   {
-    accessorKey: "userID",
+    accessorKey: "data.userID",
     header: "In my List?",
     cell: ({ row }) => {
       const [checked, setChecked] = useState(false);
 
       useEffect(() => {
         // if the field is empty, null or does not exist, set the checkbox to false
-        if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
+        if (!row.getValue("data.userID") || row.getValue("data.userID") === "" || row.getValue("data.userID") === "null") {
           setChecked(false);
         } else { // if it exists, then set checkbox to true
           setChecked(true);
@@ -181,10 +182,10 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           //   headers: {
           //       'Content-Type': 'application/json',
           //   }, 
-          //   body: JSON.stringify({ data: { userID: row.getValue("userID"), name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+          //   body: JSON.stringify({ data: { userID: row.getValue("data.userID"), name: row.getValue("data.name") } }), // Pass the user ID and name fields to the backend
           // };
-          //   console.log(row.getValue("userID"), "userid");
-          //   console.log(row.getValue("name"), "name")
+          //   console.log(row.getValue("data.userID"), "userid");
+          //   console.log(row.getValue("data.name"), "name")
           //   const addToList = await fetch(`/api/db/addToList`, options);
           //   if (addToList.ok) {
           //     setChecked(true);
@@ -203,10 +204,10 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               headers: {
                   'Content-Type': 'application/json',
               }, 
-              body: JSON.stringify({ data: { userID: row.getValue("userID"), name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+              body: JSON.stringify({ data: { userID: row.getValue("data.userID"), name: row.getValue("data.name") } }), // Pass the user ID and name fields to the backend
             };
-            console.log(row.getValue("userID"), "userid");
-            console.log(row.getValue("name"), "name")
+            console.log(row.getValue("data.userID"), "userid");
+            console.log(row.getValue("data.name"), "name")
             const removeFromList = await fetch(`/api/db/removeFromList`, options);
             if (removeFromList.ok) {
               setChecked(false);

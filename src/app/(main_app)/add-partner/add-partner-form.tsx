@@ -71,9 +71,9 @@ export function AddPartnerForm() {
                                 <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added &quot;{formData.business_name}&quot; to the directory!</h1>
                             </div>
                         </>
-                    ),
-                    onOpenChange: () => router.push(`/partners/${ragResponse.generation.name}`)
+                    )
                 })
+                router.push(`/partners/${ragResponse.generation.name}`)
             } else if (code === 206) {
                 toast({
                     title: `Uh Oh! Duplicate partner found in DB! 🚫`,

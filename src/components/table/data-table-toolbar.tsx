@@ -23,16 +23,16 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <Input // Search filter
           placeholder="Filter partner names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("data.name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("data.name")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
 
-        {table.getColumn("category") && ( // Filter by category
+        {table.getColumn("data.category") && ( // Filter by category
           <DataTableFacetedFilter
-            column={table.getColumn("category")}
+            column={table.getColumn("data.category")}
             title="Category"
             options={categories}
           />

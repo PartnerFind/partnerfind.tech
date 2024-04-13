@@ -42,11 +42,18 @@ export async function POST(req: Request, res: NextApiResponse) {
         return rest;
     });
     
-    // Add userID to each company object if there's a match based on company name
-    const updatedCompanies = formattedCompanies.map(company => {
-        const matchingUser = userList.find(user => user.name === company.name);
-        return matchingUser ? { ...company, userID: matchingUser.userID } : company;
-    });
+    // Add userID to each company object if there's a match based on company name as well as add userID at the tippy top of data (so we can use in db calls)
+    const updatedCompanies = { 
+        userID,
+        data: formattedCompanies.map(company => {
+            const matchingUser = userList.find(user => user.name === company.name);
+            return matchingUser ? { ...company, userID: matchingUser.userID } : company;
+        }),
+        // data: [{ userID }, ...formattedCompanies.map(company => {
+        //     const matchingUser = userList.find(user => user.name === company.name);
+        //     return matchingUser ? { ...company, userID: matchingUser.userID } : company;
+        // })],
+    };
     
     return NextResponse.json({ data: updatedCompanies });
 }
