@@ -165,7 +165,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   },
   {
     accessorKey: "userID",
-    header: `In my List?`,
+    header: `In my List?`, // todo increase width
     size: 500,
     cell: ({ row }) => {
       const [checked, setChecked] = useState(false);
