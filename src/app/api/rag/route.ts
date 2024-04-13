@@ -53,7 +53,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           
           {
             "name": "", // (the business name)
-            "phonenumber": "", // There should ONLY be a SINGLE phone number here(format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis)
+            "phonenumber": "", // just the simple 9 digits as it will be a US number no formatting no extra characters)
             "email": "", // Leave blank if no VALID email is provided / tavily provides a nonvalid email
             "type": "", // (the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)
             "resources": "", // (very brief list of resources they provide for highschool students)
@@ -69,7 +69,6 @@ export async function POST(request: Request, res: NextApiResponse) {
           }
 
           inside of the genpage field, make sure each subfield is around 350 characters of descriptive content
-          even if Tavily formats the phonenumber incorrectly, make sure it is in this format: (314)-292-6262 --- include parenthesis for area code and dashes between each area code, telephone prefix, and line number including a dash after the parenthesis
           make sure there is 1 valid phonenumber with the given format above in the field, and one VALID email in the field.If Tavily provides a string a nonvalid email, leave the email field blank
           `
         const groqParams: any = {
