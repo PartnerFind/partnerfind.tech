@@ -1,9 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { useState } from "react"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
+import { Checkbox } from "@/components/ui/checkbox"
 import { categories } from "./catagories-data"
 
 // This type is used to define the shape of our data.
@@ -25,6 +26,23 @@ export type ColumnsPartner = {
     }
   }[]
 }
+
+let userID = null;
+
+try {
+  const response = await fetch(`/api/db/getClerkUserID`);
+  if (response.ok) {
+    const getUserID = await response.json();
+    userID = getUserID?.clerkUserID;
+  } else {
+    throw new Error("Error fetching user ID.");
+  }
+} catch (error) {
+  console.error("An error occurred while fetching the user ID:", error);
+  alert("An error occurred while fetching the user ID");
+  throw error;
+}
+
 
 export const columns: ColumnDef<ColumnsPartner>[] = [
   {
@@ -150,7 +168,35 @@ export const columns: ColumnDef<ColumnsPartner>[] = [
     },
   },
   {
-    accessorKey: "add_partner", // todo: add checkboxes (for toggling) and use radix apis for flow
+    accessorKey: "add_partner_toggle", // todo: add checkboxes (for toggling) and use radix apis for flow
     header: "Add Partner to List", // make a cell here with the checkboxes ^^^
+    cell: ({ row }) => {
+      const [checked, setChecked] = useState(false);
+
+      const handleCheckboxChange = async () => {
+        if (checked) {
+          try {
+            const response = await fetch(`/api/db/getClerkUserID`);
+            if (response.ok) {
+              const getUserID = await response.json();
+              const userID = getUserID?.clerkUserID;
+              console.log("UserID:", userID); // Log the userID
+            } else {
+              throw new Error("Error fetching user ID.");
+            }
+          } catch (error) {
+            console.error("An error occurred while fetching the user ID:", error);
+            alert("An error occurred while fetching the user ID");
+            throw error;
+          }
+        }
+        setChecked(!checked);
+      };
+      
+      let add_partner_toggle: string = row.getValue("add_partner");
+      return (
+        <Checkbox checked={ checked } onCheckedChange={ handleCheckboxChange } />
+      );
+    },
   },
 ]
