@@ -1,3 +1,4 @@
+
 export const metadata = {
   title: "PartnerFind | Home"
 };

@@ -13,7 +13,7 @@ import SignInAndSignUp from "@/components/signin-and-signup"
 export function Navbar() {
     return (
         <>
-            <div id="navbar" className="fixed top-0 left-0 p-4 flex justify-between w-full">
+            <div id="navbar" className="fixed top-6 left-0 p-4 flex justify-between w-full">
                 <div>
                     <NavigationMenu>
                         <NavigationMenuList>
