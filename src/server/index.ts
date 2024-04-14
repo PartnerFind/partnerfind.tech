@@ -21,6 +21,8 @@ async function selectCompanies(withName: boolean) {
     }).from(elaborateCompanies);
 }
 
+//const userList = await db.select().from(userFavorites).where(s`${userFavorites.userID} = ${userID}`);
+
 //const userList = await selectCompanies(true);
 
 //const usersIS = await db.select().from(elaborateCompanies).where(s`${elaborateCompanies.name} = ${"Bombay Bazar"}`)
@@ -48,7 +50,7 @@ async function selectCompanies(withName: boolean) {
 
 
 // //Object for the Company Bombay Bazar
-// const bombayBazar = allData.find(item => item.name === "Bombay Bazar");
+//const bombayBazar = allData.find(item => item.name === "Bombay Bazar");
 
 
 // //By running the following you can print each part of the Bombay Bazar object such as its description, type, category and each individual part of its genpage

@@ -7,56 +7,98 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
 import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
+import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useUser } from "@clerk/clerk-react";
 
-function DemoContainer({
-    className,
-    ...props
-  }: React.HTMLAttributes<HTMLDivElement>) {
-    return (
-      <div
-        className={cn(
-          "flex items-center justify-center [&>div]:w-full",
-          className
-        )}
-        {...props}
-      />
-    )
-  }
-
-  function formatPhoneNumber(phoneNumber: any) {
+function formatPhoneNumber(phoneNumber: any) {
     // Remove any non-digit characters
     const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-  
     // Format the phone number
     const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
-  
     return formatted;
-  }
+}
 
 export default function SpecificPartnerComponent( { data }: { data: any } ) {
+    const { user, isLoaded } = useUser();
     const [clerkUserID, setClerkUserID] = useState<string | null>(null);
+    const [note, setNote] = useState<string | null>(null);
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [newNote, setNewNote] = useState<string>("");
 
     useEffect(() => {
-        const fetchClerkUserID = async () => {
+        if (user && isLoaded) {
+            // Set the clerkUserID only when user and isLoaded are available
+            setClerkUserID(user.id);
+        }
+    }, [user, isLoaded]); 
+
+    useEffect(() => {
+        const fetchCurrentNote = async () => {
             try {
-                // Fetch clerkUserID
-                const optionsGet = {
-                    method: 'GET',
+                if (!clerkUserID) return; // Exit early if clerkUserID is null
+                // Get current note
+                const options = {
+                    next: { revalidate: 0 },
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                    }, 
+                    body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name }), // Pass the user ID to the backend
                 };
-                const responseGet = await fetch(`/api/getClerkUserID`, optionsGet);
-                const dataGet = await responseGet.json();
-                const clerkUserID = dataGet?.userID;
-                setClerkUserID(clerkUserID);                
+        
+                const getCurrentNote = await fetch('http://localhost:3000/api/db/getCurrentNote', options); // TODO
+                if (getCurrentNote.ok) {
+                    const getCurrentNoteRes = await getCurrentNote.json();
+                    setNote(getCurrentNoteRes.data.note);
+                } else {
+                    throw new Error("Error fetching rows from DB.");
+                }
             } catch (error) {
-                // Handle errors here
                 console.error(error);
+                // Handle error appropriately, e.g., set an error state
             }
         };
-        fetchClerkUserID();
-    }, []);
+
+        fetchCurrentNote();
+    }, [clerkUserID, data]);
+
+    const handleEditClick = () => {
+        setEditMode(true);
+        setNewNote(note || "");
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            // Save the new note to the database
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
+                body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name, note: newNote }), // Pass the user ID, partner name, and new note to the backend
+            };
+    
+            const saveNoteResponse = await fetch('http://localhost:3000/api/db/saveNote', options); // TODO: Replace with actual endpoint
+            if (!saveNoteResponse.ok) {
+                throw new Error("Error saving note to DB.");
+            }
+    
+            // Update the current note with the new note
+            setNote(newNote);
+            setEditMode(false);
+        } catch (error) {
+            console.error(error);
+            // Handle error appropriately, e.g., display an error message to the user
+        }
+    };
+
+    // Move the null checks outside of the hooks
+    if (!user || !isLoaded) {
+        // Handle loading state however you like
+        return null;
+    } 
 
     return (
         <>
@@ -128,54 +170,102 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     </div>
                 </div>
                 <div className="flex justify-center mt-12 pt-0">
-                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px' }}>
-                        <Card className="max-h-96 overflow-auto" style={{ width: '850px' }}>
-                            <CardHeader>
-                                <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Detailed AI Description of {data.ragData.name}:</CardTitle>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <span className="w-full border-t" />
+                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px', marginTop: '-50px', }}>
+                        <div className="flex justify-center">
+                            <div className="max-w-lg" style={{ marginLeft: '1000px', }}>
+                                <Card className="max-h-100" style={{ width: '300px'}}>
+                                    <CardHeader>
+                                        {note ? (
+                                            <CardTitle className="text-2xl" style={{ color: '#22B357' }}>
+                                                Current Note:
+                                            </CardTitle>
+                                        ) : (
+                                            <CardTitle className="text-2xl" style={{ color: '#22B357' }}>
+                                                Add your own note:
+                                            </CardTitle>
+                                        )}
+                                        <div className="relative">
+                                            <div className="absolute inset-0 flex items-center">
+                                                <span className="w-full border-t" />
+                                            </div>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent>
+                                    {editMode ? (
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="new-note">New Note</Label>
+                                        <Textarea id="new-note" value={newNote} onChange={(e) => setNewNote(e.target.value)} />
                                     </div>
-                                </div>    
-                            </CardHeader>
-                            <CardContent className="grid gap-4">
-                                <div className="grid grid-cols-1 gap-6">
-                                    <p><strong className="underline" style={{ color: '#22B357' }}>Detailed Summary:</strong><br /> {data.ragData.genpage.summary}</p>
-                                </div>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <span className="w-full border-t" />
+                                ) : (
+                                    <div>
+                                        {note ? note : "No notes added"}
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6">
-                                    <p><strong className="underline" style={{ color: '#22B357' }}>Resources Offered:</strong><br />{data.ragData.genpage.resources}</p>
-                                </div>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <span className="w-full border-t" />
+                                )}
+                                    </CardContent>
+                                    <CardFooter>
+                                {editMode ? (
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <Button variant="outline" onClick={() => handleSaveClick()}>Save</Button>
+                                        <Button variant="outline" onClick={() => setEditMode(false)}>Cancel</Button>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6">
-                                    <p><strong className="underline" style={{ color: '#22B357' }}>Reasons to Partner:</strong><br />{data.ragData.genpage.reasons}</p>
-                                </div>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <span className="w-full border-t" />
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <Button variant="outline" onClick={() => handleEditClick()}>Edit</Button>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6">
-                                    <p><strong className="underline" style={{ color: '#22B357' }}>Flaws about {data.ragData.name}:</strong><br />{data.ragData.genpage.flaws}</p>
-                                </div>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <span className="w-full border-t" />
+                                )}
+                            </CardFooter>
+                                </Card>
+                            </div>
+                        </div>
+                        <div style={{ marginTop: '40px' }}>
+                            <Card className="max-h-96 overflow-auto" style={{ width: '850px' }}>
+                                <CardHeader>
+                                    <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Detailed AI Description of {data.ragData.name}:</CardTitle>
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                    </div>    
+                                </CardHeader>
+                                <CardContent className="grid gap-4">
+                                    <div className="grid grid-cols-1 gap-6">
+                                        <p><strong className="underline" style={{ color: '#22B357' }}>Detailed Summary:</strong><br /> {data.ragData.genpage.summary}</p>
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6">
-                                    <p><strong className="underline" style={{ color: '#22B357' }}>Steps to Partner:</strong><br />{data.ragData.genpage.process}</p>
-                                </div>
-                            </CardContent>
-                        </Card>
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-6">
+                                        <p><strong className="underline" style={{ color: '#22B357' }}>Resources Offered:</strong><br />{data.ragData.genpage.resources}</p>
+                                    </div>
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-6">
+                                        <p><strong className="underline" style={{ color: '#22B357' }}>Reasons to Partner:</strong><br />{data.ragData.genpage.reasons}</p>
+                                    </div>
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-6">
+                                        <p><strong className="underline" style={{ color: '#22B357' }}>Flaws about {data.ragData.name}:</strong><br />{data.ragData.genpage.flaws}</p>
+                                    </div>
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-6">
+                                        <p><strong className="underline" style={{ color: '#22B357' }}>Steps to Partner:</strong><br />{data.ragData.genpage.process}</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             </div>
