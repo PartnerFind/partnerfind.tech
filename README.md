@@ -1,29 +1,34 @@
-# Create T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<p align="center">
+  <em>🤝 PartnerFind 🔍 </em>
+</p>
 
-## What's next? How do I make an app with this?
+[PartnerFind](https://partnerfind.tech) lets school CTE teams keep track of business and community partners🚀!
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Use our custom RAG (Retrieval-Augmented Generation) AI model that automatically populates field values given the partner name and a zip code.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+---
+## ✨ Demo
+For the best demo experience, visit [our site](https://partnerfind.tech) :)
 
-## Learn More
+## 🚀 Website Tech Stack
+- ✅ **Bootstrapping**: [create-t3-app](https://create.t3.gg).
+- ✅ **Framework**: [NextJS 14](https://nextjs.org/) + [Typescript](https://www.typescriptlang.org/).
+- ✅ **Styling**: [TailwindCSS](https://tailwindcss.com) + [RadixUI](https://www.radix-ui.com/).
+- ✅ **Component Library**: [shadcn/ui](https://ui.shadcn.com/).
+- ✅ **Database**: [NeonDB](https://neon.tech/).
+- ✅ **ORM**: [Drizzle](https://orm.drizzle.team/).
+- ✅ **User Authentication**: [Clerk](https://clerk.com/).
+- ✅ **Schema Validation**: [Zod](https://zod.dev/).
+- ✅ **Hosting**: [Vercel](https://vercel.com/).
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## 🤖 AI RAG Model Tech Stack
+- ✅ **Web Search Content Store**: [Tavily](https://tavily.com/).
+- ✅ **LLM (Speedy)**: [Groq Mixtral 8x7B](https://groq.com/).
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+---
+## 🙌 Contributors 
+<a href="https://github.com/PartnerFind/partnerfind.tech/graphs/contributors"> <img height="128" src="https://avatars.githubusercontent.com/u/67123306?v=4"/></a>
+<a href="https://github.com/PartnerFind/partnerfind.tech/graphs/contributors"> <img height="128" src="https://avatars.githubusercontent.com/u/86448548?v=4"/></a> 
+<a href="https://github.com/PartnerFind/partnerfind.tech/graphs/contributors"> <img height="128" src="https://avatars.githubusercontent.com/u/67066931?v=4"/></a> 
