@@ -268,9 +268,9 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         <div className="flex items-center">
           {/* Conditional rendering of skeleton or checkbox based on loading state */}
           {loading ? (
-              <Skeleton className="w-5 h-5 rounded-sm border"/>
+              <Skeleton className="w-3.5 h-3.5 rounded-sm border"/>
           ) : (
-            <Checkbox className="w-5 h-5" checked={ checked } onCheckedChange={ handleCheckboxChange } />
+            <Checkbox className="w-3.5 h-3.5" checked={ checked } onCheckedChange={ handleCheckboxChange } />
           )}
         </div>
       );

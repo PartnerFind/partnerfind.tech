@@ -1,14 +1,11 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton" // todo
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
-import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useUser } from "@clerk/clerk-react";
 import { useToast } from "@/components/ui/use-toast"
@@ -27,7 +24,9 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const [note, setNote] = useState<string | null>(null);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [newNote, setNewNote] = useState<string>("");
-    const [isNameInFavorites, setIsNameInFavorites] = useState<boolean>(false);
+    const [checked, setChecked] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true); // loading state
+    const { toast } = useToast();
 
     useEffect(() => {
         if (user && isLoaded) {
@@ -37,7 +36,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     }, [user, isLoaded]); 
 
     useEffect(() => {
-        const fetchCurrentNote = async () => {
+        const fetchCurrentNoteandCurrentList = async () => {
             try {
                 
                 if (!clerkUserID) return; // Exit early if clerkUserID is null
@@ -54,14 +53,16 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 const getCurrentNote = await fetch('http://localhost:3000/api/db/getCurrentNote', options); // TODO
                 if (getCurrentNote.ok) {
                     const getCurrentNoteRes = await getCurrentNote.json();
-                    setNote(getCurrentNoteRes.data.note);
+                    setNote(getCurrentNoteRes.data?.note);
                 } else {
                     throw new Error("Error fetching rows from DB.");
                 }
 
-                const getCheckboxStatus = await fetch('http://localhost:3000/api/db/checkInDatabase', options);
+                const getCheckboxStatus = await fetch('http://localhost:3000/api/db/getCurrentList', options);
                 if (getCheckboxStatus.ok) {
-                    
+                    const getCheckboxStatusResponse = await getCheckboxStatus.json();
+                    setChecked(getCheckboxStatusResponse.data);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error(error);
@@ -69,7 +70,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
             }
         };
 
-        fetchCurrentNote();
+        fetchCurrentNoteandCurrentList();
     }, [clerkUserID, data]);
 
     const handleEditClick = () => {
@@ -107,6 +108,74 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
         // Handle loading state however you like
         return null;
     } 
+
+    const handleCheckboxChange = async () => {
+        if (!checked) { // user wants to add to their list
+          try {
+            console.log("unchecked")
+            const options = {
+              next: { revalidate: 0 }, // make sure its fresh every call
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              }, 
+              body: JSON.stringify({ data: { userID: clerkUserID, name: data.ragData.name }}) // Pass the user ID and name fields to the backend
+            };
+
+            const addToList = await fetch(`/api/db/addToList`, options);
+            if (addToList.ok) {
+              setChecked(true);
+              toast({
+                title: `Added to your list! 🎉`,
+                description: (
+                    <>
+                        <div>
+                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added to your list!</h1>
+                        </div>
+                    </>
+                )
+            })
+            } else {
+              throw new Error("Error adding user ID and name.");
+            }
+          } catch (error) {
+            throw new Error("An error occurred while adding user ID and name.");
+          }
+        } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
+            console.log("checked")
+          
+            try {
+                const options = {
+                next: { revalidate: 0 }, // make sure its fresh every call
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
+                body: JSON.stringify({ data: { userID: clerkUserID, name: data.ragData.name } }), // Pass the user ID and name fields to the backend
+                };
+            
+                const removeFromList = await fetch(`/api/db/removeFromList`, options);
+                if (removeFromList.ok) {
+                    setChecked(false);
+                    toast({
+                        title: `Removed from your list ❌!`,
+                        variant: "destructive",
+                        description: (
+                            <>
+                                <div>
+                                    <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">Successfully removed from your list!</h1>
+                                </div>
+                            </>
+                        ),
+                    })
+                } else {
+                throw new Error("Error removing user ID and name.");
+                }
+          } catch (error) {
+            throw new Error("An error occurred while removing user ID and name.");
+          }
+        }
+      };
 
     return (
         <>
@@ -274,8 +343,15 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                 </CardContent>
                             </Card>
                         </div>
-                        <div style={{ position: 'fixed', top: '50%', right: '4.5%', transform: 'translateY(-50%)' }}>
-                        <Checkbox checked={isNameInFavorites} onChange={(e) => { /* Handle checkbox change */ }} style={{ width: '50px', height: '50px' }}/>
+                        <div style={{ position: 'absolute', top: '50%', right: '4.5%', transform: 'translateY(-50%)' }}>
+                        <div className="flex items-center">
+                            {/* Conditional rendering of skeleton or checkbox based on loading state */}
+                            {loading ? (
+                                <Skeleton className="w-11 h-11 rounded-sm border"/>
+                            ) : (
+                                <Checkbox checked={ checked } onCheckedChange={ (handleCheckboxChange) } style={{ width: '40px', height: '40px' }}/>
+                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
