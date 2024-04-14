@@ -48,11 +48,9 @@ function DemoContainer({
 
 export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const [clerkUserID, setClerkUserID] = useState<string | null>(null);
-    const [checked, setChecked] = useState(false);
-    const [loading, setLoading] = useState(true); // loading state
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchClerkUserID = async () => {
             try {
                 // Fetch clerkUserID
                 const optionsGet = {
@@ -64,44 +62,19 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 const responseGet = await fetch(`/api/getClerkUserID`, optionsGet);
                 const dataGet = await responseGet.json();
                 const clerkUserID = dataGet?.userID;
-                setClerkUserID(clerkUserID);
-    
-                // Check if user is in the list
-                const optionsPost = {
-                    next: { revalidate: 0 },
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userID: clerkUserID }), // Pass the user ID to the backend
-                };
-                const getAllDataWithUserID = await fetch('http://localhost:3000/api/db/fetch-all-rows-with-user', optionsPost);
-                if (!getAllDataWithUserID.ok) {
-                    throw new Error("Error fetching rows from DB.");
-                }
-                const getAllDataWithUserIDRes = await getAllDataWithUserID.json(); // data.data
-                // Work with the fetched data here
-                
+                setClerkUserID(clerkUserID);                
             } catch (error) {
                 // Handle errors here
                 console.error(error);
             }
         };
-        fetchData();
+        fetchClerkUserID();
     }, []);
 
     return (
         <>
             <div className="hidden items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3">
                 <div className="col-span-2 grid items-start gap-6 lg:col-span-1">
-                    <DemoContainer>
-                    {loading ? (
-                        <Skeleton className="w-5 h-5 rounded-sm border"/>
-                    ) : (
-                        <Checkbox className="w-5 h-5" checked={ checked } /> // onCheckedChange={ handleCheckboxChange } 
-                    )}
-                    </DemoContainer>
-
                     <DemoContainer>
                         <Card>
                             <CardHeader className="space-y-1">
