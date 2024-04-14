@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Checkbox } from "@/components/ui/checkbox"
 import { categories } from "./catagories-data"
+import { useToast } from "@/components/ui/use-toast"
 
 // This type is used to define the shape of our data.
 export type ColumnsPartnerDef = { // shadcn table might need to take in a single key object? idk
@@ -168,6 +169,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     header: `In my List?`, // todo increase width
     size: 500,
     cell: ({ row }) => {
+      const { toast } = useToast();
       const [checked, setChecked] = useState(false);
       const [loading, setLoading] = useState(true); // loading state
 
@@ -212,13 +214,22 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
             const addToList = await fetch(`/api/db/addToList`, options);
             if (addToList.ok) {
               setChecked(true);
+              toast({
+                title: `Added to your list! 🎉`,
+                description: (
+                    <>
+                        <div>
+                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added to your list!</h1>
+                        </div>
+                    </>
+                )
+            })
             } else {
               throw new Error("Error adding user ID and name.");
             }
           } catch (error) {
             throw new Error("An error occurred while adding user ID and name.");
           }
-          setChecked(true)
         } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
           try {
             const options = {
@@ -233,6 +244,17 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
             const removeFromList = await fetch(`/api/db/removeFromList`, options);
             if (removeFromList.ok) {
               setChecked(false);
+              toast({
+                title: `Removed from your list ❌!`,
+                variant: "destructive",
+                description: (
+                    <>
+                        <div>
+                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">Successfully removed from your list!</h1>
+                        </div>
+                    </>
+                ),
+            })
             } else {
               throw new Error("Error removing user ID and name.");
             }

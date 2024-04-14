@@ -62,6 +62,16 @@ export function AddPartnerForm() {
             let ragResponse = await queryRag.json();
     
             const code = queryRag.status;
+            toast({
+                title: `Generating...`,
+                description: (
+                    <>
+                        <div>
+                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-yellow-500">Please wait up to 15 seconds for the AI to generate!</h1>
+                        </div>
+                    </>
+                )
+            })
             if (code === 200) {
                 toast({
                     title: `Yay! 🎉`,
