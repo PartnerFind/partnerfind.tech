@@ -1,5 +1,3 @@
-"use client"
-
 import { X } from 'lucide-react'
 import { Table } from "@tanstack/react-table"
 
@@ -19,7 +17,7 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0
   
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between text-xs"> {/* Adjust font size */}
       <div className="flex flex-1 items-center space-x-2">
         <Input // Search filter
           placeholder="Filter partner names..."

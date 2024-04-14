@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
             <DataTableToolbar table={table} />
 
             <div className="rounded-md border">
-            <Table>
+            <Table style={{ fontSize: '0.65em' }}> {/* Adjust the font size */}
                 <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>

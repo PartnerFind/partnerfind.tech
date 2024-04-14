@@ -38,7 +38,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start",
-            "text-2xl py-6 px-5"
+            "text-xl py-6 px-5"
           )}
         >
           {item.title}
