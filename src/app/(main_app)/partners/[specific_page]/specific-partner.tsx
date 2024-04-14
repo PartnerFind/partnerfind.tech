@@ -50,7 +50,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name }), // Pass the user ID to the backend
                 };
         
-                const getCurrentNote = await fetch('http://localhost:3000/api/db/getCurrentNote', options); // TODO
+                const getCurrentNote = await fetch('/api/db/getCurrentNote', options); // TODO
                 if (getCurrentNote.ok) {
                     const getCurrentNoteRes = await getCurrentNote.json();
                     setNote(getCurrentNoteRes.data?.note);
@@ -58,7 +58,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     throw new Error("Error fetching rows from DB.");
                 }
 
-                const getCheckboxStatus = await fetch('http://localhost:3000/api/db/getCurrentList', options);
+                const getCheckboxStatus = await fetch('/api/db/getCurrentList', options);
                 if (getCheckboxStatus.ok) {
                     const getCheckboxStatusResponse = await getCheckboxStatus.json();
                     setChecked(getCheckboxStatusResponse.data);
@@ -89,7 +89,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name, note: newNote }), // Pass the user ID, partner name, and new note to the backend
             };
     
-            const saveNoteResponse = await fetch('http://localhost:3000/api/db/saveNote', options); // TODO: Replace with actual endpoint
+            const saveNoteResponse = await fetch('/api/db/saveNote', options); // TODO: Replace with actual endpoint
             if (!saveNoteResponse.ok) {
                 throw new Error("Error saving note to DB.");
             }

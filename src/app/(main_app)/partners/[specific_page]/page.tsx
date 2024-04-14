@@ -23,7 +23,7 @@ async function fetchRagDataFromDB(name: string) {
             },
             body: JSON.stringify({ name: name }),
         }
-        const fetchRagData = await fetch(`http://localhost:3000/api/db/fetchRagData`, options);
+        const fetchRagData = await fetch(`/api/db/fetchRagData`, options);
         const fetchRagDataRes = await fetchRagData.json();
         return fetchRagDataRes;
     } catch (error: any) {
