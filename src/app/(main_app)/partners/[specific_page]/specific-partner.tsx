@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useUser } from "@clerk/clerk-react";
+import { useToast } from "@/components/ui/use-toast"
 
 function formatPhoneNumber(phoneNumber: any) {
     // Remove any non-digit characters
@@ -26,6 +27,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const [note, setNote] = useState<string | null>(null);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [newNote, setNewNote] = useState<string>("");
+    const [isNameInFavorites, setIsNameInFavorites] = useState<boolean>(false);
 
     useEffect(() => {
         if (user && isLoaded) {
@@ -37,6 +39,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     useEffect(() => {
         const fetchCurrentNote = async () => {
             try {
+                
                 if (!clerkUserID) return; // Exit early if clerkUserID is null
                 // Get current note
                 const options = {
@@ -54,6 +57,11 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     setNote(getCurrentNoteRes.data.note);
                 } else {
                     throw new Error("Error fetching rows from DB.");
+                }
+
+                const getCheckboxStatus = await fetch('http://localhost:3000/api/db/checkInDatabase', options);
+                if (getCheckboxStatus.ok) {
+                    
                 }
             } catch (error) {
                 console.error(error);
@@ -170,7 +178,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     </div>
                 </div>
                 <div className="flex justify-center mt-12 pt-0">
-                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px', marginTop: '-50px', }}>
+                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px', marginTop: '-100px', }}> {/* margin Top adjusts the height of the notes box */}
                         <div className="flex justify-center">
                             <div className="max-w-lg" style={{ marginLeft: '1000px', }}>
                                 <Card className="max-h-100" style={{ width: '300px'}}>
@@ -265,6 +273,9 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                     </div>
                                 </CardContent>
                             </Card>
+                        </div>
+                        <div style={{ position: 'fixed', top: '50%', right: '4.5%', transform: 'translateY(-50%)' }}>
+                        <Checkbox checked={isNameInFavorites} onChange={(e) => { /* Handle checkbox change */ }} style={{ width: '50px', height: '50px' }}/>
                         </div>
                     </div>
                 </div>

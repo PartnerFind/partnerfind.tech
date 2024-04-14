@@ -46,7 +46,7 @@ export async function POST(req: Request, res: NextApiResponse) {
             return matchingUser;
         }).map(company => {
             const matchingUser = userList.find(user => user.name === company.name);
-            return { ...company, userID: matchingUser.userID };
+            return { ...company, userID: matchingUser?.userID };
         }),
     };
     
