@@ -13,7 +13,6 @@ export function AuthPageNavbar() {
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <Link href="/">
-                                <Button size="xlg">Go Back Home</Button>
                             </Link>
                         </NavigationMenuItem>
                     </NavigationMenuList>
