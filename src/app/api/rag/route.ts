@@ -27,7 +27,6 @@ export async function POST(request: Request, res: NextApiResponse) {
           api_key: process.env.TAVILY_API_KEY,
           query: tavilyPrompt,
           search_depth: 'advanced',
-          include_images: true,
           include_answer: true,
           include_raw_content: false,
           max_results: 10, // trying this out
