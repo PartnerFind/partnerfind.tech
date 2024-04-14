@@ -1,34 +1,35 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+import { pgTable, text, json, serial } from 'drizzle-orm/pg-core';
 
-import { sql } from "drizzle-orm";
-import {
-  index,
-  pgTableCreator,
-  serial,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+export const baseCompanies = pgTable('baseCompanies', {
+  category: text('category'),
+  name: text('name'),
+  type: text('type'),
+  description: text('description'),
+  resources: text('resources'),
+  phonenumber: text('phonenumber'),
+  email: text('email'),
+});
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `npcapp_${name}`);
+export const elaborateCompanies = pgTable('elaborateCompanies', {
+  category: text('category'),
+  name: text('name').primaryKey(),
+  type: text('type'),
+  description: text('description'),
+  resources: text('resources'),
+  phonenumber: text('phonenumber'),
+  email: text('email'),
+  genpage: json('genpage').default({ flaws: "flaws", process: "process", reasons: "reasons", summary: "summary", resources: "resources"}),
+});
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt"),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const userFavorites = pgTable('userFavorites', {
+  userID: text('userID'),
+  name: text('name'),
+  id: serial('id').primaryKey(),
+});
+
+export const partnerNotes = pgTable('partnerNotes', {
+  userID: text('userID'),
+  name: text('name'),
+  note: text('note'),
+  id: serial('id').primaryKey(),
+});

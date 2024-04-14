@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1712986332712,
+      "tag": "0000_typical_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1712986723304,
+      "tag": "0001_complete_sleeper",
+      "breakpoints": true
+    }
+  ]
+}

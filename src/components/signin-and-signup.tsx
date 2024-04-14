@@ -31,7 +31,7 @@ export default function SignInAndSignUp() {
                     <Button size="xlg" variant="ghost">Login</Button>
                 </div>
             </ClerkSignInButton>         
-
+            
             <ClerkSignUpButton>
                 <div className="flex justify-end ml-auto">
                     <Button size="xlg">Sign Up</Button>
