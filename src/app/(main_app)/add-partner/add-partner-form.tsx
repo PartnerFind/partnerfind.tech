@@ -68,7 +68,7 @@ export function AddPartnerForm() {
                 body: data,
             }
     
-            const queryRag = await fetch('/api/rag', options);
+            const queryRag = await fetch('https://partnerfind.tech/api/rag', options);
             let ragResponse = await queryRag.json();
     
             const code = queryRag.status;

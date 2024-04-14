@@ -16,7 +16,7 @@ async function fetchAllTableData(userId: string) { // fetch all the partners as 
             body: JSON.stringify({ userID: userId }), // Pass the user ID to the backend
         };
 
-        const getAllRows = await fetch('/api/db/fetch-all-rows-with-user', options); // TODO
+        const getAllRows = await fetch('https://partnerfind.tech/api/db/fetch-all-rows-with-user', options); // TODO
         if (getAllRows.ok) {
             const data = await getAllRows.json();
             return data
