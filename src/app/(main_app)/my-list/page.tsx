@@ -29,7 +29,7 @@ async function fetchAllTableData(userId: string) { // fetch all the partners as 
     }
 }
 
-export default async function ExplorePage() {
+export default async function MyListPage() {
     let data: string | null = null;
     const { userId } : { userId: string | null } = auth();
     
