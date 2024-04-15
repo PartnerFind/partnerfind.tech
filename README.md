@@ -3,7 +3,7 @@
   <em>🤝 PartnerFind 🔍 </em>
 </p>
 
-[PartnerFind](https://partnerfind.tech) lets school CTE teams keep track of business and community partners🚀!
+[PartnerFind](https://partnerfind.tech) lets your school’s Career and Technical Education (CTE) Department find possible business / community partners, which they can work with to expand the school’s opportunities and connection with students🚀!
 
 
 Use our custom RAG (Retrieval-Augmented Generation) AI model that automatically populates field values given the partner name and a zip code.
