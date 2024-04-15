@@ -295,7 +295,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </div>
                         </div>
                         <div style={{ marginTop: '40px' }}>
-                            <Card className="max-h-96 overflow-auto" style={{ width: '850px' }}>
+                            <Card className="max-h-96 overflow-auto mb-6" style={{ width: '850px' }}>
                                 <CardHeader>
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Detailed AI Description of {data.ragData.name}:</CardTitle>
                                     <div className="relative">
