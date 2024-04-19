@@ -12,14 +12,14 @@ const HomePage = (): React.JSX.Element => {
     <>
       <div>
         <main className="flex min-h-screen flex-col items-center justify-center">
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 mb-20">
-              <h1 className="text-8xl font-extrabold tracking-tight text-white sm:text-[5.5rem]">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500">PartnerFind</span>.tech
-              </h1>
-            </div>
-            {/* Q&A Section */}
-          <div className="container mx-auto mt-20 mb-16">
-            <h2 className="text-4xl font-semibold text-center mb-8" ><strong>About</strong></h2>
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 mb-20">
+            <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight text-white sm:text-[5.5rem] text-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500">PartnerFind</span>.tech
+            </h1>
+          </div>
+
+          <div className="container mx-auto my-20">
+            <h2 className="text-4xl font-semibold text-center mb-8"><strong>About</strong></h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Q&A Card 1 */}
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -46,10 +46,9 @@ const HomePage = (): React.JSX.Element => {
               </div>
             </div>
           </div>
-          {/* How to Use Section */}
+
           <div className="container mx-auto mb-16">
             <h2 className="text-4xl font-semibold text-center mb-8"><strong>How to Use</strong></h2>
-            {/* Button to toggle the visibility of steps */}
             <div className="flex justify-center mb-8">
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -58,9 +57,6 @@ const HomePage = (): React.JSX.Element => {
                 {isExpanded ? 'Hide Steps' : 'Show Steps'}
               </button>
             </div>
-
-            {/* Steps Section */}
-            {/* Render steps only if expanded */}
             {isExpanded && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Step 1 */}
