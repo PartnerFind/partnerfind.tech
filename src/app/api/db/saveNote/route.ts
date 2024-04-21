@@ -4,9 +4,6 @@ import { db } from '@/server/index';
 import { partnerNotes } from '@/server/db/schema';
 import { eq, and } from "drizzle-orm";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export async function POST(req: Request, res: NextApiResponse) {
     let data = await req.json()
     const userID = data.userID;

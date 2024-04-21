@@ -16,18 +16,17 @@ export async function generateMetadata( { params }: any ) {
 async function fetchRagDataFromDB(name: string) {
     try {
         const options = {
-            next: { revalidate: 10 }, // todo
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ name: name }),
         }
-        const fetchRagData = await fetch(`https://partnerfind.tech/api/db/fetchRagData`, options);
+        const fetchRagData = await fetch(`/api/db/fetchRagData`, options);
         const fetchRagDataRes = await fetchRagData.json();
         return fetchRagDataRes;
     } catch (error: any) {
-        console.error(`An error occurred while fetching RAG data from the database. ${error}`)
+        console.log(`An error occurred while fetching RAG data from the database. ${error}`)
         return null;
     }
 }
@@ -35,11 +34,9 @@ async function fetchRagDataFromDB(name: string) {
 export default async function SpecificPartnerPage( { params }: { params: any } ) {
     let name = decodeURIComponent(params.specific_page);
     let data = await fetchRagDataFromDB(name);
-
     if (data === null) {
         notFound()
-    }
-    else {
+    } else {
         return (
             <>
                <SpecificPartnerComponent data={ data } />

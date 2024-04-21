@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextApiResponse } from 'next';
-
 import { db } from '@/server/index';
 import { sql as s } from 'drizzle-orm';
 import { elaborateCompanies, userFavorites } from '@/server/db/schema';
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
 
 export async function POST(req: Request, res: NextApiResponse) {
     let data = await req.json()

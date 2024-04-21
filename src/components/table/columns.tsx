@@ -193,7 +193,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
                 'Content-Type': 'application/json',
             }, 
           };
-          const getClerkUserID = await fetch(`https://partnerfind.tech/api/getClerkUserID`, options);
+          const getClerkUserID = await fetch(`/api/getClerkUserID`, options);
           let getClerkUserIDResponse = await getClerkUserID.json();
           clerkUserID = getClerkUserIDResponse?.userID;
         } catch (error) {
@@ -203,7 +203,6 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         if (!checked) { // user wants to add to their list
           try {
             const options = {
-              next: { revalidate: 0 }, // make sure its fresh every call
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -211,7 +210,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
             };
 
-            const addToList = await fetch(`https://partnerfind.tech/api/db/addToList`, options);
+            const addToList = await fetch(`/api/db/addToList`, options);
             if (addToList.ok) {
               setChecked(true);
               toast({
@@ -233,7 +232,6 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
           try {
             const options = {
-              next: { revalidate: 0 }, // make sure its fresh every call
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -241,7 +239,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
             };
 
-            const removeFromList = await fetch(`https://partnerfind.tech/api/db/removeFromList`, options);
+            const removeFromList = await fetch(`/api/db/removeFromList`, options);
             if (removeFromList.ok) {
               setChecked(false);
               toast({

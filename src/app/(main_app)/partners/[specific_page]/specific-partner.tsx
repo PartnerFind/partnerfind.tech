@@ -42,7 +42,6 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 if (!clerkUserID) return; // Exit early if clerkUserID is null
                 // Get current note
                 const options = {
-                    next: { revalidate: 0 },
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -50,7 +49,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name }), // Pass the user ID to the backend
                 };
         
-                const getCurrentNote = await fetch('https://partnerfind.tech/api/db/getCurrentNote', options); // TODO
+                const getCurrentNote = await fetch('/api/db/getCurrentNote', options); // TODO
                 if (getCurrentNote.ok) {
                     const getCurrentNoteRes = await getCurrentNote.json();
                     setNote(getCurrentNoteRes.data?.note);
@@ -58,7 +57,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                     throw new Error("Error fetching rows from DB.");
                 }
 
-                const getCheckboxStatus = await fetch('https://partnerfind.tech/api/db/getCurrentList', options);
+                const getCheckboxStatus = await fetch('/api/db/getCurrentList', options);
                 if (getCheckboxStatus.ok) {
                     const getCheckboxStatusResponse = await getCheckboxStatus.json();
                     setChecked(getCheckboxStatusResponse.data);
@@ -89,7 +88,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 body: JSON.stringify({ userID: clerkUserID, name: data.ragData.name, note: newNote }), // Pass the user ID, partner name, and new note to the backend
             };
     
-            const saveNoteResponse = await fetch('https://partnerfind.tech/api/db/saveNote', options); // TODO: Replace with actual endpoint
+            const saveNoteResponse = await fetch('/api/db/saveNote', options); // TODO: Replace with actual endpoint
             if (!saveNoteResponse.ok) {
                 throw new Error("Error saving note to DB.");
             }
@@ -112,9 +111,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const handleCheckboxChange = async () => {
         if (!checked) { // user wants to add to their list
           try {
-            console.log("unchecked")
             const options = {
-              next: { revalidate: 0 }, // make sure its fresh every call
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -122,7 +119,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
               body: JSON.stringify({ data: { userID: clerkUserID, name: data.ragData.name }}) // Pass the user ID and name fields to the backend
             };
 
-            const addToList = await fetch(`https://partnerfind.tech/api/db/addToList`, options);
+            const addToList = await fetch(`/api/db/addToList`, options);
             if (addToList.ok) {
               setChecked(true);
               toast({
@@ -142,11 +139,9 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
             throw new Error("An error occurred while adding user ID and name.");
           }
         } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
-            console.log("checked")
           
             try {
                 const options = {
-                next: { revalidate: 0 }, // make sure its fresh every call
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -154,7 +149,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 body: JSON.stringify({ data: { userID: clerkUserID, name: data.ragData.name } }), // Pass the user ID and name fields to the backend
                 };
             
-                const removeFromList = await fetch(`https://partnerfind.tech/api/db/removeFromList`, options);
+                const removeFromList = await fetch(`/api/db/removeFromList`, options);
                 if (removeFromList.ok) {
                     setChecked(false);
                     toast({

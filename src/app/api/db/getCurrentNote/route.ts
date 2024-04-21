@@ -3,9 +3,6 @@ import type { NextApiResponse } from 'next';
 import { db } from '@/server/index';
 import { partnerNotes } from '@/server/db/schema';
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export async function POST(req: Request, res: NextApiResponse) {
     let data = await req.json()
     const name = data.name;

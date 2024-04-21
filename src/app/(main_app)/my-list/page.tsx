@@ -8,7 +8,6 @@ export const metadata = {
 async function fetchAllTableData(userId: string) { // fetch all the partners as well as user specific partners list
     try {
         const options = {
-            next: { revalidate: 0 },
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +15,7 @@ async function fetchAllTableData(userId: string) { // fetch all the partners as 
             body: JSON.stringify({ userID: userId }), // Pass the user ID to the backend
         };
 
-        const getAllRows = await fetch('https://partnerfind.tech/api/db/fetch-list-rows-user', options); // TODO
+        const getAllRows = await fetch('/api/db/fetch-list-rows-user', options); // TODO
         if (getAllRows.ok) {
             const data = await getAllRows.json();
             return data
