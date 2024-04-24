@@ -7,11 +7,9 @@ export async function POST(req: Request, res: NextApiResponse) {
     let data = await req.json()
     const userID = data.userID;
     const name = data.name;
-    let allData = null;
-    let isNameInFavorites = false;
 
     try {
-        allData = await db.select().from(userFavorites);
+        let allData = await db.select().from(userFavorites);
         let isNameInFavorites = allData.some(item => {
             return item.name === name && item.userID === userID;
         });

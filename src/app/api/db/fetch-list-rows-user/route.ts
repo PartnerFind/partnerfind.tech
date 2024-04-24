@@ -35,7 +35,7 @@ export async function POST(req: Request, res: NextApiResponse) {
         return rest;
     });
 
-    // Filter companies that match the userID
+    // Remove genpage from company object, include only companies that match the userID (so return the companies the user has in their favorites)
     const updatedCompanies = {
         data: formattedCompanies.filter(company => {
             const matchingUser = userList.find(user => user.name === company.name);
