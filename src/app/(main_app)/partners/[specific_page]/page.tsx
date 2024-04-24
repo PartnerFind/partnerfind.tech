@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import SpecificPartnerComponent from "./specific-partner";
+import fetchRAGDataForAPartner from "@/util/fetchRAGDataForAPartner";
 
 export async function generateMetadata( { params }: any ) {
     // read route params
@@ -11,27 +12,9 @@ export async function generateMetadata( { params }: any ) {
     }
 }
 
-async function fetchRagDataFromDB(name: string) {
-    try {
-        const options = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: name }),
-        }
-        const fetchRagData = await fetch(`/api/db/fetchRagDataForOnePartner`, options);
-        const fetchRagDataRes = await fetchRagData.json();
-        return fetchRagDataRes;
-    } catch (error: any) {
-        console.log(`An error occurred while fetching RAG data from the database. ${error}`)
-        return null;
-    }
-}
-
 export default async function SpecificPartnerPage( { params }: { params: any } ) {
     let name = decodeURIComponent(params.specific_page);
-    let data = await fetchRagDataFromDB(name);
+    let data = await fetchRAGDataForAPartner(name);
     if (data === null) {
         notFound()
     } else {

@@ -1,5 +1,5 @@
 import MyListTable from './my-list-table';
-import { fetchUserFavorites } from '@/util/fetchUserFavorites';
+import fetchUserFavorites from '@/util/fetchUserFavorites';
 import { auth } from '@clerk/nextjs';
 
 export const metadata = {

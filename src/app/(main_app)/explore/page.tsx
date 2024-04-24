@@ -1,5 +1,5 @@
 import ExploreTable from './explore-table';
-import { fetchAllPartners } from '@/util/fetchAllPartners';
+import fetchAllPartners from '@/util/fetchAllPartners';
 import { auth } from '@clerk/nextjs';
 
 export const metadata = {
