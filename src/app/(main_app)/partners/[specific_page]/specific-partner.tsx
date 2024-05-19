@@ -1,14 +1,15 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton" // todo
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton"; // todo
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
+import ExcelJS from 'exceljs';
 
 function formatPhoneNumber(phoneNumber: any) {
     // Remove any non-digit characters
@@ -248,6 +249,53 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
         URL.revokeObjectURL(url);
     };
 
+    const handleExcelExport = async () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            resources: data.ragData.resources,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
+        // Add header row
+        worksheet.addRow(Object.keys(updatedData));
+
+        // Add data row
+        worksheet.addRow(Object.values(updatedData));
+
+        // Write to buffer
+        const buffer = await workbook.xlsx.writeBuffer();
+
+        // Create a Blob from the buffer
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Create a link element and trigger download
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.xlsx`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };    
+
     return (
         <>
             <div className="flex flex-col items-center justify-center">
@@ -429,6 +477,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                 <div style={{ marginTop: '20px' }}>
                     <Button variant="outline" onClick={ handleJSONExport }>Export This Data to JSON!</Button>
                     <Button variant="outline" onClick={ handleCSVExport } style={{ marginLeft: '10px' }}>Export This Data to CSV!</Button>
+                    <Button variant="outline" onClick={ handleExcelExport } style={{ marginLeft: '10px' }}>Export This Data to an Excel Sheet!</Button>
                 </div>
             </div>
         </>
