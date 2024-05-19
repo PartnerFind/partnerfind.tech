@@ -27,7 +27,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const [checked, setChecked] = useState<boolean>(false);
     const [loading, setLoading] = useState(true); // loading state
     const { toast } = useToast();
-
+    
     useEffect(() => {
         if (user && isLoaded) {
             // Set the clerkUserID only when user and isLoaded are available
@@ -171,6 +171,82 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
           }
         }
       };
+
+    const handleJSONExport = () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            resources: data.ragData.resources,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+    
+        const partnerData = JSON.stringify(updatedData, null, 2); // format nicely
+        const blob = new Blob([partnerData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.json`; // TODO: name this better?
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+    
+    const handleCSVExport = () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            resources: data.ragData.resources,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+        
+        const csvRows: string[] = [];
+        const headers: (keyof typeof updatedData)[] = Object.keys(updatedData) as (keyof typeof updatedData)[];
+        csvRows.push(headers.join(',')); // Header row
+
+        const values = headers.map(header => 
+            JSON.stringify(updatedData[header], (key, value) =>
+                value === null ? '' : value)
+        ); // Handle null values
+        csvRows.push(values.join(','));
+    
+        const csvString = csvRows.join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.csv`; // TODO: name this better?
+        link.click();
+        URL.revokeObjectURL(url);
+    };
 
     return (
         <>
@@ -331,7 +407,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                         <div className="absolute inset-0 flex items-center">
                                             <span className="w-full border-t" />
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div className="grid grid-cols-1 gap-6">
                                         <p><strong className="underline" style={{ color: '#22B357' }}>Steps to Partner:</strong><br />{data.ragData.genpage.process}</p>
                                     </div>
@@ -349,6 +425,10 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div style={{ marginTop: '20px' }}>
+                    <Button variant="outline" onClick={ handleJSONExport }>Export This Data to JSON!</Button>
+                    <Button variant="outline" onClick={ handleCSVExport } style={{ marginLeft: '10px' }}>Export This Data to CSV!</Button>
                 </div>
             </div>
         </>
