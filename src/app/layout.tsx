@@ -41,10 +41,10 @@ export default function RootLayout({
         >
           <Navbar />
           <div className="flex flex-col md:flex-row">
-            <aside className="md:absolute z-10 top-24 md:top-32 left-0 w-full md:w-1/5">
+            <aside className="absolute z-10 top-24 md:top-32 left-0 w-full md:w-1/5">
               <SidebarNav items={sidebarNavItems} />
             </aside>
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 mt-20 md:mt-0 md:ml-20">{children}</main>
           </div>
         </body>
       </html>

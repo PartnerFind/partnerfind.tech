@@ -30,9 +30,11 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box; /* Ensure padding and border are included in element's total width and height */
   }
   html {
     @apply scroll-smooth;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
   body {
     @apply bg-background text-foreground;
