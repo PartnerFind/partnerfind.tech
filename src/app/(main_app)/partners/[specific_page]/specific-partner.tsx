@@ -298,10 +298,10 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-12 pt-0 ml-auto">
-                    <div className="flex justify-center">
-                        <div className="max-w-lg">
+            <div className="container mx-auto lg:p-20 md:p-32 p-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <div>
                             <Card>
                                 <CardHeader className="space-y-1">
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>{data.ragData.name}</CardTitle>
@@ -329,8 +329,8 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </Card>
                         </div>
                     </div>
-                    <div className="flex justify-center">
-                        <div className="max-w-lg">
+                    <div>
+                        <div className="max-w-sm">
                             <Card>
                                 <CardHeader className="space-y-1">
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Contact</CardTitle>
@@ -364,12 +364,30 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </Card>
                         </div>
                     </div>
-                </div>
-                <div className="flex justify-center mt-12 pt-0">
-                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px', marginTop: '-100px', }}> {/* margin Top adjusts the height of the notes box */}
-                        <div className="flex justify-center">
-                            <div className="max-w-lg" style={{ marginLeft: '1000px', }}>
-                                <Card className="max-h-100" style={{ width: '300px'}}>
+                    <div>
+                        <div>
+                            <Card className="max-w-sm">
+                                <CardHeader>
+                                    <CardTitle className="text-xl font-bold">Manage List</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="flex items-center">
+                                        <Checkbox
+                                        id="addToList"
+                                        checked={checked}
+                                        onCheckedChange={handleCheckboxChange}
+                                        />
+                                        <Label htmlFor="addToList" className="ml-2">
+                                            {checked ? "Remove from your list" : "Add to your list"}
+                                        </Label>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                    <div className="md:col-start-2 md:col-span-1">
+                        <div className="max-w-sm">
+                            <Card>
                                     <CardHeader>
                                         {note ? (
                                             <CardTitle className="text-2xl" style={{ color: '#22B357' }}>
@@ -410,11 +428,14 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                     </div>
                                 )}
                             </CardFooter>
-                                </Card>
-                            </div>
+                            </Card>
                         </div>
-                        <div style={{ marginTop: '40px' }}>
-                            <Card className="max-h-96 overflow-auto mb-6" style={{ width: '850px' }}>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div className="py-10">
+                            <Card className="w-full md:col-span-2">
                                 <CardHeader>
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Detailed AI Description of {data.ragData.name}:</CardTitle>
                                     <div className="relative">
@@ -462,15 +483,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                 </CardContent>
                             </Card>
                         </div>
-                        <div style={{ position: 'absolute', top: '50%', right: '4.5%', transform: 'translateY(-50%)' }}>
-                        <div className="flex items-center">
-                            {/* Conditional rendering of skeleton or checkbox based on loading state */}
-                            {loading ? (
-                                <Skeleton className="w-11 h-11 rounded-sm border"/>
-                            ) : (
-                                <Checkbox checked={ checked } onCheckedChange={ (handleCheckboxChange) } style={{ width: '40px', height: '40px' }}/>
-                            )}
-                            </div>
+                        <div>
                         </div>
                     </div>
                 </div>
