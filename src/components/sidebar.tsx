@@ -31,10 +31,11 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           className={cn(
             buttonVariants({ variant: "ghost" }),
             pathname === item.href
-              ? "bg-muted hover:bg-muted"
+              ? "bg-muted text-white"
               : "hover:bg-transparent hover:underline",
             "justify-start",
-            "text-xl py-2 px-3"
+            "text-xl py-2 px-6",
+            "w-full"  // Ensure the button takes full width to avoid overflow
           )}
         >
           {item.title}
