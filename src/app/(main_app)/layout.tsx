@@ -1,7 +1,5 @@
 import { Navbar } from "@/components/navbar";
 import { SidebarNav } from "@/components/sidebar";
-import { twMerge } from "tailwind-merge";
-import { fontSans } from "@/lib/fonts";
 
 export const metadata = {
   title: "PartnerFind | Home",
@@ -29,19 +27,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      {/* <Navbar />
       <div>
-        <aside className="w-half absolute left-0 top-24 z-10 md:top-28 lg:top-32 ">
-          <SidebarNav items={sidebarNavItems} />
-        </aside>
-        {children}
-      </div> */}
-      <div
-        className={twMerge(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
         <Navbar />
         <div className="flex flex-col md:flex-row">
           <aside className="w-half absolute left-0 top-24 z-10 md:top-28 lg:top-32 ">
