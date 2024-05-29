@@ -14,17 +14,12 @@ export function Navbar() {
   const [isNavbarVisible, setIsNavbarVisible] = React.useState(true);
 
   React.useEffect(() => {
-    let prevScrollPos = window.scrollY;
-
     const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      const isVisible = prevScrollPos > currentScrollPos || currentScrollPos < 100;
-      setIsNavbarVisible(isVisible);
-      prevScrollPos = currentScrollPos;
+      const currentScrollPos = window.pageYOffset;
+      setIsNavbarVisible(currentScrollPos === 0);
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,7 +27,7 @@ export function Navbar() {
     <>
       <div
         id="navbar"
-        className={`fixed top-6 left-0 right-0 p-4 flex justify-between items-center transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "opacity-0"}`}
+        className={`fixed top-0 left-0 right-0 p-4 flex justify-between items-center transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
         <div>
           <NavigationMenu>
@@ -69,8 +64,7 @@ export function Navbar() {
         }
         @media (max-width: 768px) {
           #navbar {
-            padding-left: 16px;
-            padding-right: 16px;
+            padding: 12px; /* Adjust padding for smaller devices */
           }
         }
       `}</style>
