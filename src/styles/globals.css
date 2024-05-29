@@ -25,19 +25,51 @@
     --ring: 142.4 71.8% 29.2%;
     --radius: 0.5rem;
   }
-}  
+}
 
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   html {
     @apply scroll-smooth;
+    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
-    /* font-feature-settings: "rlig" 1, "calt" 1; */
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+  }
+  .sidebar-button {
+    display: inline-block; /* Makes the button adjust to the size of its content */
+    padding: 0.5rem 1rem; /* Adjust padding for appropriate spacing */
+    background-color: transparent; /* Default background color */
+    border-radius: var(--radius); /* Round the corners */
+    transition: background-color 0.2s; /* Smooth transition on hover */
+  }
+  .sidebar-button:hover,
+  .sidebar-button-selected {
+    background-color: var(--muted); /* Background color on hover */
+    color: var(--foreground); /* Text color when selected */
+  }
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    .sidebar-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .sidebar-button {
+      margin: 0.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sidebar-nav {
+      flex-direction: column;
+    }
+    .sidebar-button {
+      margin: 0.5rem 0;
+    }
   }
 }

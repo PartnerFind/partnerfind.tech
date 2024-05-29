@@ -1,14 +1,15 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton" // todo
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton"; // todo
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
+import ExcelJS from 'exceljs';
 
 function formatPhoneNumber(phoneNumber: any) {
     // Remove any non-digit characters
@@ -27,7 +28,7 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
     const [checked, setChecked] = useState<boolean>(false);
     const [loading, setLoading] = useState(true); // loading state
     const { toast } = useToast();
-
+    
     useEffect(() => {
         if (user && isLoaded) {
             // Set the clerkUserID only when user and isLoaded are available
@@ -172,12 +173,135 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
         }
       };
 
+    const handleJSONExport = () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            resources: data.ragData.resources,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+    
+        const partnerData = JSON.stringify(updatedData, null, 2); // format nicely
+        const blob = new Blob([partnerData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.json`; // TODO: name this better?
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+    
+    const handleCSVExport = () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            resources: data.ragData.resources,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+        
+        const csvRows: string[] = [];
+        const headers: (keyof typeof updatedData)[] = Object.keys(updatedData) as (keyof typeof updatedData)[];
+        csvRows.push(headers.join(',')); // Header row
+
+        const values = headers.map(header => 
+            JSON.stringify(updatedData[header], (key, value) =>
+                value === null ? '' : value)
+        ); // Handle null values
+        csvRows.push(values.join(','));
+    
+        const csvString = csvRows.join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.csv`; // TODO: name this better?
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const handleExcelExport = async () => {
+        const categoryMapping: any = { // convert the short forms to full form categories
+            FPO: "For-Profit (FPO)",
+            NPO: "Non-Profit (NPO)",
+            GA: "Government Association (GA)",
+            LB: "Local Business (LB)",
+            CB: "Corporate Business (CB)"
+        };
+
+        const updatedData = {
+            category: categoryMapping[data.ragData.category],
+            name: data.ragData.name,
+            type: data.ragData.type,
+            description: data.ragData.description,
+            phonenumber: data.ragData.phonenumber,
+            email: data.ragData.email,
+            resources: data.ragData.resources,
+            summary: data.ragData.genpage.summary,
+            reasons: data.ragData.genpage.reasons,
+            flaws: data.ragData.genpage.flaws,
+            process: data.ragData.genpage.process
+        };
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
+        // Add header row
+        worksheet.addRow(Object.keys(updatedData));
+
+        // Add data row
+        worksheet.addRow(Object.values(updatedData));
+
+        // Write to buffer
+        const buffer = await workbook.xlsx.writeBuffer();
+
+        // Create a Blob from the buffer
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Create a link element and trigger download
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.ragData.name}_partnerfind.xlsx`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };    
+
     return (
         <>
-            <div className="flex flex-col items-center justify-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-12 pt-0 ml-auto">
-                    <div className="flex justify-center">
-                        <div className="max-w-lg">
+            <div className="container mx-auto lg:p-20 md:p-32 p-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <div>
                             <Card>
                                 <CardHeader className="space-y-1">
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>{data.ragData.name}</CardTitle>
@@ -205,8 +329,8 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </Card>
                         </div>
                     </div>
-                    <div className="flex justify-center">
-                        <div className="max-w-lg">
+                    <div>
+                        <div className="max-w-sm">
                             <Card>
                                 <CardHeader className="space-y-1">
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Contact</CardTitle>
@@ -240,12 +364,30 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                             </Card>
                         </div>
                     </div>
-                </div>
-                <div className="flex justify-center mt-12 pt-0">
-                    <div className="max-w-lg" style={{ marginLeft: 'auto', marginRight: '275px', marginTop: '-100px', }}> {/* margin Top adjusts the height of the notes box */}
-                        <div className="flex justify-center">
-                            <div className="max-w-lg" style={{ marginLeft: '1000px', }}>
-                                <Card className="max-h-100" style={{ width: '300px'}}>
+                    <div>
+                        <div>
+                            <Card className="max-w-sm">
+                                <CardHeader>
+                                    <CardTitle className="text-xl font-bold">Manage List</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="flex items-center">
+                                        <Checkbox
+                                        id="addToList"
+                                        checked={checked}
+                                        onCheckedChange={handleCheckboxChange}
+                                        />
+                                        <Label htmlFor="addToList" className="ml-2">
+                                            {checked ? "Remove from your list" : "Add to your list"}
+                                        </Label>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                    <div className="md:col-start-2 md:col-span-1">
+                        <div className="max-w-sm">
+                            <Card>
                                     <CardHeader>
                                         {note ? (
                                             <CardTitle className="text-2xl" style={{ color: '#22B357' }}>
@@ -286,11 +428,14 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                     </div>
                                 )}
                             </CardFooter>
-                                </Card>
-                            </div>
+                            </Card>
                         </div>
-                        <div style={{ marginTop: '40px' }}>
-                            <Card className="max-h-96 overflow-auto mb-6" style={{ width: '850px' }}>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div className="py-10">
+                            <Card className="w-full md:col-span-2">
                                 <CardHeader>
                                     <CardTitle className="text-2xl" style={{ color: '#22B357' }}>Detailed AI Description of {data.ragData.name}:</CardTitle>
                                     <div className="relative">
@@ -331,24 +476,21 @@ export default function SpecificPartnerComponent( { data }: { data: any } ) {
                                         <div className="absolute inset-0 flex items-center">
                                             <span className="w-full border-t" />
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div className="grid grid-cols-1 gap-6">
                                         <p><strong className="underline" style={{ color: '#22B357' }}>Steps to Partner:</strong><br />{data.ragData.genpage.process}</p>
                                     </div>
                                 </CardContent>
                             </Card>
                         </div>
-                        <div style={{ position: 'absolute', top: '50%', right: '4.5%', transform: 'translateY(-50%)' }}>
-                        <div className="flex items-center">
-                            {/* Conditional rendering of skeleton or checkbox based on loading state */}
-                            {loading ? (
-                                <Skeleton className="w-11 h-11 rounded-sm border"/>
-                            ) : (
-                                <Checkbox checked={ checked } onCheckedChange={ (handleCheckboxChange) } style={{ width: '40px', height: '40px' }}/>
-                            )}
-                            </div>
+                        <div>
                         </div>
                     </div>
+                </div>
+                <div style={{ marginTop: '20px' }}>
+                    <Button variant="outline" onClick={ handleJSONExport }>Export This Data to JSON!</Button>
+                    <Button variant="outline" onClick={ handleCSVExport } style={{ marginLeft: '10px' }}>Export This Data to CSV!</Button>
+                    <Button variant="outline" onClick={ handleExcelExport } style={{ marginLeft: '10px' }}>Export This Data to an Excel Sheet!</Button>
                 </div>
             </div>
         </>
