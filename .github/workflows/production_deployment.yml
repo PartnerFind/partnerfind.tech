@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_LTS_VERSION }}
           check-latest: true
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Dependencies
         run: |
@@ -42,17 +42,17 @@ jobs:
           npm install
 
       - name: Install Vercel CLI
-        run: | 
+        run: |
           echo "Installing Vercel CLI..."
           npm install --global vercel@latest
 
       - name: Run ESLint
-        run: | 
+        run: |
           echo "Running ESLint..."
           npm run lint
 
       - name: Pull Vercel Environment Information
-        run: | 
+        run: |
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project

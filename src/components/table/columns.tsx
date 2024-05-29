@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { useState, useEffect } from "react"
-import { ArrowUpDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Checkbox } from "@/components/ui/checkbox"
-import { categories } from "./catagories-data"
-import { useToast } from "@/components/ui/use-toast"
+import { ColumnDef } from "@tanstack/react-table";
+import { useState, useEffect } from "react";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Checkbox } from "@/components/ui/checkbox";
+import { categories } from "./catagories-data";
+import { useToast } from "@/components/ui/use-toast";
 
 // This type is used to define the shape of our data.
-export type ColumnsPartnerDef = { // shadcn table might need to take in a single key object? idk
+export type ColumnsPartnerDef = {
+  // shadcn table might need to take in a single key object? idk
   // userID: string;
   data: {
     category: string;
@@ -21,8 +22,8 @@ export type ColumnsPartnerDef = { // shadcn table might need to take in a single
     phonenumber: string;
     email: string;
     userID?: string; // userID is optional
-  }
-}
+  };
+};
 
 export const columns: ColumnDef<ColumnsPartnerDef>[] = [
   {
@@ -36,25 +37,25 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           Category
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
       const category = categories.find(
-        (category) => category.value === row.getValue("category")
-      )
+        (category) => category.value === row.getValue("category"),
+      );
 
       if (!category) {
-        return null
+        return null;
       }
 
       return (
         <div className="flex w-[100px] items-center">
           <span>{category.label}</span>
         </div>
-      )
+      );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -68,7 +69,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
       let name: string = row.getValue("name");
@@ -78,11 +79,15 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         return (
           <div className="flex space-x-4">
             <span className="max-w-[275px] font-medium">
-              <a className="font-medium" href={`/partners/${name}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
+              <a
+                className="font-medium"
+                href={`/partners/${name}`}
+                style={{ color: "#1a73e8", textDecoration: "underline" }}
+              >
                 {name}
               </a>
             </span>
-        </div>
+          </div>
         );
       }
     },
@@ -98,9 +103,9 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       let description: string = row.getValue("description");
       if (description.length > 200) {
         // If description is more than 200 characters, truncate and add an ellipise (...), but make sure to not slice on spaces
-        let truncatedDescription = description.slice(0, 197); 
-        let lastSpaceIndex = truncatedDescription.lastIndexOf(' ');
-  
+        let truncatedDescription = description.slice(0, 197);
+        let lastSpaceIndex = truncatedDescription.lastIndexOf(" ");
+
         if (lastSpaceIndex !== -1) {
           // If a space was found before the 197th character, truncate at that space
           return truncatedDescription.slice(0, lastSpaceIndex) + "...";
@@ -128,21 +133,24 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       } else {
         function formatPhoneNumber(phoneNumber: string) {
           // Remove any non-digit characters
-          const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-      
+          const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+
           // Format the phone number
-          const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '($1)-$2-$3');
-      
+          const formatted = cleaned.replace(
+            /(\d{3})(\d{3})(\d{4})/,
+            "($1)-$2-$3",
+          );
+
           return formatted;
         }
-      phonenumber = formatPhoneNumber(phonenumber);
+        phonenumber = formatPhoneNumber(phonenumber);
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              { phonenumber }
+              {phonenumber}
             </span>
           </div>
-        )
+        );
       }
     },
   },
@@ -157,7 +165,11 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         email = email.toLowerCase();
 
         return (
-          <a className="font-medium" href={`mailto:${email}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
+          <a
+            className="font-medium"
+            href={`mailto:${email}`}
+            style={{ color: "#1a73e8", textDecoration: "underline" }}
+          >
             {email}
           </a>
         );
@@ -175,9 +187,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
 
       useEffect(() => {
         // if the field is empty, null or does not exist, set the checkbox to false
-        if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
+        if (
+          !row.getValue("userID") ||
+          row.getValue("userID") === "" ||
+          row.getValue("userID") === "null"
+        ) {
           setChecked(false);
-        } else { // if it exists, then set checkbox to true
+        } else {
+          // if it exists, then set checkbox to true
           setChecked(true);
         }
         setLoading(false); // Set loading to false after checking the row value
@@ -188,10 +205,10 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
 
         try {
           const options = {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-            }, 
+              "Content-Type": "application/json",
+            },
           };
           const getClerkUserID = await fetch(`/api/getClerkUserID`, options);
           let getClerkUserIDResponse = await getClerkUserID.json();
@@ -200,14 +217,17 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           throw new Error("An error occurred while querying userID.");
         }
 
-        if (!checked) { // user wants to add to their list
+        if (!checked) {
+          // user wants to add to their list
           try {
             const options = {
-              method: 'POST',
+              method: "POST",
               headers: {
-                  'Content-Type': 'application/json',
-              }, 
-              body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                data: { userID: clerkUserID, name: row.getValue("name") },
+              }), // Pass the user ID and name fields to the backend
             };
 
             const addToList = await fetch(`/api/db/addToList`, options);
@@ -216,62 +236,78 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               toast({
                 title: `Added to your list! 🎉`,
                 description: (
-                    <>
-                        <div>
-                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added to your list!</h1>
-                        </div>
-                    </>
-                )
-            })
+                  <>
+                    <div>
+                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">
+                        Successfully added to your list!
+                      </h1>
+                    </div>
+                  </>
+                ),
+              });
             } else {
               throw new Error("Error adding user ID and name.");
             }
           } catch (error) {
             throw new Error("An error occurred while adding user ID and name.");
           }
-        } else if (checked) { // user wants to remove from their list (userID already exists in data for these)
+        } else if (checked) {
+          // user wants to remove from their list (userID already exists in data for these)
           try {
             const options = {
-              method: 'POST',
+              method: "POST",
               headers: {
-                  'Content-Type': 'application/json',
-              }, 
-              body: JSON.stringify({ data: { userID: clerkUserID, name: row.getValue("name") } }), // Pass the user ID and name fields to the backend
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                data: { userID: clerkUserID, name: row.getValue("name") },
+              }), // Pass the user ID and name fields to the backend
             };
 
-            const removeFromList = await fetch(`/api/db/removeFromList`, options);
+            const removeFromList = await fetch(
+              `/api/db/removeFromList`,
+              options,
+            );
             if (removeFromList.ok) {
               setChecked(false);
               toast({
                 title: `Removed from your list ❌!`,
                 variant: "destructive",
                 description: (
-                    <>
-                        <div>
-                            <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">Successfully removed from your list!</h1>
-                        </div>
-                    </>
+                  <>
+                    <div>
+                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">
+                        Successfully removed from your list!
+                      </h1>
+                    </div>
+                  </>
                 ),
-            })
+              });
             } else {
               throw new Error("Error removing user ID and name.");
             }
           } catch (error) {
-            throw new Error("An error occurred while removing user ID and name.");
+            throw new Error(
+              "An error occurred while removing user ID and name.",
+            );
           }
         }
       };
-      
+
       return (
         <div className="flex items-center">
           {/* Conditional rendering of skeleton or checkbox based on loading state */}
           {loading ? (
-              <Skeleton className="w-3.5 h-3.5 rounded-sm border"/>
+            <Skeleton className="h-3.5 w-3.5 rounded-sm border" />
           ) : (
-            <Checkbox className="w-3.5 h-3.5" checked={ checked } onCheckedChange={ handleCheckboxChange } />
+            <Checkbox
+              className="h-3.5 w-3.5"
+              checked={checked}
+              onCheckedChange={handleCheckboxChange}
+            />
           )}
         </div>
       );
     },
   },
-]
+];

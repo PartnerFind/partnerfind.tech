@@ -20,7 +20,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
     <nav
       className={cn(
         "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
-        className
+        className,
       )}
       {...props}
     >
@@ -34,8 +34,8 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
               ? "bg-muted text-white"
               : "hover:bg-transparent hover:underline",
             "justify-start",
-            "text-xl py-2 px-6",
-            "w-full"  // Ensure the button takes full width to avoid overflow
+            "px-6 py-2 text-xl",
+            "w-full", // Ensure the button takes full width to avoid overflow
           )}
         >
           {item.title}

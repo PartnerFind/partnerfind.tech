@@ -1,7 +1,7 @@
-import { AuthPageNavbar } from '@/components/auth-page-navbar';
+import { AuthPageNavbar } from "@/components/auth-page-navbar";
 
 export const metadata = {
-  title: "PartnerFind | Auth"
+  title: "PartnerFind | Auth",
 };
 
 export default function AuthLayout({
@@ -11,8 +11,8 @@ export default function AuthLayout({
 }) {
   return (
     <div className="bg-white">
-        <AuthPageNavbar/>
-        {children}
+      <AuthPageNavbar />
+      {children}
     </div>
   );
 }

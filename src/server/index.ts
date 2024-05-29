@@ -1,24 +1,26 @@
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { baseCompanies } from './db/schema';
-import { elaborateCompanies } from './db/schema';
-import { userFavorites } from './db/schema';
-import { config } from 'dotenv';
-import { currentUser } from '@clerk/nextjs';
-import { sql as s } from 'drizzle-orm';
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { baseCompanies } from "./db/schema";
+import { elaborateCompanies } from "./db/schema";
+import { userFavorites } from "./db/schema";
+import { config } from "dotenv";
+import { currentUser } from "@clerk/nextjs";
+import { sql as s } from "drizzle-orm";
 
-config ({
-    path: '.env',
+config({
+  path: ".env",
 });
 
 const sql = neon<boolean, boolean>(process.env.DATABASE_URL!);
 export const db = drizzle(sql);
 
 async function selectCompanies(withName: boolean) {
-    return db.select({
-        name: elaborateCompanies.name, 
-        ... (withName ? { name: elaborateCompanies.name } : {}),
-    }).from(elaborateCompanies);
+  return db
+    .select({
+      name: elaborateCompanies.name,
+      ...(withName ? { name: elaborateCompanies.name } : {}),
+    })
+    .from(elaborateCompanies);
 }
 
 //const userList = await db.select().from(userFavorites).where(s`${userFavorites.userID} = ${userID}`);
@@ -35,7 +37,6 @@ async function selectCompanies(withName: boolean) {
 // const Companies = await db.select().from(elaborateCompanies);
 // // console.log(Companies);
 
-
 // //Full data for the elaborateCompanies table, using this table you can create objects for each individual row (aka Company)
 // const allData = await db.select({
 //   category: elaborateCompanies.category,
@@ -48,10 +49,8 @@ async function selectCompanies(withName: boolean) {
 //   genpage: elaborateCompanies.genpage as any,
 // }).from(elaborateCompanies).execute();
 
-
 // //Object for the Company Bombay Bazar
 //const bombayBazar = allData.find(item => item.name === "Bombay Bazar");
-
 
 // //By running the following you can print each part of the Bombay Bazar object such as its description, type, category and each individual part of its genpage
 // // console.log(bombayBazar?.name);
@@ -67,20 +66,13 @@ async function selectCompanies(withName: boolean) {
 // // console.log(bombayBazar?.genpage?.flaws);
 // // console.log(bombayBazar?.genpage?.process);
 
-
 // //If you want to create an object by the id in the table do the following, which selects the Company that is in the first row of the table
 // const readyReaders = allData[0];
 
-
 // //Then just as done above, you can print the name of the company to find out what it is
 // // console.log(readyReaders?.name);
-
 
 // //Use a for each loop to print all of a specific category for all companies in the table, such as the script below that prints all the flaws of the genpage of all companies in the table
 // allData.forEach(item => {
 //   // console.log(item.genpage.flaws);
 // })
-
-
-
-  

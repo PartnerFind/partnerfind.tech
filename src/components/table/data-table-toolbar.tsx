@@ -1,23 +1,25 @@
-import { X } from 'lucide-react'
-import { Table } from "@tanstack/react-table"
+import { X } from "lucide-react";
+import { Table } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-import { categories } from "./catagories-data"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { categories } from "./catagories-data";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
 }
 
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
-  
+  const isFiltered = table.getState().columnFilters.length > 0;
+
   return (
-    <div className="flex items-center justify-between text-xs"> {/* Adjust font size */}
+    <div className="flex items-center justify-between text-xs">
+      {" "}
+      {/* Adjust font size */}
       <div className="flex flex-1 items-center space-x-2">
         <Input // Search filter
           placeholder="Filter partner names..."
@@ -48,5 +50,5 @@ export function DataTableToolbar<TData>({
         )}
       </div>
     </div>
-  )
+  );
 }

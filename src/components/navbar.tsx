@@ -3,7 +3,11 @@
 import * as React from "react";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import UserButton from "@/components/user-button";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -27,7 +31,7 @@ export function Navbar() {
     <>
       <div
         id="navbar"
-        className={`fixed top-0 left-0 right-0 p-4 flex justify-between items-center transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed left-0 right-0 top-0 flex items-center justify-between p-4 transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <div>
           <NavigationMenu>
@@ -36,7 +40,8 @@ export function Navbar() {
                 <Link href="/">
                   <Button size="xlg">
                     <Home />
-                    <span className="icon-text-margin"></span> {/* Spacer element */}
+                    <span className="icon-text-margin"></span>{" "}
+                    {/* Spacer element */}
                     Home
                   </Button>
                 </Link>
