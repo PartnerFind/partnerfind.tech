@@ -113,7 +113,11 @@ export async function POST(request: Request, res: NextApiResponse) {
         let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
         parsedGroqCompletion = await JSON.parse(parsedGroqCompletion);
 
-        interface Result { title: string; url: string; score: string; }
+        interface Result {
+          title: string;
+          url: string;
+          score: string;
+        }
 
         let simplifiedResults = tavilyResponse.results.map((results: Result) => ({
           title: results.title,
@@ -121,7 +125,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           score: results.score,
         }));
 
-        parsedGroqCompletion.sources = simplifiedResults
+        parsedGroqCompletion.sources = simplifiedResults;
 
         try {
           await db.insert(elaborateCompanies).values([
@@ -134,6 +138,7 @@ export async function POST(request: Request, res: NextApiResponse) {
               description: parsedGroqCompletion.description,
               category: parsedGroqCompletion.category,
               genpage: parsedGroqCompletion.genpage,
+              sources: parsedGroqCompletion.sources,
             },
           ]);
         } catch (err: any) {

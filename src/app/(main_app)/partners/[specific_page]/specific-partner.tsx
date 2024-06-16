@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
 import { useToast } from "@/components/ui/use-toast";
 import ExcelJS from "exceljs";
+import Loading3Dots from "@/components/Loading3Dots";
 
 function formatPhoneNumber(phoneNumber: any) {
   // Remove any non-digit characters
@@ -74,6 +75,10 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
     fetchCurrentNoteandCurrentList();
   }, [clerkUserID, data]);
+
+  if (loading) {
+    return <Loading3Dots />;
+  }
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -207,6 +212,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       reasons: data.ragData.genpage.reasons,
       flaws: data.ragData.genpage.flaws,
       process: data.ragData.genpage.process,
+      sources: data.ragData.sources
     };
 
     const partnerData = JSON.stringify(updatedData, null, 2); // format nicely

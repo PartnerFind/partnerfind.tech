@@ -1,4 +1,5 @@
 import { pgTable, text, json, serial } from "drizzle-orm/pg-core";
+import { sources } from "next/dist/compiled/webpack/webpack";
 
 export const baseCompanies = pgTable("baseCompanies", {
   category: text("category"),
@@ -24,6 +25,11 @@ export const elaborateCompanies = pgTable("elaborateCompanies", {
     reasons: "reasons",
     summary: "summary",
     resources: "resources",
+  }),
+  sources: json("sources").default({
+    title: "title",
+    url: "url",
+    score: "score",
   }),
 });
 
