@@ -12,11 +12,25 @@ export default async function MyListPage() {
 
   if (userId !== null) {
     allFavorites = await fetchUserFavorites(userId); // fetch all the partners user has favorited
+  } else {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold">No Favorites!</h1>
+      </div>
+    );
   }
 
-  return (
-    <>
-      <MyListTable data={allFavorites.list.data || ""} />
-    </>
-  );
+  if (allFavorites === null) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold">No Favorites!</h1>
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <MyListTable data={allFavorites.list.data || ""} />
+      </>
+    );
+  }
 }

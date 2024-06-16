@@ -12,11 +12,25 @@ export default async function ExplorePage() {
 
   if (userId !== null) {
     allFavorites = await fetchAllPartners(userId); // fetch all the partners as well as user specific partners list to pass into table
+  } else {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold">No Favorites!</h1>
+      </div>
+    );
   }
 
-  return (
-    <>
-      <ExploreTable data={allFavorites.list.data || ""} />
-    </>
-  );
+  if (allFavorites === null) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold">No Favorites!</h1>
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <ExploreTable data={allFavorites.list.data || ""} />
+      </>
+    );
+  }
 }

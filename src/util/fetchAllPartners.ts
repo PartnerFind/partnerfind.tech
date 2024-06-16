@@ -11,8 +11,8 @@ export default async function fetchAllPartners(userID: string) {
       .from(userFavorites)
       .where(s`${userFavorites.userID} = ${userID}`); // query db for userFavorites based on passed in userID
   } catch (err: any) {
-    console.error(err);
-    throw new Error(`Failed to query userFavorites | ${err.message}`);
+    console.error("Failed to query userFavorites:", err);
+    return null;
   }
 
   let Companies = null;
