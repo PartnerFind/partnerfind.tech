@@ -78,7 +78,7 @@ export async function POST(request: Request, res: NextApiResponse) {
             "type": "", // (the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)
             "resources": "", // (very brief list of resources they provide for highschool students)
             "description": "", // (extremely brief and concise description of the organization)
-            "category": "", // (3 letter abbreviation for the type of organization it is)
+            "category": "", // (2 or 3 letter abbreviation for the type of organization it is - MUST BE ONE OF THESE: (NPO - nonprofit org,FPO - for profit org, GA - Government Association, LB - Local Business,CB - Corporate Business))
             "genpage": { // DO NOT ADD ANY \\n OR ESCAPE SEQUENCES IN THIS FOLLOWING OBJECT
               "summary": "", // (summary of the organization and who they are; be descriptive and talk about how this partner can potential help highschool students)
               "resources": "", // (resources offered by the organization for highschools;be extremely descriptive and specific in your analysis)
