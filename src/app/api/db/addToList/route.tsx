@@ -10,15 +10,10 @@ export async function POST(req: Request, res: NextApiResponse) {
 
   let addToUserList = null;
   try {
-    addToUserList = await db
-      .insert(userFavorites)
-      .values([{ userID: userID, name: name }]); // Adds to database with user passed userID and name
+    addToUserList = await db.insert(userFavorites).values([{ userID: userID, name: name }]); // Adds to database with user passed userID and name
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json(
-      { error: `Failed to insert into userFavorites | ${err.message}` },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: `Failed to insert into userFavorites | ${err.message}` }, { status: 500 });
   }
 
   return NextResponse.json({ query: "successful insertion" }, { status: 200 });

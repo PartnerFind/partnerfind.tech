@@ -5,15 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
@@ -81,8 +73,7 @@ export function AddPartnerForm() {
             <>
               <div>
                 <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">
-                  Successfully added &quot;{formData.business_name}&quot; to the
-                  directory!
+                  Successfully added &quot;{formData.business_name}&quot; to the directory!
                 </h1>
               </div>
             </>

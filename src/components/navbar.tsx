@@ -3,11 +3,7 @@
 import * as React from "react";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import UserButton from "@/components/user-button";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -40,8 +36,7 @@ export function Navbar() {
                 <Link href="/">
                   <Button size="xlg">
                     <Home />
-                    <span className="icon-text-margin"></span>{" "}
-                    {/* Spacer element */}
+                    <span className="icon-text-margin"></span> {/* Spacer element */}
                     Home
                   </Button>
                 </Link>

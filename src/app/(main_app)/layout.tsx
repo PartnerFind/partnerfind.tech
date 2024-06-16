@@ -24,11 +24,7 @@ const sidebarNavItems = [
   },
 ];
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div>
@@ -37,9 +33,7 @@ export default function MainLayout({
           <aside className="w-half absolute left-0 top-24 z-10 md:top-28 lg:top-32 ">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="mt-20 flex-1 md:mt-5 lg:ml-20 lg:mt-0">
-            {children}
-          </div>
+          <div className="mt-20 flex-1 md:mt-5 lg:ml-20 lg:mt-0">{children}</div>
         </div>
       </div>
     </>

@@ -13,15 +13,10 @@ export async function POST(req: Request, res: NextApiResponse) {
   try {
     removeFromUserList = await db
       .delete(userFavorites)
-      .where(
-        and(eq(userFavorites.userID, userID), eq(userFavorites.name, name)),
-      ); // Deletes database entry for the current user and name of row selected
+      .where(and(eq(userFavorites.userID, userID), eq(userFavorites.name, name))); // Deletes database entry for the current user and name of row selected
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json(
-      { error: `Failed to remove from userFavorites | ${err.message}` },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: `Failed to remove from userFavorites | ${err.message}` }, { status: 500 });
   }
 
   return NextResponse.json({ query: "successful deletion" }, { status: 200 });

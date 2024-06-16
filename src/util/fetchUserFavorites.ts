@@ -33,15 +33,11 @@ export default async function fetchUserFavorites(userID: string) {
   const updatedCompanies = {
     data: formattedCompanies
       .filter((company) => {
-        const matchingUser = userList.find(
-          (user) => user.name === company.name,
-        );
+        const matchingUser = userList.find((user) => user.name === company.name);
         return matchingUser;
       })
       .map((company) => {
-        const matchingUser = userList.find(
-          (user) => user.name === company.name,
-        );
+        const matchingUser = userList.find((user) => user.name === company.name);
         return { ...company, userID: matchingUser?.userID };
       }),
   };

@@ -17,9 +17,6 @@ export async function POST(req: Request, res: NextApiResponse) {
     return NextResponse.json({ data: isNameInFavorites });
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json(
-      { error: `Can't find if it is in database or not | ${err.message}` },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: `Can't find if it is in database or not | ${err.message}` }, { status: 500 });
   }
 }

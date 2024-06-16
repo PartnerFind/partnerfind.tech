@@ -15,7 +15,7 @@ export async function POST(request: Request, res: NextApiResponse) {
       {
         error: "The prompt length exceeds the maximum limit of 400 characters.",
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -38,16 +38,13 @@ export async function POST(request: Request, res: NextApiResponse) {
     if (tavilyAPI.ok) {
       // If tavily API is successful, call groq API and pass in the response from tavily
       const tavilyResponse = await tavilyAPI.json();
-      const clearbitAPI = await fetch(
-        `https://company.clearbit.com/v1/domains/find?name=${data.business_name}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.CLEARBIT_SECRET_KEY}`,
-          },
+      const clearbitAPI = await fetch(`https://company.clearbit.com/v1/domains/find?name=${data.business_name}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.CLEARBIT_SECRET_KEY}`,
         },
-      );
+      });
       const clearbitResponse = await clearbitAPI.json();
 
       const hunterAPI = await fetch(
@@ -57,7 +54,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
       const hunterResponse = await hunterAPI.json();
       const email = hunterResponse.data.emails[0].value;
@@ -113,8 +110,7 @@ export async function POST(request: Request, res: NextApiResponse) {
       try {
         const groqCompletion = await groq.chat.completions.create(groqParams);
 
-        let parsedGroqCompletion: any =
-          groqCompletion.choices[0]?.message?.content ?? "";
+        let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
         parsedGroqCompletion = await JSON.parse(parsedGroqCompletion);
 
         try {
@@ -135,36 +131,24 @@ export async function POST(request: Request, res: NextApiResponse) {
           if (err.code === "23505") {
             return NextResponse.json(
               { error: `Duplicate DB entry: ${err.message}` },
-              { status: 206 }, // 409 status code causes error messages and etc
+              { status: 206 } // 409 status code causes error messages and etc
             );
           } else {
             // For other errors, return a 500 status
             console.error(err);
-            return NextResponse.json(
-              { error: `Error adding to DB: ${err.message}` },
-              { status: 500 },
-            );
+            return NextResponse.json({ error: `Error adding to DB: ${err.message}` }, { status: 500 });
           }
         }
 
-        return NextResponse.json(
-          { generation: parsedGroqCompletion },
-          { status: 200 },
-        );
+        return NextResponse.json({ generation: parsedGroqCompletion }, { status: 200 });
       } catch (err: any) {
         console.error(err);
-        return NextResponse.json(
-          { error: `Failed to query Groq API | ${err.message}` },
-          { status: 500 },
-        );
+        return NextResponse.json({ error: `Failed to query Groq API | ${err.message}` }, { status: 500 });
       }
     } else {
-      return new NextResponse(
-        `Failed to query tavily | ${tavilyAPI.statusText}`,
-        {
-          status: 500,
-        },
-      );
+      return new NextResponse(`Failed to query tavily | ${tavilyAPI.statusText}`, {
+        status: 500,
+      });
     }
   } catch (err: any) {
     console.error(err);

@@ -11,9 +11,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTableToolbar<TData>({
-  table,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -24,26 +22,16 @@ export function DataTableToolbar<TData>({
         <Input // Search filter
           placeholder="Filter partner names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
 
         {table.getColumn("category") && ( // Filter by category
-          <DataTableFacetedFilter
-            column={table.getColumn("category")}
-            title="Category"
-            options={categories}
-          />
+          <DataTableFacetedFilter column={table.getColumn("category")} title="Category" options={categories} />
         )}
 
         {isFiltered && ( // Reset filters button
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
+          <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
             Reset
             <X className="ml-2 h-4 w-4" />
           </Button>

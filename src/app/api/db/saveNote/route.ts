@@ -16,15 +16,10 @@ export async function POST(req: Request, res: NextApiResponse) {
     removeFromList = await db
       .delete(partnerNotes)
       .where(and(eq(partnerNotes.userID, userID), eq(partnerNotes.name, name))); // Deletes database entry for the current user and name of row selected
-    allData = await db
-      .insert(partnerNotes)
-      .values([{ userID: userID, name: name, note: note }]); // Adds to database with user passed userID and name
+    allData = await db.insert(partnerNotes).values([{ userID: userID, name: name, note: note }]); // Adds to database with user passed userID and name
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json(
-      { error: `Failed to insert into partnerNotes | ${err.message}` },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: `Failed to insert into partnerNotes | ${err.message}` }, { status: 500 });
   }
 
   return NextResponse.json({ query: "successful insertion" }, { status: 200 });

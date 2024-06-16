@@ -30,19 +30,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     accessorKey: "category",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Category
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const category = categories.find(
-        (category) => category.value === row.getValue("category"),
-      );
+      const category = categories.find((category) => category.value === row.getValue("category"));
 
       if (!category) {
         return null;
@@ -62,10 +57,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     accessorKey: "name",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -136,19 +128,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           const cleaned = ("" + phoneNumber).replace(/\D/g, "");
 
           // Format the phone number
-          const formatted = cleaned.replace(
-            /(\d{3})(\d{3})(\d{4})/,
-            "($1)-$2-$3",
-          );
+          const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "($1)-$2-$3");
 
           return formatted;
         }
         phonenumber = formatPhoneNumber(phonenumber);
         return (
           <div className="flex space-x-2">
-            <span className="max-w-[500px] truncate font-medium">
-              {phonenumber}
-            </span>
+            <span className="max-w-[500px] truncate font-medium">{phonenumber}</span>
           </div>
         );
       }
@@ -165,11 +152,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         email = email.toLowerCase();
 
         return (
-          <a
-            className="font-medium"
-            href={`mailto:${email}`}
-            style={{ color: "#1a73e8", textDecoration: "underline" }}
-          >
+          <a className="font-medium" href={`mailto:${email}`} style={{ color: "#1a73e8", textDecoration: "underline" }}>
             {email}
           </a>
         );
@@ -187,11 +170,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
 
       useEffect(() => {
         // if the field is empty, null or does not exist, set the checkbox to false
-        if (
-          !row.getValue("userID") ||
-          row.getValue("userID") === "" ||
-          row.getValue("userID") === "null"
-        ) {
+        if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
           setChecked(false);
         } else {
           // if it exists, then set checkbox to true
@@ -238,9 +217,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
                 description: (
                   <>
                     <div>
-                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">
-                        Successfully added to your list!
-                      </h1>
+                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added to your list!</h1>
                     </div>
                   </>
                 ),
@@ -264,10 +241,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               }), // Pass the user ID and name fields to the backend
             };
 
-            const removeFromList = await fetch(
-              `/api/db/removeFromList`,
-              options,
-            );
+            const removeFromList = await fetch(`/api/db/removeFromList`, options);
             if (removeFromList.ok) {
               setChecked(false);
               toast({
@@ -276,9 +250,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
                 description: (
                   <>
                     <div>
-                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">
-                        Successfully removed from your list!
-                      </h1>
+                      <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">Successfully removed from your list!</h1>
                     </div>
                   </>
                 ),
@@ -287,9 +259,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
               throw new Error("Error removing user ID and name.");
             }
           } catch (error) {
-            throw new Error(
-              "An error occurred while removing user ID and name.",
-            );
+            throw new Error("An error occurred while removing user ID and name.");
           }
         }
       };
@@ -300,11 +270,7 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           {loading ? (
             <Skeleton className="h-3.5 w-3.5 rounded-sm border" />
           ) : (
-            <Checkbox
-              className="h-3.5 w-3.5"
-              checked={checked}
-              onCheckedChange={handleCheckboxChange}
-            />
+            <Checkbox className="h-3.5 w-3.5" checked={checked} onCheckedChange={handleCheckboxChange} />
           )}
         </div>
       );

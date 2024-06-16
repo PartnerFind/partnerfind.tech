@@ -7,21 +7,12 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <html lang="en">
         <body>
-          <div
-            className={twMerge(
-              "min-h-screen bg-background font-sans antialiased",
-              fontSans.variable,
-            )}
-          >
+          <div className={twMerge("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
             <main>{children}</main>
           </div>
         </body>

@@ -37,8 +37,7 @@ const main = async () => {
         type: "Education",
         description:
           "The mission of the St. Louis Public Library Foundation is to support the Librarys programs and services through advocacy and fundraising and to build relationships with others who share a passion for the Librarys work.",
-        resources:
-          "Library Access, Study Support, Career Development, Technology Access, Educational Programs",
+        resources: "Library Access, Study Support, Career Development, Technology Access, Educational Programs",
         phonenumber: "(314)-241-2288",
         email: "foundation@slplfoundation.org",
       },
@@ -48,8 +47,7 @@ const main = async () => {
         type: "Financial",
         description:
           "Ronald McDonald House Charities® of St. Louis provides a home-away-from-home for families of seriously ill children. These children (eighteen years and younger), who live outside a 50-mile radius of St. Louis, are treated at local area hospitals",
-        resources:
-          "Family Support, Financial Aid, Health Services, Meal Programs, Educational Support",
+        resources: "Family Support, Financial Aid, Health Services, Meal Programs, Educational Support",
         phonenumber: "(314)-773-1100",
         email: "rbrown@rmhcstl.com",
       },
@@ -59,8 +57,7 @@ const main = async () => {
         type: "Housing",
         description:
           "Beyond Housing is a nationally recognized community development organization that works to strengthen families and transform underserved communities to create a stronger, more equitable, and prosperous St. Louis region for all.",
-        resources:
-          "Housing Assistance, Financial Literacy, Employment Services, Youth Programs, Community Engagement",
+        resources: "Housing Assistance, Financial Literacy, Employment Services, Youth Programs, Community Engagement",
         phonenumber: "(314)-533-0600",
         email: "ckrehmeyer@beyondhousing.org",
       },
@@ -81,8 +78,7 @@ const main = async () => {
         type: "Education",
         description:
           "Originally conceived as a place for children to create their own special teddy bear with a step-by-step process including our now iconic Heart Ceremony, Build-A-Bear is now a multi-generational, multi-dimensional global brand appealing to diverse consumer demographics.",
-        resources:
-          "Workshop Tours, Team Building, Fundraising Events, Educational Workshops, Career Exploration",
+        resources: "Workshop Tours, Team Building, Fundraising Events, Educational Workshops, Career Exploration",
         phonenumber: "(636)-237-6101",
         email: "Guest.Services@buildabear.com",
       },
@@ -191,8 +187,7 @@ const main = async () => {
         type: "Clothing",
         description:
           "STL Shirt Co is a premier, family-owned custom apparel company. Specializing in custom designs for schools, events, and businesses, we provide top-quality products to meet your unique needs. Offering screen printing, embroidery, vinyl, stickers/decals, and online store services, were the fastest in the St. Louis area!",
-        resources:
-          "Custom Apparel, Fundraising Support, Design Services, Event Promotion, Bulk Discounts",
+        resources: "Custom Apparel, Fundraising Support, Design Services, Event Promotion, Bulk Discounts",
         phonenumber: "(636)-926-2777",
         email: "mike@stlshirtco.com",
       },
@@ -213,8 +208,7 @@ const main = async () => {
         type: "Environment",
         description:
           "Missouri Coalition for the Environment (MCE) is Missouris independent, citizens environmental organization for clean water, clean air, clean energy, and a healthy environment. With the help of our members and allies we are making the world a better place.",
-        resources:
-          "Environmental Education, Advocacy Support, Youth Engagement, Green Initiatives, Outdoor Activities",
+        resources: "Environmental Education, Advocacy Support, Youth Engagement, Green Initiatives, Outdoor Activities",
         phonenumber: "(314)-727-0600",
         email: "moenviron@moenvironment.org",
       },
@@ -224,8 +218,7 @@ const main = async () => {
         type: "Food",
         description:
           "Produce, dairy, eggs, meat, bakery, grains, packaged goods, and more! Fewer food miles, fresher food. Better for you and the earth.",
-        resources:
-          "Local Produce, Nutrition Worshops, Food Education, Student Discounts, Community Outreach",
+        resources: "Local Produce, Nutrition Worshops, Food Education, Student Discounts, Community Outreach",
         phonenumber: "(314)-865-5260",
         email: "becca@localharvestgrocery.com",
       },
@@ -235,8 +228,7 @@ const main = async () => {
         type: "Technology",
         description:
           "Ameren Corp (Ameren) is an energy holding company. It carries out the operations of rate regulated electricity and natural gas generation, transmission and distribution through its subsidiaries.",
-        resources:
-          "Energy Education, STEM Support, Internship Opportunities, Career Guidance, Safety Training",
+        resources: "Energy Education, STEM Support, Internship Opportunities, Career Guidance, Safety Training",
         phonenumber: "(314)-621-3222",
         email: "communications@ameren.com",
       },
@@ -257,8 +249,7 @@ const main = async () => {
         type: "Healthcare",
         description:
           "At BJC HealthCare, we serve patients in urban, suburban and rural communities through our 14 hospitals and multiple community health locations, providing inpatient and outpatient care, primary care, community health and wellness, workplace health, home health, community mental health, rehabilitation, and long-term care.",
-        resources:
-          "Health Education, Medical Services, Career Exploration, Mental Health Support, Community Outreach",
+        resources: "Health Education, Medical Services, Career Exploration, Mental Health Support, Community Outreach",
         phonenumber: "(636)-484-5220",
         email: "d_j@bjc.org",
       },
@@ -268,8 +259,7 @@ const main = async () => {
         type: "Technology",
         description:
           "Spectrum Mobile is a mobile virtual network operator (MVNO). It doesnt have a standalone mobile network like Verizon but instead leases and resells Verizons 4G LTE and 5G connections through the Spectrum Mobile brand.",
-        resources:
-          "Internet Access, Educational Content, Technology Support, Career Development, Community Engagement",
+        resources: "Internet Access, Educational Content, Technology Support, Career Development, Community Engagement",
         phonenumber: "(314)-801-2296",
         email: "contact@spectrumam.com",
       },
@@ -279,8 +269,7 @@ const main = async () => {
         type: "Technology",
         description:
           "Boeing in Brief. As a leading global aerospace company, Boeing develops, manufactures and services commercial airplanes, defense products and space systems for customers in more than 150 countries.",
-        resources:
-          "STEM Education, Career Pathways, Mentorship Programs, Educational Grants, Aviation Outreach",
+        resources: "STEM Education, Career Pathways, Mentorship Programs, Educational Grants, Aviation Outreach",
         phonenumber: "(314)-232-0232",
         email: "media@boeing.com",
       },

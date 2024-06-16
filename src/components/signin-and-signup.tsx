@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  SignInButton as ClerkSignInButton,
-  SignUpButton as ClerkSignUpButton,
-  useUser,
-} from "@clerk/nextjs";
+import { SignInButton as ClerkSignInButton, SignUpButton as ClerkSignUpButton, useUser } from "@clerk/nextjs";
 // import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 

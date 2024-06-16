@@ -33,9 +33,7 @@ export default async function fetchAllPartners(userID: string) {
   const updatedCompanies = {
     data: formattedCompanies.map((company) => {
       const matchingUser = userList.find((user) => user.name === company.name);
-      return matchingUser
-        ? { ...company, userID: matchingUser.userID }
-        : company; // this added user ID field to the final data is used in the table to
+      return matchingUser ? { ...company, userID: matchingUser.userID } : company; // this added user ID field to the final data is used in the table to
       // determine if the user has favorited the company or not by just checking if it exists in the data passed to the table
     }),
   };

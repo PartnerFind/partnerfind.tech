@@ -4,14 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton"; // todo
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
@@ -67,10 +60,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           throw new Error("Error fetching rows from DB.");
         }
 
-        const getCheckboxStatus = await fetch(
-          "/api/db/getCurrentList",
-          options,
-        );
+        const getCheckboxStatus = await fetch("/api/db/getCurrentList", options);
         if (getCheckboxStatus.ok) {
           const getCheckboxStatusResponse = await getCheckboxStatus.json();
           setChecked(getCheckboxStatusResponse.data);
@@ -147,9 +137,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
             description: (
               <>
                 <div>
-                  <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">
-                    Successfully added to your list!
-                  </h1>
+                  <h1 className="mt-2 w-[340px] rounded-md p-4 text-green-500">Successfully added to your list!</h1>
                 </div>
               </>
             ),
@@ -183,9 +171,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
             description: (
               <>
                 <div>
-                  <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">
-                    Successfully removed from your list!
-                  </h1>
+                  <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">Successfully removed from your list!</h1>
                 </div>
               </>
             ),
@@ -258,15 +244,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     };
 
     const csvRows: string[] = [];
-    const headers: (keyof typeof updatedData)[] = Object.keys(
-      updatedData,
-    ) as (keyof typeof updatedData)[];
+    const headers: (keyof typeof updatedData)[] = Object.keys(updatedData) as (keyof typeof updatedData)[];
     csvRows.push(headers.join(",")); // Header row
 
     const values = headers.map((header) =>
-      JSON.stringify(updatedData[header], (key, value) =>
-        value === null ? "" : value,
-      ),
+      JSON.stringify(updatedData[header], (key, value) => (value === null ? "" : value))
     ); // Handle null values
     csvRows.push(values.join(","));
 
@@ -351,19 +333,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Partner Category:
                       </strong>
                       <br /> {data.ragData.category}
                     </p>
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Type:
                       </strong>
                       <br /> {data.ragData.type}
@@ -376,10 +352,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Provided Resources:
                       </strong>
                       <br />
@@ -409,10 +382,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       Email:
                     </strong>
                     {data.ragData.email ? (
-                      <a
-                        href={`mailto:${data.ragData.email}`}
-                        className="underline"
-                      >
+                      <a href={`mailto:${data.ragData.email}`} className="underline">
                         <br />
                         {data.ragData.email.toLowerCase()}
                       </a>
@@ -427,10 +397,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Phone Number:
                       </strong>
                       <br />
@@ -445,17 +412,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
             <div>
               <Card className="max-w-sm">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold">
-                    Manage List
-                  </CardTitle>
+                  <CardTitle className="text-xl font-bold">Manage List</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center">
-                    <Checkbox
-                      id="addToList"
-                      checked={checked}
-                      onCheckedChange={handleCheckboxChange}
-                    />
+                    <Checkbox id="addToList" checked={checked} onCheckedChange={handleCheckboxChange} />
                     <Label htmlFor="addToList" className="ml-2">
                       {checked ? "Remove from your list" : "Add to your list"}
                     </Label>
@@ -469,17 +430,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
               <Card>
                 <CardHeader>
                   {note ? (
-                    <CardTitle
-                      className="text-2xl"
-                      style={{ color: "#22B357" }}
-                    >
+                    <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                       Current Note:
                     </CardTitle>
                   ) : (
-                    <CardTitle
-                      className="text-2xl"
-                      style={{ color: "#22B357" }}
-                    >
+                    <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                       Add your own note:
                     </CardTitle>
                   )}
@@ -493,11 +448,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   {editMode ? (
                     <div className="grid gap-2">
                       <Label htmlFor="new-note">New Note</Label>
-                      <Textarea
-                        id="new-note"
-                        value={newNote}
-                        onChange={(e) => setNewNote(e.target.value)}
-                      />
+                      <Textarea id="new-note" value={newNote} onChange={(e) => setNewNote(e.target.value)} />
                     </div>
                   ) : (
                     <div>{note ? note : "No notes added"}</div>
@@ -506,25 +457,16 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 <CardFooter>
                   {editMode ? (
                     <div className="grid grid-cols-2 gap-6">
-                      <Button
-                        variant="outline"
-                        onClick={() => handleSaveClick()}
-                      >
+                      <Button variant="outline" onClick={() => handleSaveClick()}>
                         Save
                       </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => setEditMode(false)}
-                      >
+                      <Button variant="outline" onClick={() => setEditMode(false)}>
                         Cancel
                       </Button>
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 gap-6">
-                      <Button
-                        variant="outline"
-                        onClick={() => handleEditClick()}
-                      >
+                      <Button variant="outline" onClick={() => handleEditClick()}>
                         Edit
                       </Button>
                     </div>
@@ -551,10 +493,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Detailed Summary:
                       </strong>
                       <br /> {data.ragData.genpage.summary}
@@ -567,10 +506,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Resources Offered:
                       </strong>
                       <br />
@@ -584,10 +520,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Reasons to Partner:
                       </strong>
                       <br />
@@ -601,10 +534,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Flaws about {data.ragData.name}:
                       </strong>
                       <br />
@@ -618,10 +548,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="grid grid-cols-1 gap-6">
                     <p>
-                      <strong
-                        className="underline"
-                        style={{ color: "#22B357" }}
-                      >
+                      <strong className="underline" style={{ color: "#22B357" }}>
                         Steps to Partner:
                       </strong>
                       <br />
@@ -638,18 +565,10 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           <Button variant="outline" onClick={handleJSONExport}>
             Export This Data to JSON!
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleCSVExport}
-            style={{ marginLeft: "10px" }}
-          >
+          <Button variant="outline" onClick={handleCSVExport} style={{ marginLeft: "10px" }}>
             Export This Data to CSV!
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleExcelExport}
-            style={{ marginLeft: "10px" }}
-          >
+          <Button variant="outline" onClick={handleExcelExport} style={{ marginLeft: "10px" }}>
             Export This Data to an Excel Sheet!
           </Button>
         </div>
