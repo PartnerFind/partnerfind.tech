@@ -113,6 +113,16 @@ export async function POST(request: Request, res: NextApiResponse) {
         let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
         parsedGroqCompletion = await JSON.parse(parsedGroqCompletion);
 
+        interface Result { title: string; url: string; score: string; }
+
+        let simplifiedResults = tavilyResponse.results.map((results: Result) => ({
+          title: results.title,
+          url: results.url,
+          score: results.score,
+        }));
+
+        parsedGroqCompletion.sources = simplifiedResults
+
         try {
           await db.insert(elaborateCompanies).values([
             {
