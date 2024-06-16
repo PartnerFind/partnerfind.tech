@@ -31,7 +31,7 @@ export async function POST(request: Request, res: NextApiResponse) {
         search_depth: "advanced",
         include_answer: true,
         include_raw_content: false,
-        max_results: 10, // trying this out
+        max_results: 5, // trying this out
       }),
     });
 

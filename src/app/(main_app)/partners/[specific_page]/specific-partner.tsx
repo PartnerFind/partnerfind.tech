@@ -212,7 +212,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       reasons: data.ragData.genpage.reasons,
       flaws: data.ragData.genpage.flaws,
       process: data.ragData.genpage.process,
-      sources: data.ragData.sources
+      sources: data.ragData.sources,
     };
 
     const partnerData = JSON.stringify(updatedData, null, 2); // format nicely
@@ -429,6 +429,28 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card className="max-w-sm">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {data.ragData.results.map((result: any, index: any) => (
+                    <div key={index} className="flex items-center mb-4">
+                      <div className="mr-2">
+                        <strong>{result.title}</strong>
+                        <br />
+                        <a href={result.url} target="_blank" rel="noopener noreferrer">
+                          {result.url}
+                        </a>
+                        <br />
+                        Score: {result.score}
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
             </div>
           </div>
           <div className="md:col-span-1 md:col-start-2">
