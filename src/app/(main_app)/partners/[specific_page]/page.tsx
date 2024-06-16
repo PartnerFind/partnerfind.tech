@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: any) {
 export default async function SpecificPartnerPage({ params }: { params: any }) {
   let name = decodeURIComponent(params.specific_page);
   let data = await fetchRAGDataForAPartner(name);
+
   if (data === null) {
     notFound();
   } else {

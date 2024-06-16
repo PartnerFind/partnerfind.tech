@@ -13,6 +13,7 @@ export default async function fetchRAGDataForAPartner(name: string) {
       phonenumber: elaborateCompanies.phonenumber,
       email: elaborateCompanies.email,
       genpage: elaborateCompanies.genpage as any,
+      sources: elaborateCompanies.sources as any,
     })
     .from(elaborateCompanies)
     .execute();

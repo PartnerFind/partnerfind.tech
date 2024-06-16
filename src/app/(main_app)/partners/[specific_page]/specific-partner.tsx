@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton"; // todo
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,7 +99,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
         }), // Pass the user ID, partner name, and new note to the backend
       };
 
-      const saveNoteResponse = await fetch("/api/db/saveNote", options); // TODO: Replace with actual endpoint
+      const saveNoteResponse = await fetch("/api/db/saveNote", options);
       if (!saveNoteResponse.ok) {
         throw new Error("Error saving note to DB.");
       }
@@ -247,6 +246,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       reasons: data.ragData.genpage.reasons,
       flaws: data.ragData.genpage.flaws,
       process: data.ragData.genpage.process,
+      sources: data.ragData.sources,
     };
 
     const csvRows: string[] = [];
@@ -283,13 +283,14 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       name: data.ragData.name,
       type: data.ragData.type,
       description: data.ragData.description,
+      resources: data.ragData.resources,
       phonenumber: data.ragData.phonenumber,
       email: data.ragData.email,
-      resources: data.ragData.resources,
       summary: data.ragData.genpage.summary,
       reasons: data.ragData.genpage.reasons,
       flaws: data.ragData.genpage.flaws,
       process: data.ragData.genpage.process,
+      sources: data.ragData.sources,
     };
 
     const workbook = new ExcelJS.Workbook();
@@ -435,22 +436,26 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {data.ragData.results.map((result: any, index: any) => (
+                  {data.ragData.sources.map((result: any, index: any) => (
                     <div key={index} className="flex items-center mb-4">
                       <div className="mr-2">
                         <strong>{result.title}</strong>
                         <br />
-                        <a href={result.url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          className="underline text-blue-500"
+                          href={result.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {result.url}
                         </a>
                         <br />
-                        Score: {result.score}
+                        Aritcle Relevancy: {result.score}
                       </div>
                     </div>
                   ))}
                 </CardContent>
               </Card>
-
             </div>
           </div>
           <div className="md:col-span-1 md:col-start-2">
