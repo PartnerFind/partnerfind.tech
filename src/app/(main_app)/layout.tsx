@@ -15,6 +15,10 @@ const sidebarNavItems = [
     href: "/my-list",
   },
   {
+    title: "Privacy Policy",
+    href: "/legal/privacy-policy",
+  },
+  {
     title: "Add",
     href: "/add-partner",
   },
