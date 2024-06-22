@@ -4,12 +4,14 @@ import { elaborateCompanies } from "@/server/db/schema";
 import { db } from "@/server/index";
 import Groq from "groq-sdk";
 
+// Define the handler for POST requests
 export async function POST(request: Request, res: NextApiResponse) {
-  const data: any = await request.json();
-  // First thing, call tavily api and pass in data
-  let tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
+  const data: any = await request.json();  // Parse the JSON request body to get the input data
 
-  // Check if the length exceeds 400 characters
+  // Create a prompt for the Tavily API
+  const tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
+
+  // Ensure the prompt does not exceed 400 characters
   if (tavilyPrompt.length > 399) {
     return NextResponse.json(
       {
@@ -20,6 +22,7 @@ export async function POST(request: Request, res: NextApiResponse) {
   }
 
   try {
+    // Call Tavily API with the generated prompt
     const tavilyAPI = await fetch("https://api.tavily.com/search", {
       method: "POST",
       headers: {
@@ -31,36 +34,46 @@ export async function POST(request: Request, res: NextApiResponse) {
         search_depth: "advanced",
         include_answer: true,
         include_raw_content: false,
-        max_results: 5, // trying this out
+        max_results: 5,  // Limit the results to 5
       }),
     });
 
-    if (tavilyAPI.ok) {
-      // If tavily API is successful, call groq API and pass in the response from tavily
-      const tavilyResponse = await tavilyAPI.json();
-      const clearbitAPI = await fetch(`https://company.clearbit.com/v1/domains/find?name=${data.business_name}`, {
+    // Check if Tavily API call was successful
+    if (!tavilyAPI.ok) {
+      return NextResponse.json({ error: `Failed to query Tavily API: ${tavilyAPI.statusText}` }, { status: 500 });
+    }
+
+    const tavilyResponse = await tavilyAPI.json();  // Parse the response from Tavily API
+
+    // Call Clearbit API to get additional company details
+    const clearbitAPI = await fetch(`https://company.clearbit.com/v1/domains/find?name=${data.business_name}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.CLEARBIT_SECRET_KEY}`,
+      },
+    });
+
+    const clearbitResponse = await clearbitAPI.json();  // Parse the response from Clearbit API
+
+    // Call Hunter.io API to get the email address of the company
+    const hunterAPI = await fetch(
+      `https://api.hunter.io/v2/domain-search?domain=${clearbitResponse.domain}&api_key=${process.env.HUNTERIO_API_KEY}`,
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.CLEARBIT_SECRET_KEY}`,
         },
-      });
-      const clearbitResponse = await clearbitAPI.json();
+      }
+    );
 
-      const hunterAPI = await fetch(
-        `https://api.hunter.io/v2/domain-search?domain=${clearbitResponse.domain}&api_key=${process.env.HUNTERIO_API_KEY}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const hunterResponse = await hunterAPI.json();
-      const email = hunterResponse.data.emails[0].value;
-      const groq = new Groq();
+    const hunterResponse = await hunterAPI.json();  // Parse the response from Hunter.io API
+    const email = hunterResponse.data.emails[0]?.value || "";  // Extract the email address or default to an empty string
 
-      let groqPrompt = `I am an administrator at my high school and need insightful information on potential community partners near me. 
+    const groq = new Groq();  // Initialize Groq SDK
+
+    // Create a prompt for Groq API with the response from Tavily API
+    let groqPrompt = `I am an administrator at my high school and need insightful information on potential community partners near me. 
           take the info I will give you from a tavilyAPI search and I compile it into JSON struture, 
           I want you to give a detailed analysis on the resources that the organization can provide that you will be given, and also come up with and infer potential reasons to or 
           not to partner with this organization and how it will be beneficial for the school. 
@@ -89,86 +102,71 @@ export async function POST(request: Request, res: NextApiResponse) {
           }
           make sure there is 1 valid phonenumber with the given format above in the field, and one VALID email in the field.
           `;
-      const groqParams: any = {
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences. Use the schema provided by the user.",
-          },
-          { role: "user", content: groqPrompt },
-        ],
-        model: "mixtral-8x7b-32768",
-        temperature: 0.0000001,
-        stream: false,
-        response_format: {
-          type: "json_object",
+
+    // Define the parameters for the Groq API call
+    const groqParams: any = {
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a RAG assistant that only answers in valid JSON objects. The response should be instantly usable in a web app with no \\n and other escape sequences. Use the schema provided by the user.",
         },
-      };
+        { role: "user", content: groqPrompt },
+      ],
+      model: "mixtral-8x7b-32768",
+      temperature: 0.0000001,
+      stream: false,
+      response_format: {
+        type: "json_object",
+      },
+    };
 
-      // Call groq API and return the response
-      try {
-        const groqCompletion = await groq.chat.completions.create(groqParams);
+    // Call Groq API and parse the response
+    const groqCompletion = await groq.chat.completions.create(groqParams);
+    let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
+    parsedGroqCompletion = JSON.parse(parsedGroqCompletion);
 
-        let parsedGroqCompletion: any = groqCompletion.choices[0]?.message?.content ?? "";
-        parsedGroqCompletion = await JSON.parse(parsedGroqCompletion);
+    // Simplify Tavily API results for easier consumption
+    const simplifiedResults = tavilyResponse.results.map((result: any) => ({
+      title: result.title,
+      url: result.url,
+      score: result.score,
+    }));
 
-        interface Result {
-          title: string;
-          url: string;
-          score: string;
-        }
+    // Add simplified results to the parsed Groq response
+    parsedGroqCompletion.sources = simplifiedResults;
 
-        let simplifiedResults = tavilyResponse.results.map((results: Result) => ({
-          title: results.title,
-          url: results.url,
-          score: results.score,
-        }));
-
-        parsedGroqCompletion.sources = simplifiedResults;
-
-        try {
-          await db.insert(elaborateCompanies).values([
-            {
-              name: parsedGroqCompletion.name,
-              phonenumber: parsedGroqCompletion.phonenumber,
-              email: parsedGroqCompletion.email,
-              type: parsedGroqCompletion.type,
-              resources: parsedGroqCompletion.resources,
-              description: parsedGroqCompletion.description,
-              category: parsedGroqCompletion.category,
-              genpage: parsedGroqCompletion.genpage,
-              sources: parsedGroqCompletion.sources,
-            },
-          ]);
-        } catch (err: any) {
-          // Check if the error code indicates a duplicate key violation
-          if (err.code === "23505") {
-            return NextResponse.json(
-              { error: `Duplicate DB entry: ${err.message}` },
-              { status: 206 } // 409 status code causes error messages and etc
-            );
-          } else {
-            // For other errors, return a 500 status
-            console.error(err);
-            return NextResponse.json({ error: `Error adding to DB: ${err.message}` }, { status: 500 });
-          }
-        }
-
-        return NextResponse.json({ generation: parsedGroqCompletion }, { status: 200 });
-      } catch (err: any) {
+    // Insert the processed data into the database
+    try {
+      await db.insert(elaborateCompanies).values([
+        {
+          name: parsedGroqCompletion.name,
+          phonenumber: parsedGroqCompletion.phonenumber,
+          email: parsedGroqCompletion.email,
+          type: parsedGroqCompletion.type,
+          resources: parsedGroqCompletion.resources,
+          description: parsedGroqCompletion.description,
+          category: parsedGroqCompletion.category,
+          genpage: parsedGroqCompletion.genpage,
+          sources: parsedGroqCompletion.sources,
+        },
+      ]);
+    } catch (err: any) {
+      // Handle potential duplicate entry error
+      if (err.code === "23505") {
+        return NextResponse.json({ error: `Duplicate DB entry: ${err.message}` }, { status: 206 });
+      } else {
+        // Handle other database errors
         console.error(err);
-        return NextResponse.json({ error: `Failed to query Groq API | ${err.message}` }, { status: 500 });
+        return NextResponse.json({ error: `Error adding to DB: ${err.message}` }, { status: 500 });
       }
-    } else {
-      return new NextResponse(`Failed to query tavily | ${tavilyAPI.statusText}`, {
-        status: 500,
-      });
     }
+
+    // Return the successfully processed and inserted data
+    return NextResponse.json({ generation: parsedGroqCompletion }, { status: 200 });
   } catch (err: any) {
+    // Handle any other errors that may occur during the process
     console.error(err);
-    return new NextResponse(`Failed to query Tavily (RAG) | ${err.message}`, {
-      status: 500,
-    });
+    return NextResponse.json({ error: `An error occurred: ${err.message}` }, { status: 500 });
   }
 }
