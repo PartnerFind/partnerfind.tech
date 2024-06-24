@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
 import { useToast } from "@/components/ui/use-toast";
+import { CircleProgress } from "@/components/ui/progress";
 import ExcelJS from "exceljs";
 import Loading3Dots from "@/components/Loading3Dots";
 
@@ -566,13 +567,17 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
               </Card>
             </div>
             <Card className="w-full md:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {data.ragData.sources.map((result: any, index: any) => (
-                    <div key={index} className="flex items-center mb-4">
-                      <div className="mr-2">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {data.ragData.sources.map((result: any, index: any) => {
+                  const score = parseFloat(result.score); // Ensure score is a float
+                  const progressValue = !isNaN(score) ? score * 100 : 0; // Multiply by 100 if valid number, otherwise 0
+
+                  return (
+                    <div key={index} className="flex items-center justify-between mb-4">
+                      <div>
                         <strong style={{ color: "#22B357" }}>{result.title}</strong>
                         <br />
                         <a
@@ -583,13 +588,16 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         >
                           {result.url}
                         </a>
-                        <br />
-                        Aritcle Relevancy: {result.score}
+                      </div>
+                      <div className="flex items-center">
+                        <span style={{ marginRight: '10px' }}>Article Relevancy: </span>
+                        <CircleProgress value={((Math.round(progressValue*100))/100)} />
                       </div>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
+                  );
+                })}
+              </CardContent>
+            </Card>
           </div>
         </div>
         <div style={{ marginTop: "20px" }}>
