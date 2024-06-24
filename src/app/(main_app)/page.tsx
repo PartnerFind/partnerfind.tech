@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Particles from "@/components/magicui/particles";
+import Meteors from "@/components/magicui/meteors";
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
+
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
@@ -11,9 +14,19 @@ const HomePage = (): React.JSX.Element => {
   return (
     <>
       <div>
-        <main className="flex min-h-screen flex-col items-center justify-center">
-          <div className="container mb-20 mt-20 flex flex-col items-center justify-center gap-12 px-4 py-16 md:mt-40">
-            <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+        <main className="flex min-h-screen flex-col items-center justify-center relative">
+          {/* Full-page Particles */}
+          <Particles
+            className="absolute inset-0 z-0 pointer-events-none"
+            quantity={125}
+            ease={80}
+            size={0.5}
+            refresh
+          />
+
+          <div className="container mb-20 mt-20 flex flex-col items-center justify-center gap-12 px-4 py-16 md:mt-40 relative z-10">
+            <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl relative z-10">
+              <Meteors number={4} />
               <span className="bg-gradient-to-r from-blue-400 to-green-500 bg-clip-text text-transparent">
                 PartnerFind
               </span>
@@ -21,7 +34,7 @@ const HomePage = (): React.JSX.Element => {
             </h1>
           </div>
 
-          <div className="container mx-auto my-20">
+          <div className="container mx-auto my-20 relative z-10">
             <h2 className="mb-8 text-center text-4xl font-semibold">
               <strong>About</strong>
             </h2>
@@ -77,7 +90,7 @@ const HomePage = (): React.JSX.Element => {
             </div>
           </div>
 
-          <div className="container mx-auto mb-16">
+          <div className="container mx-auto mb-16 relative z-10">
             <h2 className="mb-8 text-center text-4xl font-semibold">
               <strong>How to Use</strong>
             </h2>

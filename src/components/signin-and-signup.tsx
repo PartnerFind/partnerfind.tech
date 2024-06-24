@@ -27,7 +27,7 @@ export default function SignInAndSignUp() {
     <>
       <div>
         <ClerkSignInButton>
-          <div className="absolute right-[8rem]">
+          <div className="absolute right-[9.25rem]">
             <Button size="xlg" variant="ghost">
               Login
             </Button>
