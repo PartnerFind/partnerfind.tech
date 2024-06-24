@@ -6,7 +6,7 @@ import Groq from "groq-sdk";
 
 // Define the handler for POST requests
 export async function POST(request: Request, res: NextApiResponse) {
-  const data: any = await request.json();  // Parse the JSON request body to get the input data
+  const data: any = await request.json(); // Parse the JSON request body to get the input data
 
   // Create a prompt for the Tavily API
   const tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
@@ -34,7 +34,7 @@ export async function POST(request: Request, res: NextApiResponse) {
         search_depth: "advanced",
         include_answer: true,
         include_raw_content: false,
-        max_results: 5,  // Limit the results to 5
+        max_results: 5, // Limit the results to 5
       }),
     });
 
@@ -43,7 +43,7 @@ export async function POST(request: Request, res: NextApiResponse) {
       return NextResponse.json({ error: `Failed to query Tavily API: ${tavilyAPI.statusText}` }, { status: 500 });
     }
 
-    const tavilyResponse = await tavilyAPI.json();  // Parse the response from Tavily API
+    const tavilyResponse = await tavilyAPI.json(); // Parse the response from Tavily API
 
     // Call Clearbit API to get additional company details
     const clearbitAPI = await fetch(`https://company.clearbit.com/v1/domains/find?name=${data.business_name}`, {
@@ -54,7 +54,7 @@ export async function POST(request: Request, res: NextApiResponse) {
       },
     });
 
-    const clearbitResponse = await clearbitAPI.json();  // Parse the response from Clearbit API
+    const clearbitResponse = await clearbitAPI.json(); // Parse the response from Clearbit API
 
     // Call Hunter.io API to get the email address of the company
     const hunterAPI = await fetch(
@@ -67,10 +67,10 @@ export async function POST(request: Request, res: NextApiResponse) {
       }
     );
 
-    const hunterResponse = await hunterAPI.json();  // Parse the response from Hunter.io API
-    const email = hunterResponse.data.emails[0]?.value || "";  // Extract the email address or default to an empty string
+    const hunterResponse = await hunterAPI.json(); // Parse the response from Hunter.io API
+    const email = hunterResponse.data.emails[0]?.value || ""; // Extract the email address or default to an empty string
 
-    const groq = new Groq();  // Initialize Groq SDK
+    const groq = new Groq(); // Initialize Groq SDK
 
     // Create a prompt for Groq API with the response from Tavily API
     let groqPrompt = `I am an administrator at my high school and need insightful information on potential community partners near me. 

@@ -590,8 +590,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         </a>
                       </div>
                       <div className="flex items-center">
-                        <span style={{ marginRight: '10px' }}>Article Relevancy: </span>
-                        <CircleProgress value={((Math.round(progressValue*100))/100)} />
+                        <span style={{ marginRight: "10px" }}>Article Relevancy: </span>
+                        <CircleProgress value={Math.round(progressValue * 100) / 100} />
                       </div>
                     </div>
                   );
