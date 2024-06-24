@@ -430,32 +430,6 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="max-w-sm">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {data.ragData.sources.map((result: any, index: any) => (
-                    <div key={index} className="flex items-center mb-4">
-                      <div className="mr-2">
-                        <strong>{result.title}</strong>
-                        <br />
-                        <a
-                          className="underline text-blue-500"
-                          href={result.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {result.url}
-                        </a>
-                        <br />
-                        Aritcle Relevancy: {result.score}
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
             </div>
           </div>
           <div className="md:col-span-1 md:col-start-2">
@@ -591,7 +565,31 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 </CardContent>
               </Card>
             </div>
-            <div></div>
+            <Card className="w-full md:col-span-2">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {data.ragData.sources.map((result: any, index: any) => (
+                    <div key={index} className="flex items-center mb-4">
+                      <div className="mr-2">
+                        <strong style={{ color: "#22B357" }}>{result.title}</strong>
+                        <br />
+                        <a
+                          className="underline text-blue-500"
+                          href={result.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {result.url}
+                        </a>
+                        <br />
+                        Aritcle Relevancy: {result.score}
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
           </div>
         </div>
         <div style={{ marginTop: "20px" }}>
