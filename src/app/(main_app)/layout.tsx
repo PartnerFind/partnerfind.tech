@@ -15,7 +15,7 @@ const sidebarNavItems = [
     href: "/my-list",
   },
   {
-    title: "Add",
+    title: "Add Partner",
     href: "/add-partner",
   },
   {

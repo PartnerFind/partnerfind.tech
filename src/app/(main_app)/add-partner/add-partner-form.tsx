@@ -8,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const addPartnerFormSchema = z.object({
-  // Zod Schema for form validation
   business_name: z
     .string()
     .min(2, {
-      message: "Business name must atleast 3 characters!",
+      message: "Business name must be at least 3 characters!",
     })
     .max(30, {
       message: "Business name must be under 30 characters!",
@@ -27,6 +27,7 @@ type AddPartnerFormValues = z.infer<typeof addPartnerFormSchema>;
 export function AddPartnerForm() {
   const { toast } = useToast();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<AddPartnerFormValues>({
     resolver: zodResolver(addPartnerFormSchema),
@@ -37,7 +38,7 @@ export function AddPartnerForm() {
   });
 
   async function onFormSubmit(formData: AddPartnerFormValues) {
-    // This is type-safe and validated by Zod.
+    setIsSubmitting(true);
     let data = JSON.stringify(formData);
     try {
       toast({
@@ -86,7 +87,7 @@ export function AddPartnerForm() {
             <>
               <div>
                 <h1 className="mt-2 w-[340px] rounded-md p-4 text-yellow-500">
-                  Please resubmit with another potential partner.
+                  Uh Oh! Please resubmit with another potential partner.
                 </h1>
               </div>
             </>
@@ -94,13 +95,13 @@ export function AddPartnerForm() {
         });
       } else if (code === 500) {
         toast({
-          title: `Uh Oh! Something failed when querying the AI! ❌`,
+          title: `Error! Something failed when querying the AI! ❌`,
           variant: "destructive",
           description: (
             <>
               <div>
                 <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">
-                  Uh oh! An unkwown error occured, please try again.
+                  Uh oh! An unknown error occurred, please try again.
                 </h1>
               </div>
             </>
@@ -115,12 +116,14 @@ export function AddPartnerForm() {
           <>
             <div>
               <h1 className="mt-2 w-[340px] rounded-md p-4 text-white">
-                Uh oh! An unkwown error occured, please try again.
+                Uh oh! An unknown error occurred, please try again.
               </h1>
             </div>
           </>
         ),
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -134,7 +137,7 @@ export function AddPartnerForm() {
             <FormItem>
               <FormLabel>Business Name</FormLabel>
               <FormControl>
-                <Input placeholder="Barnes & Noble" {...field} />
+                <Input placeholder="Barnes & Noble" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage /> {/* zod messages come through this */}
             </FormItem>
@@ -148,14 +151,16 @@ export function AddPartnerForm() {
             <FormItem>
               <FormLabel>Zipcode</FormLabel>
               <FormControl>
-                <Input placeholder="63017" {...field} />
+                <Input placeholder="63017" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Add using AI!</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Adding..." : "Add using AI!"}
+        </Button>
       </form>
     </Form>
   );
