@@ -27,7 +27,7 @@ export function Navbar() {
     <>
       <div
         id="navbar"
-        className={`fixed left-0 right-0 top-0 flex items-center justify-between p-4 transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`z-20 fixed left-0 right-0 top-0 flex items-center justify-between p-4 transition-opacity duration-300 ${isNavbarVisible ? "opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <div>
           <NavigationMenu>

@@ -16,13 +16,7 @@ const HomePage = (): React.JSX.Element => {
       <div>
         <main className="flex min-h-screen flex-col items-center justify-center relative">
           {/* Full-page Particles */}
-          <Particles
-            className="absolute inset-0 z-0 pointer-events-none"
-            quantity={125}
-            ease={80}
-            size={0.5}
-            refresh
-          />
+          <Particles className="absolute inset-0 z-0 pointer-events-none" quantity={125} ease={80} size={0.5} refresh />
 
           <div className="container mb-20 mt-20 flex flex-col items-center justify-center gap-12 px-4 py-16 md:mt-40 relative z-10">
             <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl relative z-10">

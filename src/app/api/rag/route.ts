@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextApiResponse } from "next";
 import { elaborateCompanies } from "@/server/db/schema";
+import fetchRAGDataForAPartner from "@/util/fetchRAGDataForAPartner";
 import { db } from "@/server/index";
 import Groq from "groq-sdk";
 
 // Define the handler for POST requests
 export async function POST(request: Request, res: NextApiResponse) {
   const data: any = await request.json(); // Parse the JSON request body to get the input data
+
+  if (!data) {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
 
   // Create a prompt for the Tavily API
   const tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
@@ -21,6 +26,30 @@ export async function POST(request: Request, res: NextApiResponse) {
     );
   }
 
+  let checkIfPartnerInDB = await fetchRAGDataForAPartner(data.business_name);
+
+  if (checkIfPartnerInDB.ragData !== null && checkIfPartnerInDB.ragData !== undefined) {
+    return NextResponse.json({ error: "Partner already in database" }, { status: 206 });
+  }
+
+  // ENV KEYS
+  let TAVILY_API_KEY = null;
+  let GROQ_API_KEY = null;
+  let CLEARBIT_SECRET_KEY = null;
+  let HUNTERIO_API_KEY = null;
+
+  if (process.env.NODE_ENV === "development") {
+    TAVILY_API_KEY = process.env.LOCAL_TAVILY_API_KEY;
+    GROQ_API_KEY = process.env.LOCAL_GROQ_API_KEY;
+    CLEARBIT_SECRET_KEY = process.env.CLEARBIT_SECRET_KEY; // use the same key for local and prod (no limits)
+    HUNTERIO_API_KEY = process.env.LOCAL_HUNTERIO_API_KEY;
+  } else {
+    TAVILY_API_KEY = process.env.TAVILY_API_KEY;
+    GROQ_API_KEY = process.env.GROQ_API_KEY;
+    CLEARBIT_SECRET_KEY = process.env.CLEARBIT_SECRET_KEY;
+    HUNTERIO_API_KEY = process.env.HUNTERIO_API_KEY;
+  }
+
   try {
     // Call Tavily API with the generated prompt
     const tavilyAPI = await fetch("https://api.tavily.com/search", {
@@ -29,7 +58,7 @@ export async function POST(request: Request, res: NextApiResponse) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        api_key: process.env.TAVILY_API_KEY,
+        api_key: TAVILY_API_KEY,
         query: tavilyPrompt,
         search_depth: "advanced",
         include_answer: true,
@@ -50,7 +79,7 @@ export async function POST(request: Request, res: NextApiResponse) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.CLEARBIT_SECRET_KEY}`,
+        Authorization: `Bearer ${CLEARBIT_SECRET_KEY}`,
       },
     });
 
@@ -58,7 +87,7 @@ export async function POST(request: Request, res: NextApiResponse) {
 
     // Call Hunter.io API to get the email address of the company
     const hunterAPI = await fetch(
-      `https://api.hunter.io/v2/domain-search?domain=${clearbitResponse.domain}&api_key=${process.env.HUNTERIO_API_KEY}`,
+      `https://api.hunter.io/v2/domain-search?domain=${clearbitResponse.domain}&api_key=${HUNTERIO_API_KEY}`,
       {
         method: "GET",
         headers: {
@@ -70,7 +99,9 @@ export async function POST(request: Request, res: NextApiResponse) {
     const hunterResponse = await hunterAPI.json(); // Parse the response from Hunter.io API
     const email = hunterResponse.data.emails[0]?.value || ""; // Extract the email address or default to an empty string
 
-    const groq = new Groq(); // Initialize Groq SDK
+    const groq = new Groq({
+      apiKey: GROQ_API_KEY,
+    }); // Initialize Groq SDK
 
     // Create a prompt for Groq API with the response from Tavily API
     let groqPrompt = `I am an administrator at my high school and need insightful information on potential community partners near me. 
@@ -85,7 +116,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           NOTE: Make sure the response is a valid JSON object, meaning no escape sequences, and do this through generating the completion in only one line. 
           Make absolute sure your response is in this exact JSON schema below:
           {
-            "name": "", // (the business name)
+            "name": "", // (the business name KEEP IT THE SAME AS WHAT TAVILY GIVES YOU)
             "phonenumber": "", // just the simple 9 digits as it will be a US number no formatting no extra characters - (IF NOT VALID LEAVE BLANK)
             "email": "", // Leave blank if no VALID email is provided
             "type": "", // (the industry it is in --- one worder, make sure it is exactly a singular word and make it very vague/general, simply saying the umbrella industry it's in)
@@ -100,7 +131,8 @@ export async function POST(request: Request, res: NextApiResponse) {
               "process" : "" // (list out directions and the process I should follow to partner with this organization)
             }
           }
-          make sure there is 1 valid phonenumber with the given format above in the field, and one VALID email in the field.
+          If ANY VALUE is blank, say N/A in the field. Try to make sure there is 1 valid phonenumber with the given format above in the field, 
+          and one VALID email in the field.
           `;
 
     // Define the parameters for the Groq API call

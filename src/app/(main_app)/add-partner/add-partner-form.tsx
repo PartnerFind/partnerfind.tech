@@ -19,9 +19,7 @@ const addPartnerFormSchema = z.object({
     .max(30, {
       message: "Business name must be under 30 characters!",
     }),
-  zip_code: z.string().length(5, {
-    message: "Zipcode must be 5 characters!",
-  }),
+  zip_code: z.string().regex(/^\d{5}$/, { message: "Zip code must be a 5-digit number!" }),
 });
 
 type AddPartnerFormValues = z.infer<typeof addPartnerFormSchema>;
@@ -47,13 +45,14 @@ export function AddPartnerForm() {
         description: (
           <>
             <div>
-              <h1 className="mt-2 w-[340px] rounded-md p-4 text-yellow-500">
+              <h1 className="mt-2 w-[340px] rounded-md p-4 text-[#20B256]">
                 Please wait up to 15 seconds for the AI to generate!
               </h1>
             </div>
           </>
         ),
       });
+
       const options = {
         method: "POST",
         headers: {
@@ -82,7 +81,7 @@ export function AddPartnerForm() {
         router.push(`/partners/${ragResponse.generation.name}`);
       } else if (code === 206) {
         toast({
-          title: `Uh Oh! Duplicate partner found in DB! 🚫`,
+          title: `Oops. Duplicate partner found in DB! 🚫`,
           description: (
             <>
               <div>
@@ -95,7 +94,7 @@ export function AddPartnerForm() {
         });
       } else if (code === 500) {
         toast({
-          title: `Error: Something failed when querying the AI! ❌`,
+          title: `Uh Oh! Something failed when querying the AI! ❌`,
           variant: "destructive",
           description: (
             <>

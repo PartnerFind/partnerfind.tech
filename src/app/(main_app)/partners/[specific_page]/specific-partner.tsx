@@ -443,7 +443,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </CardTitle>
                   ) : (
                     <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
-                      Add your own note:
+                      Add your own note
                     </CardTitle>
                   )}
                   <div className="relative">
@@ -490,7 +490,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
               <Card className="w-full md:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
-                    Detailed AI Description of {data.ragData.name}:
+                    Detailed AI Description of {data.ragData.name}
                   </CardTitle>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -590,7 +590,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         </a>
                       </div>
                       <div className="flex items-center">
-                        <span style={{ marginRight: "10px" }}>Article Relevancy: </span>
+                        <span style={{ marginRight: "10px" }}>Data Source Relevancy: </span>
                         <CircleProgress value={Math.round(progressValue * 100) / 100} />
                       </div>
                     </div>
