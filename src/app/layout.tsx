@@ -27,11 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }}
     >
       <html lang="en">
-        <body>
-          <div className={manrope.className}>
-            <main>{children}</main>
-            <Toaster />
-          </div>
+        <body className={manrope.className}>
+          <main>{children}</main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
