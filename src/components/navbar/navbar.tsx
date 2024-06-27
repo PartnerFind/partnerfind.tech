@@ -24,7 +24,7 @@ export function Navbar() {
       >
         <div className="flex space-x-4 items-center justify-center pb-16">
           <Link href="/" className="flex items-center space-x-4">
-            <Image src={partnerfind} alt="PartnerFind Logo" className="h-16 w-16 bg-white rounded-full" />
+            <Image src={partnerfind} alt="PartnerFind Logo" className="h-16 w-16 bg-white rounded-full" priority={true} />
             <div className="font-semibold text-6xl font-teachers">PartnerFind</div>
           </Link>
         </div>
