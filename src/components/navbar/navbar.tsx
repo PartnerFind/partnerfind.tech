@@ -23,28 +23,28 @@ export function Navbar() {
         }}
       >
         <div className="flex space-x-4 items-center justify-center pb-16">
-          <Link href="/" className="flex items-center space-x-4">
+          <Link href="/" prefetch={false} className="flex items-center space-x-4">
             <Image src={partnerfind} alt="PartnerFind Logo" className="h-16 w-16 bg-white rounded-full" priority={true} />
             <div className="font-semibold text-6xl font-teachers">PartnerFind</div>
           </Link>
         </div>
-        <Link href="/explore" className="text-4xl font-semibold">
+        <Link href="/explore" prefetch={false} className="text-4xl font-semibold">
           Explore
         </Link>
-        <Link href="/my-list" className="text-4xl font-semibold">
+        <Link href="/my-list" prefetch={false} className="text-4xl font-semibold">
           My List
         </Link>
-        <Link href="/add-partner" className="text-4xl font-semibold">
+        <Link href="/add-partner" prefetch={false} className="text-4xl font-semibold">
           Add Partner
         </Link>
-        <Link href="/legal/privacy-policy" className="text-4xl font-semibold">
+        <Link href="/legal/privacy-policy" prefetch={false} className="text-4xl font-semibold">
           Privacy Policy
         </Link>
       </div>
       <NavigationMenu>
         <NavigationMenuList className="fixed top-0 right-0 left-0 flex justify-between h-16 bg-background backdrop-blur-lg md:px-12 px-2">
           <div className="flex h-full space-x-4">
-            <Link href="/" className="flex items-center">
+            <Link href="/" prefetch={false} className="flex items-center">
               <div className="flex items-center h-full">
                 <div className="flex h-12 items-center p-2">
                   <Image src={partnerfind} alt="PartnerFind Logo" className="h-9 w-9 bg-white rounded-full" />
