@@ -1,6 +1,6 @@
 import MyListTable from "./my-list-table";
 import fetchUserFavorites from "@/util/fetchUserFavorites";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata = {
   title: "PartnerFind | My-List",

@@ -4,7 +4,7 @@ import { baseCompanies } from "./db/schema";
 import { elaborateCompanies } from "./db/schema";
 import { userFavorites } from "./db/schema";
 import { config } from "dotenv";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { sql as s } from "drizzle-orm";
 
 config({

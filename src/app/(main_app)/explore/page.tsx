@@ -1,6 +1,6 @@
 import ExploreTable from "./explore-table";
 import fetchAllPartners from "@/util/fetchAllPartners";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata = {
   title: "PartnerFind | Explore",
