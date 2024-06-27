@@ -16,6 +16,13 @@ export default function SharedListTable({
 }) {
   const { isLoaded, isSignedIn, user } = useUser();
   const [modifiedData, setModifiedData] = useState<any[]>([]);
+  
+  // Fetch and modify data when component mounts or user ID changes
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      fetchAndModifyData(user.id).then((modified) => setModifiedData(modified));
+    }
+  }, [isLoaded, isSignedIn, user?.id, getCurrentUserFavorites, data]);
 
   if (!isLoaded || !isSignedIn) {
     return (
@@ -69,13 +76,6 @@ export default function SharedListTable({
       return data; // Return original data if an error occurs
     }
   };
-
-  // Fetch and modify data when component mounts or user ID changes
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      fetchAndModifyData(user.id).then((modified) => setModifiedData(modified));
-    }
-  }, [isLoaded, isSignedIn, user?.id, getCurrentUserFavorites, data]);
 
   return (
     <div className="container px-4 pt-24 md:pl-20 md:pt-40">
