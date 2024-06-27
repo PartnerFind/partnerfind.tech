@@ -2,7 +2,7 @@ import MyListTable from "./my-list-table";
 import fetchUserFavorites from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
 
-const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "PartnerFind | My-List",

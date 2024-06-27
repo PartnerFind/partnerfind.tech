@@ -3,6 +3,8 @@ import { clerkClient } from "@clerk/nextjs/server";
 import fetchUserFavorites from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: any) {
   // read route params
   const user_id = decodeURIComponent(params.user_id);
