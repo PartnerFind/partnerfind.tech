@@ -6,7 +6,7 @@ export async function generateMetadata({ params }: any) {
   // read route params
   const specific_page = decodeURIComponent(params.specific_page);
   // set the title based on the id
-  const title = `PartnerFind | ${specific_page}`;
+  const title = `${specific_page} | PartnerFind`;
   return {
     title: title,
   };
