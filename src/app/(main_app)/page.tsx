@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Particles from "@/components/magicui/particles";
 import Meteors from "@/components/magicui/meteors";
+import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -10,6 +11,29 @@ const HomePage = (): React.JSX.Element => {
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const items = [
+    {
+      title: "What is PartnerFind and what is it for?",
+      description:
+        "PartnerFind is a website for your school’s Career and Technical Education Department to use to find possible “partners” or companies which they can work with to expand your school’s opportunities.",
+    },
+    {
+      title: "How does PartnerFind work to do this?",
+      description:
+        "PartnerFind gives you a list of companies to explore and find more about them as well. It provides you with essential information such as the resources it can provide, contact information, reasons to partner with it, and the process to establish a specific company as your partner.",
+    },
+    {
+      title: "What if I want to add my own company?",
+      description:
+        "If the Partnerfind database doesn’t have a specific company you want to see, you can provide its name and zip code to automatically generate a new entry using AI. Then you can add this company to your own personalized list.",
+    },
+    {
+      title: "What do I do after I have already partnered with a company?",
+      description:
+        "After partnering or establishing connections with a company, you can add it to your own list. Use this list to manage potential companies you want to work with, including adding notes for each company.",
+    },
+  ];
 
   return (
     <>
@@ -32,56 +56,17 @@ const HomePage = (): React.JSX.Element => {
             <h2 className="mb-8 text-center text-4xl font-semibold">
               <strong>About</strong>
             </h2>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {/* Q&A Card 1 */}
-              <div className="rounded-lg bg-white p-6 shadow-md">
-                <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                  What is PartnerFind and what is it for?
-                </h3>
-                <p className="text-gray-700">
-                  PartnerFind is a website for your school’s Career and Technical Education Department to use to find
-                  possible “partners” or companies which they can work with to expand your school’s opportunities.
-                </p>
-              </div>
-
-              {/* Q&A Card 2 */}
-              <div className="rounded-lg bg-white p-6 shadow-md">
-                <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                  How does PartnerFind work to do this?
-                </h3>
-                <p className="text-gray-700">
-                  PartnerFind gives you a list of companies to explore and find more about them as well. It provides you
-                  with not only essential information such as the resources it can provide and contact information, but
-                  it also gives you flaws of the business, reasons to partner with it, and the process to go through to
-                  establish a specific company as your parter
-                </p>
-              </div>
-
-              {/* Q&A Card 3 */}
-              <div className="rounded-lg bg-white p-6 shadow-md">
-                <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                  What if I want to add my own company?
-                </h3>
-                <p className="text-gray-700">
-                  Let’s say you see that the Partnerfind database doesn’t have a specific company you want to see on
-                  there. You can give it a companies name, and zip code, to automatically generate a new entry using AI!
-                  Then you can add this to your own personalized list
-                </p>
-              </div>
-
-              {/* Q&A Card 4 */}
-              <div className="rounded-lg bg-white p-6 shadow-md">
-                <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                  What do I do after I have already partnered with a company?
-                </h3>
-                <p className="text-gray-700">
-                  After you have already partnered, or established connections to a company, you can add it to your own
-                  list of companies. Use this list to also check potential companies you want to work with. You can also
-                  add notes for each company, such as what you plan to do with them, and you’ll see those notes every
-                  time you log onto the app.
-                </p>
-              </div>
-            </div>
+            {/* Bento Grid Section */}
+            <BentoGrid className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {items.map((item, index) => (
+                <BentoGridItem
+                  key={index}
+                  title={item.title}
+                  description={item.description}
+                  className="rounded-lg bg-green-500 p-6 shadow-md"
+                />
+              ))}
+            </BentoGrid>
           </div>
 
           <div className="container mx-auto mb-16 relative z-10">
