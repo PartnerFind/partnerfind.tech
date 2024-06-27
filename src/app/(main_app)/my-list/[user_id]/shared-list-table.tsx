@@ -16,7 +16,7 @@ export default function SharedListTable({
 }) {
   const { isLoaded, isSignedIn, user } = useUser();
   const [modifiedData, setModifiedData] = useState<any[]>([]);
-  
+
   // Fetch and modify data when component mounts or user ID changes
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -35,7 +35,7 @@ export default function SharedListTable({
                 You are not signed in. Please sign in to view this shared partner list.
               </h2>
             </div>
-            <Separator/>
+            <Separator />
             <div className="w-full mt-4">
               <SignInButton>
                 <Button className="font-bold py-1 px-4 rounded-lg w-full md:w-auto">Sign In</Button>

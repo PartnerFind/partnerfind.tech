@@ -4,7 +4,7 @@ const isPublicRoute = createRouteMatcher([
   "/",
   "/legal(.*)",
   "/my-list/(.*)", // anyone can see /my-list/[slug], but not /my-list without auth
-  "/api(.*)"
+  "/api(.*)",
 ]);
 
 export default clerkMiddleware((auth, request) => {
