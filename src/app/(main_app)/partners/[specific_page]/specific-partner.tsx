@@ -24,11 +24,36 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const { user, isLoaded } = useUser();
   const [clerkUserID, setClerkUserID] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [resources, setResources] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [fullEditMode, setFullEditMode] = useState<boolean>(false);
   const [newNote, setNewNote] = useState<string>("");
+  const [newType, setNewType] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
+  const [newResources, setNewResources] = useState<string>("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState<string>("");
+  const [newEmail, setNewEmail] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(true); // loading state
+  const [isEditing, setIsEditing] = useState<boolean>(false); // state for edit/save button
   const { toast } = useToast();
+
+  useEffect(() => {
+    setType(data.ragData.type);
+    setDescription(data.ragData.description);
+    setResources(data.ragData.resources);
+    setPhoneNumber(data.ragData.phonenumber);
+    setEmail(data.ragData.email);
+    setNewDescription(data.ragData.description);
+    setNewResources(data.ragData.resources);
+    setNewType(data.ragData.type);
+    setNewPhoneNumber(data.ragData.phonenumber);
+    setNewEmail(data.ragData.email);
+  }, [data]);
 
   useEffect(() => {
     if (user && isLoaded) {
@@ -85,6 +110,15 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     setNewNote(note || "");
   };
 
+  const handleFullEditClick = () => {
+    setFullEditMode(true);
+    setNewType(data.ragData.type || "");
+    setNewDescription(data.ragData.description || "");
+    setNewResources(data.ragData.resources || "");
+    setNewPhoneNumber(data.ragData.phonenumber || "");
+    setNewEmail(data.ragData.email || "");
+  };
+
   const handleSaveClick = async () => {
     try {
       // Save the new note to the database
@@ -111,6 +145,43 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     } catch (error) {
       console.error(error);
       // Handle error appropriately, e.g., display an error message to the user
+    }
+  };
+
+  const handleFullSaveClick = async () => {
+    try {
+      //Save new info to db
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.ragData.name,
+          category: data.ragData.category,
+          genpage: data.ragData.genpage,
+          sources: data.ragData.sources,
+          type: newType,
+          description: newDescription,
+          resources: newResources,
+          phonenumber: newPhoneNumber,
+          email: newEmail,
+        }),
+      };
+
+      const savePageResponse = await fetch("/api/db/editPage", options);
+      if (!savePageResponse.ok) {
+        throw new Error("Error saving data into db");
+      }
+
+      setType(newType);
+      setDescription(newDescription);
+      setResources(newResources);
+      setPhoneNumber(newPhoneNumber);
+      setEmail(newEmail);
+      setFullEditMode(false);
+    } catch (error) {
+      //Error message
     }
   };
 
@@ -336,7 +407,20 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       <span className="w-full border-t" />
                     </div>
                   </div>
-                  <CardDescription>{data.ragData.description}</CardDescription>
+                  <CardDescription>
+                    {fullEditMode ? (
+                      <div className="grid gap-2">
+                        <Label htmlFor="new-note"></Label>
+                        <Textarea
+                          id="new-note"
+                          value={newDescription}
+                          onChange={(e) => setNewDescription(e.target.value)}
+                        />
+                      </div>
+                    ) : (
+                      <div>{description}</div>
+                    )}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-6">
@@ -350,7 +434,15 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Type:
                       </strong>
-                      <br /> {data.ragData.type}
+                      <br />
+                      {fullEditMode ? (
+                        <div className="grid gap-2">
+                          <Label htmlFor="new-note"></Label>
+                          <Textarea id="new-note" value={newType} onChange={(e) => setNewType(e.target.value)} />
+                        </div>
+                      ) : (
+                        <div>{type}</div>
+                      )}
                     </p>
                   </div>
                   <div className="relative">
@@ -364,7 +456,18 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         Provided Resources:
                       </strong>
                       <br />
-                      {data.ragData.resources}
+                      {fullEditMode ? (
+                        <div className="grid gap-2">
+                          <Label htmlFor="new-note"></Label>
+                          <Textarea
+                            id="new-note"
+                            value={newResources}
+                            onChange={(e) => setNewResources(e.target.value)}
+                          />
+                        </div>
+                      ) : (
+                        <div>{resources}</div>
+                      )}
                     </p>
                   </div>
                 </CardContent>
@@ -389,10 +492,26 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     <strong className="underline" style={{ color: "#22B357" }}>
                       Email:
                     </strong>
-                    {data.ragData.email ? (
-                      <a href={`mailto:${data.ragData.email}`} className="underline">
+                    {fullEditMode ? (
+                      data.ragData.email ? (
+                        <div className="grid gap-2">
+                          <Label htmlFor="new-note"></Label>
+                          <Textarea id="new-note" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
+                        </div>
+                      ) : (
+                        <div className="grid gap-2">
+                          <Label htmlFor="new-note"></Label>
+                          <Textarea
+                            id="new-note"
+                            value={"Not Available"}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                          />
+                        </div>
+                      )
+                    ) : data.ragData.email ? (
+                      <a href={`mailto:${email}`} className="underline">
                         <br />
-                        {data.ragData.email.toLowerCase()}
+                        {email?.toLowerCase()}
                       </a>
                     ) : (
                       " Not Available"
@@ -409,7 +528,18 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         Phone Number:
                       </strong>
                       <br />
-                      {formatPhoneNumber(data.ragData.phonenumber)}
+                      {fullEditMode ? (
+                        <div className="grid gap-2">
+                          <Label htmlFor="new-note"></Label>
+                          <Textarea
+                            id="new-note"
+                            value={newPhoneNumber}
+                            onChange={(e) => setNewPhoneNumber(e.target.value)}
+                          />
+                        </div>
+                      ) : (
+                        <div>{formatPhoneNumber(phoneNumber)}</div>
+                      )}
                     </p>
                   </div>
                 </CardContent>
@@ -428,6 +558,17 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     <Label htmlFor="addToList" className="ml-2">
                       {checked ? "Remove from your list" : "Add to your list"}
                     </Label>
+                  </div>
+                  <div className="mt-4">
+                    {fullEditMode ? (
+                      <Button className="mt-1" style={{ color: "#000000" }} onClick={handleFullSaveClick}>
+                        Save
+                      </Button>
+                    ) : (
+                      <Button className="mt-1" style={{ color: "#000000" }} onClick={handleFullEditClick}>
+                        Edit This Page
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
