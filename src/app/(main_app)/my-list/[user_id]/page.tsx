@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
-import { CopyButton } from "@/components/ui/copy-button";
-import { headers } from "next/headers";
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -42,22 +40,10 @@ export default async function SharedListPage({ params }: { params: any }) {
     notFound();
   }
 
-  // Get the host dynamically
-  const headersList = headers();
-  const host = headersList.get("host") || "";
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-
-  // Construct the full URL
-  const fullUrl = `${protocol}://${host}/my-list/${user_id}`;
-
   return (
-    <div className="space-y-4">
+    <>
       {/* will show a nice "No Results Found" table if no data */}
       <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} />
-
-      <div className="flex justify-end">
-        <CopyButton value={fullUrl}>Share this List (Copy)</CopyButton>
-      </div>
-    </div>
+    </>
   );
 }

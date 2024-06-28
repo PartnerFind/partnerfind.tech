@@ -1,6 +1,8 @@
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
 import MyListTable from "./my-list-table";
+import { CopyButton } from "@/components/ui/copy-button";
+import { headers } from "next/headers";
 
 export const metadata = {
   title: "PartnerFind | My-List",
@@ -19,9 +21,22 @@ export default async function MyListPage() {
       throw error; // Rethrow the error after logging it
     }
   }
+
+  // Get the host dynamically
+  const headersList = headers();
+  const host = headersList.get("host") || "";
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+
+  // Construct the full URL
+  const fullUrl = `${protocol}://${host}/my-list/${userId}`;
+
   return (
-    <>
+    <div className="space-y-4">
       <MyListTable fetchUserFavorites={fetchUserFavorites} userID={userId} />
-    </>
+
+      <div className="flex justify-end">
+        <CopyButton value={fullUrl}>Share this List (Copy)!</CopyButton>
+      </div>
+    </div>
   );
 }
