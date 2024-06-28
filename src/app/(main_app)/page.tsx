@@ -4,19 +4,9 @@ import React, { useEffect, useState } from "react";
 import Particles from "@/components/magicui/particles";
 import Meteors from "@/components/magicui/meteors";
 import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
-import { Card, CardSkeletonContainer, CardTitle, CardDescription} from "@/components/aui/cards";
+import { Card, CardSkeletonContainer, CardTitle, CardDescription } from "@/components/aui/cards";
 import { animate, motion } from "framer-motion";
 import { GoCopilot } from "react-icons/go";
-import {
-  TextureCard,
-  TextureCardContent,
-  TextureCardFooter,
-  TextureCardHeader,
-  TextureCardTitle,
-  TextureSeparator,
-} from "@/components/aui/texture-card"
-
-
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -80,10 +70,6 @@ const HomePage = (): React.JSX.Element => {
         "Use the top navigation bar for quick access to the homepage, account settings, sign-in, and sign-up options. The sidebar on every page allows easy navigation to the Explore page, your list, and Add Partner.",
     },
   ];
-  
-  
-
-  
 
   return (
     <>
@@ -111,16 +97,8 @@ const HomePage = (): React.JSX.Element => {
               {Aboutitems.map((item, index) => (
                 <BentoGridItem
                   key={index}
-                  title={
-                    <h3 className="text-2xl font-bold text-green-500" >
-                      {item.title}
-                    </h3>
-                  }
-                  description={
-                    <p className="text-lg text-white font-medium" >
-                      {item.description}
-                    </p>
-                  }
+                  title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
+                  description={<p className="text-lg text-white font-medium">{item.description}</p>}
                   className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                 />
               ))}
@@ -140,25 +118,17 @@ const HomePage = (): React.JSX.Element => {
               </button>
             </div>
             {isExpanded && (
-              <div >
+              <div>
                 <BentoGrid className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {Stepsitems.map((item, index) => (
-                <BentoGridItem
-                  key={index}
-                  title={
-                    <h3 className="text-2xl font-bold text-green-500" >
-                      {item.title}
-                    </h3>
-                  }
-                  description={
-                    <p className="text-lg text-white font-medium" >
-                      {item.description}
-                    </p>
-                  }
-                  className="bg-[#191919] rounded-lg p-4 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
-                />
-              ))}
-            </BentoGrid>
+                  {Stepsitems.map((item, index) => (
+                    <BentoGridItem
+                      key={index}
+                      title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
+                      description={<p className="text-lg text-white font-medium">{item.description}</p>}
+                      className="bg-[#191919] rounded-lg p-4 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
+                    />
+                  ))}
+                </BentoGrid>
               </div>
             )}
           </div>
