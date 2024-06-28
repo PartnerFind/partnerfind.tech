@@ -2,7 +2,7 @@ import { db } from "@/server/index";
 import { sql as s } from "drizzle-orm";
 import { elaborateCompanies, userFavorites } from "@/server/db/schema";
 
-export default async function fetchAllPartners(userID: string) {
+export async function fetchAllPartners(userID: string) {
   let userList = null;
 
   try {
