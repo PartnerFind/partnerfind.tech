@@ -1,38 +1,29 @@
 import MyListTable from "./my-list-table";
-import fetchUserFavorites from "@/util/fetchUserFavorites";
+import { fetchAllPartners as backendFetchAllPartners } from "@/util/fetchAllPartners";
 import { auth } from "@clerk/nextjs/server";
-import { unstable_noStore as noStore } from "next/cache";
+// import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "PartnerFind | My-List",
 };
 
 export default async function MyListPage() {
-  noStore();
+  // noStore();
   const { userId }: { userId: string | null } = auth(); // get clerk user ID
-  let allFavorites: any = null;
 
-  if (userId !== null) {
-    allFavorites = await fetchUserFavorites(userId); // fetch all the partners user has favorited
-  } else {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold">No Favorites!</h1>
-      </div>
-    );
+  async function fetchAllPartners(userId: string) {
+    "use server";
+    try {
+      const partners = await backendFetchAllPartners(userId);
+      return partners;
+    } catch (error: any) {
+      console.error("Error when getting all partners", error);
+      throw error; // Rethrow the error after logging it
+    }
   }
-
-  if (allFavorites === null) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold">No Favorites!</h1>
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <MyListTable data={allFavorites.list.data || ""} />
-      </>
-    );
-  }
+  return (
+    <>
+      <MyListTable fetchAllPartners={fetchAllPartners} userID={userId} />
+    </>
+  );
 }

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { clerkClient } from "@clerk/nextjs/server";
-import fetchUserFavorites from "@/util/fetchUserFavorites";
+import { clerkClient, auth } from "@clerk/nextjs/server";
+import {fetchAllPartners as backendFetchAllPartners} from "@/util/fetchAllPartners";
 import SharedListTable from "./shared-list-table";
-import { unstable_noStore as noStore } from 'next/cache';
+// import { unstable_noStore as noStore } from 'next/cache';
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -24,31 +24,29 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default async function SharedListPage({ params }: { params: any }) {
-  noStore();
+  // noStore();
+
+  const { userId }: { userId: string | null } = auth(); // get clerk user ID
   let user_id = decodeURIComponent(params.user_id);
-  let allFavorites: any = null;
 
-  if (user_id !== null) {
-    allFavorites = await fetchUserFavorites(user_id); // fetch all the partners user has favorited
-  } else {
-    notFound();
-  }
-
-  async function getCurrentUserFavorites(currentUserID: string) {
+  async function fetchAllPartners(userId: string) {
     "use server";
-
     try {
-      const favorites = await fetchUserFavorites(currentUserID);
-      return favorites;
+      const partners = await backendFetchAllPartners(userId);
+      return partners;
     } catch (error: any) {
-      console.error("Error when getting current user's favorites", error);
+      console.error("Error when getting all partners", error);
       throw error; // Rethrow the error after logging it
     }
   }
 
+  if (user_id === null || !user_id) {
+    notFound();
+  }
+
   return (
     <>
-      <SharedListTable data={allFavorites.list.data || ""} getCurrentUserFavorites={getCurrentUserFavorites} />
+      <SharedListTable fetchAllPartners={fetchAllPartners} userID={userId}/>
       {/* will show a nice "No Results Found" table if no data */}
     </>
   );

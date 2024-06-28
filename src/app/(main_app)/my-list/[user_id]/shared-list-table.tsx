@@ -3,28 +3,22 @@
 import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/columns";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 
-export default function SharedListTable({
-  data,
-  getCurrentUserFavorites,
-}: {
-  data: any;
-  getCurrentUserFavorites: any;
-}) {
-  const { isLoaded, isSignedIn, user } = useUser();
+export default function SharedListTable({ fetchAllPartners, userID }: { fetchAllPartners: any; userID: any }) {
+  const [data, setData] = useState([]);
   const [modifiedData, setModifiedData] = useState<any[]>([]);
 
-  // Fetch and modify data when component mounts or user ID changes
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      fetchAndModifyData(user.id).then((modified) => setModifiedData(modified));
-    }
-  }, [isLoaded, isSignedIn, user?.id, getCurrentUserFavorites, data]);
+  if (userID !== null || !userID) {
+    // Fetch and modify data when component mounts or user ID changes
 
-  if (!isLoaded || !isSignedIn) {
+    useEffect(() => {
+      fetchAndModifyData(userID).then((modified) => setModifiedData(modified));
+    }, [userID, fetchAllPartners, data]);
+  } else {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-0 pt-20">
         <div className="w-full md:max-w-xl z-30">
@@ -48,9 +42,9 @@ export default function SharedListTable({
   }
 
   // Function to fetch current user's favorites and modify if they match with the shared user's list
-  const fetchAndModifyData = async (userId: string) => {
+  const fetchAndModifyData = async (userID: string) => {
     try {
-      const currentUserFavorites = await getCurrentUserFavorites(userId);
+      const currentUserFavorites = await fetchAllPartners(userID);
 
       // Extract names from currentUserFavorites for fast lookup
       const favoriteNames = currentUserFavorites.list.data.map((favorite: any) => favorite.name);
@@ -61,7 +55,7 @@ export default function SharedListTable({
           // Update userID to current user's ID
           return {
             ...item,
-            userID: userId,
+            userID: userID,
           };
         } else {
           // Remove userID property if name is not a favorite

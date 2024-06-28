@@ -1,5 +1,5 @@
 import ExploreTable from "./explore-table";
-import {fetchAllPartners as backendFetchAllPartners} from "@/util/fetchAllPartners";
+import { fetchAllPartners as backendFetchAllPartners } from "@/util/fetchAllPartners";
 import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic";
@@ -10,10 +10,9 @@ export const metadata = {
 
 export default async function ExplorePage() {
   const { userId }: { userId: string | null } = auth(); // get clerk user ID
-  let allFavorites: any = null;
 
-  async function fetchAllPartners(userId: string) { 
-    "use server"
+  async function fetchAllPartners(userId: string) {
+    "use server";
     try {
       const partners = await backendFetchAllPartners(userId);
       return partners;
@@ -23,28 +22,9 @@ export default async function ExplorePage() {
     }
   }
 
-
-  if (userId !== null) {
-    allFavorites = await fetchAllPartners(userId); // fetch all the partners as well as user specific partners list to pass into table
-  } else {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold">No Favorites! Please Sign-In</h1>
-      </div>
-    );
-  }
-
-  if (allFavorites === null) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold">No Favorites!</h1>
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <ExploreTable fetchAllPartners={fetchAllPartners} userID={userId} />
-      </>
-    );
-  }
+  return (
+    <>
+      <ExploreTable fetchAllPartners={fetchAllPartners} userID={userId} />
+    </>
+  );
 }
