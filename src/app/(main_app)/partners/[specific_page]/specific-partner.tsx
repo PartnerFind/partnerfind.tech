@@ -11,6 +11,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { CircleProgress } from "@/components/ui/progress";
 import ExcelJS from "exceljs";
 import Loading3Dots from "@/components/Loading3Dots";
+import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
+//import { Card, CardSkeletonContainer, CardTitle, CardDescription } from "@/components/aui/cards";
 
 function formatPhoneNumber(phoneNumber: any) {
   // Remove any non-digit characters
@@ -396,8 +398,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       <div className="container mx-auto p-12 md:p-32 lg:p-20">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
-            <div>
-              <Card>
+            <div>  
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     {data.ragData.name}
@@ -475,8 +477,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
             </div>
           </div>
           <div>
-            <div className="max-w-sm">
-              <Card>
+            <div className="">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     Contact
@@ -548,7 +550,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           </div>
           <div>
             <div>
-              <Card className="max-w-sm">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Manage List</CardTitle>
                 </CardHeader>
@@ -565,7 +567,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         Save
                       </Button>
                     ) : (
-                      <Button className="mt-1" style={{ color: "#000000" }} onClick={handleFullEditClick}>
+                      <Button className="mt-7" style={{ color: "#000000" }} onClick={handleFullEditClick}>
                         Edit This Page
                       </Button>
                     )}
@@ -575,8 +577,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
             </div>
           </div>
           <div className="md:col-span-1 md:col-start-2">
-            <div className="max-w-sm">
-              <Card>
+            <div className="">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader>
                   {note ? (
                     <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
@@ -628,7 +630,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
         <div>
           <div>
             <div className="py-10">
-              <Card className="w-full md:col-span-2">
+              <Card className="w-full md:col-span-2 bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader>
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     Detailed AI Description of {data.ragData.name}
@@ -707,7 +709,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 </CardContent>
               </Card>
             </div>
-            <Card className="w-full md:col-span-2">
+            <Card className="w-full md:col-span-2 bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">Data Sources</CardTitle>
               </CardHeader>
