@@ -3,8 +3,6 @@ import fetchUserFavorites from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
 import { unstable_noStore as noStore } from "next/cache";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "PartnerFind | My-List",
 };
