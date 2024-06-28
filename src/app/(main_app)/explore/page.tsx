@@ -17,7 +17,7 @@ export default async function ExplorePage() {
   } else {
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold">No Favorites!</h1>
+        <h1 className="text-3xl font-bold">No Favorites! Please Sign-In</h1>
       </div>
     );
   }
