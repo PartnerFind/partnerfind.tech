@@ -1,6 +1,7 @@
 import MyListTable from "./my-list-table";
 import fetchUserFavorites from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,7 @@ export const metadata = {
 };
 
 export default async function MyListPage() {
+  noStore();
   const { userId }: { userId: string | null } = auth(); // get clerk user ID
   let allFavorites: any = null;
 

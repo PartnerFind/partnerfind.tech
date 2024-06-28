@@ -2,8 +2,7 @@ import { notFound } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
 import fetchUserFavorites from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
-
-export const dynamic = "force-dynamic";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -25,6 +24,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default async function SharedListPage({ params }: { params: any }) {
+  noStore();
   let user_id = decodeURIComponent(params.user_id);
   let allFavorites: any = null;
 
@@ -49,7 +49,7 @@ export default async function SharedListPage({ params }: { params: any }) {
   return (
     <>
       <SharedListTable data={allFavorites.list.data || ""} getCurrentUserFavorites={getCurrentUserFavorites} />
-      {/* will show a nice "No Results Found :c" table if no data */}
+      {/* will show a nice "No Results Found" table if no data */}
     </>
   );
 }
