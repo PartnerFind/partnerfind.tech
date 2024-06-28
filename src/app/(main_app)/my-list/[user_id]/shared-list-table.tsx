@@ -7,7 +7,15 @@ import { SignInButton } from "@clerk/nextjs";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "@/components/ui/button";
 
-export default function SharedListTable({ fetchUserFavorites, userID }: { fetchUserFavorites: any; userID: any }) {
+export default function SharedListTable({
+  fetchUserFavorites,
+  userID,
+  currentUserID,
+}: {
+  fetchUserFavorites: any;
+  userID: any;
+  currentUserID: any;
+}) {
   const [data, setData] = useState([]);
   const [modifiedData, setModifiedData] = useState<any[]>([]);
 
@@ -16,14 +24,14 @@ export default function SharedListTable({ fetchUserFavorites, userID }: { fetchU
     useEffect(() => {
       const fetchData = async () => {
         let sharedData = await fetchUserFavorites(userID);
-        setData(sharedData); // set shared user data
+        setData(sharedData.list.data); // set shared user data
       };
 
       fetchData();
     }, [userID]);
     useEffect(() => {
-      fetchAndModifyData(userID).then((modified) => setModifiedData(modified));
-    }, [userID, fetchUserFavorites, data]);
+      fetchAndModifyData(currentUserID).then((modified) => setModifiedData(modified));
+    }, [currentUserID, fetchUserFavorites, data]);
   } else {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-0 pt-20">

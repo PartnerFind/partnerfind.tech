@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
@@ -25,6 +25,8 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default async function SharedListPage({ params }: { params: any }) {
+  const { userId } = auth(); // get current user ID
+
   let user_id = decodeURIComponent(params.user_id);
 
   async function fetchUserFavorites(userID: string) {
@@ -53,7 +55,7 @@ export default async function SharedListPage({ params }: { params: any }) {
   return (
     <div className="space-y-4">
       {/* will show a nice "No Results Found" table if no data */}
-      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} />
+      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} currentUserID={userId} />
 
       <div className="flex justify-end">
         <ShareListCopyButton value={fullUrl} />

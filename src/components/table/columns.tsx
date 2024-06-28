@@ -166,7 +166,28 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
     cell: ({ row }) => {
       const { toast } = useToast();
       const [checked, setChecked] = useState(false);
+      const [clerkUserID, setClerkUserID] = useState(null);
       const [loading, setLoading] = useState(true); // loading state
+
+      useEffect(() => {
+        const fetchClerkUserID = async () => {
+          try {
+            const options = {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            };
+            const getClerkUserID = await fetch(`/api/getClerkUserID`, options);
+            const getClerkUserIDResponse = await getClerkUserID.json();
+            setClerkUserID(getClerkUserIDResponse?.userID);
+          } catch (error) {
+            console.error("An error occurred while querying userID.", error);
+          }
+        };
+
+        fetchClerkUserID();
+      }, []);
 
       useEffect(() => {
         // if the field is empty, null or does not exist, set the checkbox to false
@@ -180,22 +201,6 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       }, [row]);
 
       const handleCheckboxChange = async () => {
-        let clerkUserID = null;
-
-        try {
-          const options = {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          };
-          const getClerkUserID = await fetch(`/api/getClerkUserID`, options);
-          let getClerkUserIDResponse = await getClerkUserID.json();
-          clerkUserID = getClerkUserIDResponse?.userID;
-        } catch (error) {
-          throw new Error("An error occurred while querying userID.");
-        }
-
         if (!checked) {
           // user wants to add to their list
           try {
@@ -263,6 +268,14 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
           }
         }
       };
+
+      if (clerkUserID === null || !clerkUserID) {
+        return (
+          <div className="flex items-center">
+            {loading ? <Skeleton className="h-3.5 w-3.5 rounded-sm border" /> : <h1>Sign in to add to list</h1>}
+          </div>
+        );
+      }
 
       return (
         <div className="flex items-center">
