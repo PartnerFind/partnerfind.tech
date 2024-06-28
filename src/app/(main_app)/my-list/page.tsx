@@ -1,4 +1,4 @@
-import MyListTable from "./[user_id]/my-list-table";
+import MyListTable from "./my-list-table";
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
 // import { unstable_noStore as noStore } from "next/cache";

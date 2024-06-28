@@ -46,7 +46,7 @@ export default async function SharedListPage({ params }: { params: any }) {
 
   return (
     <>
-      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id}/>
+      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} />
       {/* will show a nice "No Results Found" table if no data */}
     </>
   );
