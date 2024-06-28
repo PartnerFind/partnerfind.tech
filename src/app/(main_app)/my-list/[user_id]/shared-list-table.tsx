@@ -6,18 +6,24 @@ import { columns } from "@/components/table/columns";
 import { SignInButton } from "@clerk/nextjs";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "@/components/ui/button";
-import { notFound } from "next/navigation";
 
-export default function SharedListTable({ fetchAllPartners, userID }: { fetchAllPartners: any; userID: any }) {
+export default function SharedListTable({ fetchUserFavorites, userID }: { fetchUserFavorites: any; userID: any }) {
   const [data, setData] = useState([]);
   const [modifiedData, setModifiedData] = useState<any[]>([]);
 
   if (userID !== null || !userID) {
     // Fetch and modify data when component mounts or user ID changes
+    useEffect(() => {
+      const fetchData = async () => {
+        let sharedData = await fetchUserFavorites(userID);
+        setData(sharedData); // set shared user data
+      };
 
+      fetchData();
+    }, [userID]);
     useEffect(() => {
       fetchAndModifyData(userID).then((modified) => setModifiedData(modified));
-    }, [userID, fetchAllPartners, data]);
+    }, [userID, fetchUserFavorites, data]);
   } else {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-0 pt-20">
@@ -44,7 +50,7 @@ export default function SharedListTable({ fetchAllPartners, userID }: { fetchAll
   // Function to fetch current user's favorites and modify if they match with the shared user's list
   const fetchAndModifyData = async (userID: string) => {
     try {
-      const currentUserFavorites = await fetchAllPartners(userID);
+      const currentUserFavorites = await fetchUserFavorites(userID);
 
       // Extract names from currentUserFavorites for fast lookup
       const favoriteNames = currentUserFavorites.list.data.map((favorite: any) => favorite.name);

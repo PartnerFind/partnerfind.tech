@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { clerkClient, auth } from "@clerk/nextjs/server";
-import {fetchAllPartners as backendFetchAllPartners} from "@/util/fetchAllPartners";
+import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
 // import { unstable_noStore as noStore } from 'next/cache';
 
@@ -29,10 +29,10 @@ export default async function SharedListPage({ params }: { params: any }) {
   const { userId }: { userId: string | null } = auth(); // get clerk user ID
   let user_id = decodeURIComponent(params.user_id);
 
-  async function fetchAllPartners(userId: string) {
+  async function fetchUserFavorites(userID: string) {
     "use server";
     try {
-      const partners = await backendFetchAllPartners(userId);
+      const partners = await backendFetchUserFavorites(userID);
       return partners;
     } catch (error: any) {
       console.error("Error when getting all partners", error);
@@ -46,7 +46,7 @@ export default async function SharedListPage({ params }: { params: any }) {
 
   return (
     <>
-      <SharedListTable fetchAllPartners={fetchAllPartners} userID={userId}/>
+      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id}/>
       {/* will show a nice "No Results Found" table if no data */}
     </>
   );

@@ -4,18 +4,18 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/columns";
 
-export default function ExploreTable({ fetchAllPartners, userID }: { fetchAllPartners: any; userID: any }) {
+export default function ExploreTable({ fetchUserFavorites, userID }: { fetchUserFavorites: any; userID: any }) {
   const [data, setData] = useState([]);
 
   if (userID !== null || !userID) {
     useEffect(() => {
       const fetchData = async () => {
-        const result = await fetchAllPartners(userID); // fetch all the partners as well as user specific partners list to pass into table
+        const result = await fetchUserFavorites(userID); // fetch all the partners as well as user specific partners list to pass into table
         setData(result.list.data || "");
       };
 
       fetchData();
-    }, [fetchAllPartners, userID]);
+    }, [fetchUserFavorites, userID]);
 
     if (data === null || data) {
       <div className="flex justify-center items-center h-screen">
