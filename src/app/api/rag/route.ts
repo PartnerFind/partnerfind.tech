@@ -14,7 +14,7 @@ export async function POST(request: Request, res: NextApiResponse) {
   }
 
   // Create a prompt for the Tavily API
-  const tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
+  const tavilyPrompt = `I want to partner with: ${data.business_name} at this zip code ${data.zip_code}.list me the business phone number and email, tell me the abbr. type of business:(NPO:nonprofit org,FPO:for profit org,GA:Government Association,LB:Local Business,CB:Corporate Business)tell me the industry it is in, detailed description, and resources they could provide to a high school`;
 
   // Ensure the prompt does not exceed 400 characters
   if (tavilyPrompt.length > 399) {
@@ -112,7 +112,8 @@ export async function POST(request: Request, res: NextApiResponse) {
           and then talking about how we can acquire their resources for our school. 
           here is the tavilyAPI completion data:  
           "answer": "${tavilyResponse.answer.replace(/\\n/g, "")}" If for some reason you can't do something, omit the little apology statement from the text as I want the response to go straight to the static site and look as professional and consistently generated as possible. 
-          Here is the email of the organization: ${email}
+          Here is the email of the organization (compare and check if the email the TavilyAPI provides is better than this. the email should be a valid contact company email): ${email}
+          Just decide which is the best email, use either one of these sources, do not make up any emails.
           NOTE: Make sure the response is a valid JSON object, meaning no escape sequences, and do this through generating the completion in only one line. 
           Make absolute sure your response is in this exact JSON schema below:
           {
@@ -131,7 +132,7 @@ export async function POST(request: Request, res: NextApiResponse) {
               "process" : "" // (list out directions and the process I should follow to partner with this organization)
             }
           }
-          If ANY VALUE is blank, say N/A in the field. Try to make sure there is 1 valid phonenumber with the given format above in the field, 
+          If ANY VALUE is blank, say N/A in the field. Try to make sure there is 1 valid phone number with the given format above in the field, 
           and one VALID email in the field.
           `;
 

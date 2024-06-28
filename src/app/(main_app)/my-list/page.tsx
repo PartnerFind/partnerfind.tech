@@ -1,14 +1,12 @@
-import MyListTable from "./my-list-table";
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
-// import { unstable_noStore as noStore } from "next/cache";
+import MyListTable from "./my-list-table";
 
 export const metadata = {
   title: "PartnerFind | My-List",
 };
 
 export default async function MyListPage() {
-  // noStore();
   const { userId }: { userId: string | null } = auth(); // get clerk user ID
 
   async function fetchUserFavorites(userId: string) {

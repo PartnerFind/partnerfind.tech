@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
-import { clerkClient, auth } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import SharedListTable from "./shared-list-table";
-// import { unstable_noStore as noStore } from 'next/cache';
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -24,9 +23,6 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default async function SharedListPage({ params }: { params: any }) {
-  // noStore();
-
-  const { userId }: { userId: string | null } = auth(); // get clerk user ID
   let user_id = decodeURIComponent(params.user_id);
 
   async function fetchUserFavorites(userID: string) {
