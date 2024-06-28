@@ -34,6 +34,6 @@
       "@/*": ["./src/*"] // Trying this out
     }
   },
-  "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
+  "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts", "src/components/aui/glowing-card.tsx"],
   "exclude": ["node_modules"]
 }

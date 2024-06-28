@@ -1,9 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Particles from "@/components/magicui/particles";
 import Meteors from "@/components/magicui/meteors";
 import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
+import { Card, CardSkeletonContainer, CardTitle, CardDescription} from "@/components/aui/cards";
+import { animate, motion } from "framer-motion";
+import { GoCopilot } from "react-icons/go";
+import {
+  TextureCard,
+  TextureCardContent,
+  TextureCardFooter,
+  TextureCardHeader,
+  TextureCardTitle,
+  TextureSeparator,
+} from "@/components/aui/texture-card"
+
+
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -12,7 +25,7 @@ const HomePage = (): React.JSX.Element => {
     setIsExpanded(!isExpanded);
   };
 
-  const items = [
+  const Aboutitems = [
     {
       title: "What is PartnerFind and what is it for?",
       description:
@@ -34,6 +47,43 @@ const HomePage = (): React.JSX.Element => {
         "After partnering or establishing connections with a company, you can add it to your own list. Use this list to manage potential companies you want to work with, including adding notes for each company.",
     },
   ];
+
+  const Stepsitems = [
+    {
+      title: "Step 1: Logging in/Signing Up",
+      description:
+        "To start using PartnerFind, log in or sign up to access your account. Logging in ensures all your information, including saved companies, lists, and notes, is tied to your unique user ID for personalized management.",
+    },
+    {
+      title: "Step 2: The Explore Page",
+      description:
+        "Navigate to the Explore page to view a categorized list of companies. Each profile includes descriptions, resources for schools, and contact information. Explore and add potential partners to your personalized list.",
+    },
+    {
+      title: "Step 3: Your List of Companies",
+      description:
+        "Manage your personalized list using the sidebar. Easily add or remove companies you're interested in partnering with or exploring further. Streamline your selection process with this feature.",
+    },
+    {
+      title: "Step 4: Each Specific Company Page",
+      description:
+        "Click on any company name to view detailed profiles. Access comprehensive information, including AI-generated summaries, resources, reasons for partnership, and partnership process. Add notes and manage preferences.",
+    },
+    {
+      title: "Step 5: Generating a New Company",
+      description:
+        "Generate a new company entry using AI if it's not listed. Enter the company's name and zip code on the Add Partner page. Instantly create and explore this new partner for potential collaboration.",
+    },
+    {
+      title: "Step 6: Navigation/Side Bar",
+      description:
+        "Use the top navigation bar for quick access to the homepage, account settings, sign-in, and sign-up options. The sidebar on every page allows easy navigation to the Explore page, your list, and Add Partner.",
+    },
+  ];
+  
+  
+
+  
 
   return (
     <>
@@ -58,12 +108,20 @@ const HomePage = (): React.JSX.Element => {
             </h2>
             {/* Bento Grid Section */}
             <BentoGrid className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {items.map((item, index) => (
+              {Aboutitems.map((item, index) => (
                 <BentoGridItem
                   key={index}
-                  title={item.title}
-                  description={item.description}
-                  className="rounded-lg bg-green-500 p-6 shadow-md"
+                  title={
+                    <h3 className="text-2xl font-bold text-green-500" >
+                      {item.title}
+                    </h3>
+                  }
+                  description={
+                    <p className="text-lg text-white font-medium" >
+                      {item.description}
+                    </p>
+                  }
+                  className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                 />
               ))}
             </BentoGrid>
@@ -82,80 +140,25 @@ const HomePage = (): React.JSX.Element => {
               </button>
             </div>
             {isExpanded && (
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {/* Step 1 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 1: Logging in/Signing Up
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    Firstly, you have to log in or sign into the app using the buttons above, to go to your account with
-                    all your information. By logging in, all your information will be saved to your unique user ID, such
-                    as the companies you generate, the companies you select to be part of your list, and the notes you
-                    added to companies.
-                  </p>
-                </div>
-                {/* Step 2 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 2: The Explore Page
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    Then you’ll be directed to the explore page by default. On the explore page you’ll see a list of all
-                    the companies or possible partners in a table listing their name, category of business, type of
-                    business, description, resources they provide for schools, and their email and phone number. You’ll
-                    have the option to add a partner to your own personalized list, and a universal search is used to
-                    sift through your options.
-                  </p>
-                </div>
-                {/* Step 3 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 3: Your List of Companies
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    Then use the sidebar to go to your own personalized list, of the companies you selected but can also
-                    remove by unchecking them and reloading the page. The only difference between this and the explore
-                    page is it will only show the companies you are interested in partnering with, or want to partner
-                    with in the future. Now, click on each companies name to go to their own individual page.
-                  </p>
-                </div>
-                {/* Step 4 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 4: Each specific Company Page
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    On each companies specific page, you’ll see more information than what was presented on the table.
-                    You can also add notes you can view for the company, and check or uncheck it from your own list.
-                    You’ll also see an even more detailed description created using AI of a summary, the resources they
-                    provide, reasons and flaws of the company and a process on how to partner with them.
-                  </p>
-                </div>
-                {/* Step 5 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 5: Generating a new company
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    Finally, use the navigation bar to go to the Add Partner page. Here, you can insert a business’ name
-                    and the zip code to then use AI to generate a new entry in your global table. After this, our model
-                    will take you to the page of this newly generated company, and you’ll now see it on your explore
-                    page, or list page if you check mark it.
-                  </p>
-                </div>
-                {/* Step 6 */}
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold" style={{ color: "#22B357" }}>
-                    Step 6: Navigation/Side Bar
-                  </h3>
-                  <p className="text-sm text-gray-700 md:text-base">
-                    Throughout the website, you’ll always see a handy navigation bar at the top and a sidebar to the
-                    left side of every page. The top navigation bar will take you to the home page, this page, and also
-                    your account setting, or if you’re not signed in, to sign in or sign up. The sidebar allows you to
-                    easily go to the explore page, your list, and to add a new partner.
-                  </p>
-                </div>
+              <div >
+                <BentoGrid className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {Stepsitems.map((item, index) => (
+                <BentoGridItem
+                  key={index}
+                  title={
+                    <h3 className="text-2xl font-bold text-green-500" >
+                      {item.title}
+                    </h3>
+                  }
+                  description={
+                    <p className="text-lg text-white font-medium" >
+                      {item.description}
+                    </p>
+                  }
+                  className="bg-[#191919] rounded-lg p-4 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
+                />
+              ))}
+            </BentoGrid>
               </div>
             )}
           </div>
