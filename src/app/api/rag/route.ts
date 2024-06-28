@@ -134,6 +134,7 @@ export async function POST(request: Request, res: NextApiResponse) {
           }
           If ANY VALUE is blank, say N/A in the field. Try to make sure there is 1 valid phone number with the given format above in the field, 
           and one VALID email in the field.
+          Also use same puncturing and capitalization for your values
           `;
 
     // Define the parameters for the Groq API call
