@@ -2,6 +2,8 @@ import ExploreTable from "./explore-table";
 import fetchAllPartners from "@/util/fetchAllPartners";
 import { auth } from "@clerk/nextjs/server";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "PartnerFind | Explore",
 };

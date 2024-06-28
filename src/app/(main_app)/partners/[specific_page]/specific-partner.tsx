@@ -53,7 +53,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           }), // Pass the user ID to the backend
         };
 
-        const getCurrentNote = await fetch("/api/db/getCurrentNote", options); // TODO
+        const getCurrentNote = await fetch("/api/db/getCurrentNote", options);
         if (getCurrentNote.ok) {
           const getCurrentNoteRes = await getCurrentNote.json();
           setNote(getCurrentNoteRes.data?.note);
@@ -220,7 +220,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${data.ragData.name}_partnerfind.json`; // TODO: name this better?
+    link.download = `${data.ragData.name}_partnerfind.json`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -264,7 +264,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${data.ragData.name}_partnerfind.csv`; // TODO: name this better?
+    link.download = `${data.ragData.name}_partnerfind.csv`;
     link.click();
     URL.revokeObjectURL(url);
   };
