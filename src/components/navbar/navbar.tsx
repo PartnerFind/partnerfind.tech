@@ -47,7 +47,7 @@ export function Navbar() {
         </Link>
       </div>
       <NavigationMenu>
-      <NavigationMenuList className="fixed top-0 right-0 left-0 flex justify-between h-16 bg-background backdrop-blur-lg md:px-12 px-2 border-b-2 border-gray-300">
+        <NavigationMenuList className="fixed top-0 right-0 left-0 flex justify-between h-16 bg-background backdrop-blur-lg md:px-12 px-2 border-b-2 border-gray-300">
           <div className="flex h-full space-x-4">
             <Link href="/" prefetch={false} className="flex items-center">
               <div className="flex items-center h-full">
