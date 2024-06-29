@@ -42,6 +42,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [loading, setLoading] = useState(true); // loading state
   const { toast } = useToast();
 
+  console.log(data);
+
   useEffect(() => {
     if (user && isLoaded) {
       // Set the clerkUserID only when user and isLoaded are available
