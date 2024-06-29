@@ -520,18 +520,18 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     )}
                   </p>
                   <div className="relative">
-                    <div className="absolute inset-0 flex items-center mt-10">
+                    <div className="absolute inset-0 flex items-center mt-12">
                       <span className="w-full border-t" />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 gap-6 mt-10">
+                  <div className="grid grid-cols-1 gap-6 mt-12">
                     <p>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Phone Number:
                       </strong>
                       <br />
                       {fullEditMode ? (
-                        <div className="grid gap-2">
+                        <div className="grid gap-2 mt-4">
                           <Label htmlFor="new-note"></Label>
                           <Textarea
                             id="new-note"
@@ -543,8 +543,6 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         <div>{formatPhoneNumber(phoneNumber)}</div>
                       )}
                     </p>
-                    <div className="mt-1">
-                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -722,14 +720,15 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
                   return (
                     <div key={index} className="flex items-center justify-between mb-4">
-                      <div>
+                      <div >
                         <strong style={{ color: "#22B357" }}>{result.title}</strong>
                         <br />
                         <a
-                          className="underline text-blue-500"
+                          className="underline text-blue-500 break-words"
                           href={result.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          style={{ maxWidth: "50%" }}
                         >
                           {result.url}
                         </a>
