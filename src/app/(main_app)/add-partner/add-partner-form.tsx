@@ -80,7 +80,6 @@ export function AddPartnerForm() {
             </>
           ),
         });
-        router.prefetch(`/partners/${ragResponse.generation.name}`); // todo: trying
         router.push(`/partners/${ragResponse.generation.name}`);
       } else if (code === 206) {
         toast({

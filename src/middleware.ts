@@ -4,9 +4,7 @@ const isPublicRoute = createRouteMatcher([
   "/",
   "/legal(.*)",
   "/favicon.ico",
-  "/explore",
-  "/add-partner",
-  "/my-list(.*)", // anyone can see /my-list/[slug], but not /my-list without auth
+  "/my-list/(.*)", // anyone can see /my-list/[slug], but not /my-list without auth
   "/api(.*)",
 ]);
 
