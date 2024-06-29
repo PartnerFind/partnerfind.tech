@@ -37,7 +37,7 @@ export function AddPartnerForm() {
     },
   });
 
-  async function onFormSubmit(formData: AddPartnerFormValues) {
+  async function onFormSubmit(formData: AddPartnerFormValues, event: any) {
     event.preventDefault();
     setIsSubmitting(true);
     let data = JSON.stringify(formData);
