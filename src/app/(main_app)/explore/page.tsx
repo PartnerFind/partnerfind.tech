@@ -23,8 +23,6 @@ export default async function ExplorePage() {
   }
 
   return (
-    <>
       <ExploreTable fetchAllPartners={fetchAllPartners} userID={userId} />
-    </>
   );
 }
