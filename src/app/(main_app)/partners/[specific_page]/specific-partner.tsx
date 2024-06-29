@@ -543,7 +543,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         <div>{formatPhoneNumber(phoneNumber)}</div>
                       )}
                     </p>
-                    <div className="mt-4">
+                    <div className="mt-1">
                     </div>
                   </div>
                 </CardContent>
