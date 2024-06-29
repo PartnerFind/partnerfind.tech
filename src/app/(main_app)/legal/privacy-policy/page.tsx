@@ -6,16 +6,16 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-slate-400 mt-2">Last Updated on 6/16/2024</h2>
 
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mt-6">Introduction</h2>
-        <p className="text-slate-400 mt-2">
+        <div className="text-slate-400 mt-2">
           PartnerFind (referred to as “we”, “our”, or “us”) is committed to protecting your privacy. This Privacy Policy
           explains how we collect, use, disclose, and safeguard your information when you use our third-party
           application (the “Application”) that lets you find and organize business partners near you. Please read this
           policy carefully to understand our views and practices regarding your personal data and how we will treat it.
-        </p>
+        </div>
 
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mt-6">Information We Collect</h2>
         <div className="text-slate-400 mt-2">
-          <p>We may collect and process the following data about you:</p>
+          <div>We may collect and process the following data about you:</div>
           <ul className="list-disc pl-4 mt-2">
             <li className="pt-2 font-semibold">Google User Data:</li>
             <ul className="list-disc pl-4 mt-2">
@@ -120,25 +120,27 @@ export default function PrivacyPolicyPage() {
         </ul>
 
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mt-6">Changes to This Privacy Policy</h2>
-        <p className="text-slate-400 mt-2">
+        <div className="text-slate-400 mt-2">
           We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new
           Privacy Policy on this page and updating the “Last Updated” date. You are advised to review this Privacy
           Policy periodically for any changes.
-        </p>
+        </div>
 
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mt-6">Contact Us</h2>
-        <p className="text-slate-400 mt-2">If you have any questions about our Privacy Policy, please contact us:</p>
-        <p className="text-slate-400 mt-2">
+        <div className="text-slate-400 mt-2">
+          If you have any questions about our Privacy Policy, please contact us:
+        </div>
+        <div className="text-slate-400 mt-2">
           Email:{" "}
           <a href="mailto:support@patnerfind.tech" className="text-blue-500 font-semibold underline">
             support@patnerfind.tech
           </a>
-        </p>
+        </div>
         <br />
-        <p className="text-slate-400 mt-2">
+        <div className="text-slate-400 mt-2">
           By using our Application, you agree to the terms of this Privacy Policy. If you do not agree with the terms,
           please do not use our Application.
-        </p>
+        </div>
       </div>
     </div>
   );

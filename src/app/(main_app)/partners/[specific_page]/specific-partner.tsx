@@ -424,13 +424,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-2 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Partner Category:
                       </strong>
                       <br /> {data.ragData.category}
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Type:
                       </strong>
@@ -443,7 +443,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       ) : (
                         <div>{type}</div>
                       )}
-                    </p>
+                    </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -451,7 +451,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Provided Resources:
                       </strong>
@@ -468,7 +468,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       ) : (
                         <div>{resources}</div>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -488,7 +488,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                  <p>
+                  <div>
                     <strong className="underline" style={{ color: "#22B357" }}>
                       Email:
                     </strong>
@@ -516,14 +516,14 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     ) : (
                       " Not Available"
                     )}
-                  </p>
+                  </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Phone Number:
                       </strong>
@@ -540,7 +540,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       ) : (
                         <div>{formatPhoneNumber(phoneNumber)}</div>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -641,12 +641,12 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Detailed Summary:
                       </strong>
                       <br /> {data.ragData.genpage.summary}
-                    </p>
+                    </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -654,13 +654,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Resources Offered:
                       </strong>
                       <br />
                       {data.ragData.genpage.resources}
-                    </p>
+                    </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -668,13 +668,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Reasons to Partner:
                       </strong>
                       <br />
                       {data.ragData.genpage.reasons}
-                    </p>
+                    </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -682,13 +682,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Flaws about {data.ragData.name}:
                       </strong>
                       <br />
                       {data.ragData.genpage.flaws}
-                    </p>
+                    </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -696,13 +696,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-6">
-                    <p>
+                    <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Steps to Partner:
                       </strong>
                       <br />
                       {data.ragData.genpage.process}
-                    </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

@@ -73,7 +73,13 @@ const HomePage = (): React.JSX.Element => {
       <div>
         <main className="flex min-h-screen flex-col items-center justify-center relative">
           {/* Full-page Particles */}
-          <Particles className="absolute inset-0 z-0 pointer-events-none" quantity={125} ease={80} size={0.5} refresh />
+          <Particles
+            className="absolute inset-0 z-0 pointer-events-none"
+            quantity={125}
+            ease={80}
+            size={0.5}
+            refresh
+          />
 
           <div className="container mb-20 mt-20 flex flex-col items-center justify-center gap-12 px-4 py-16 md:mt-40 relative z-10">
             <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl relative z-10">
@@ -95,7 +101,7 @@ const HomePage = (): React.JSX.Element => {
                 <BentoGridItem
                   key={index}
                   title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
-                  description={<p className="text-lg text-white font-medium">{item.description}</p>}
+                  description={<div className="text-lg text-white font-medium">{item.description}</div>}
                   className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                 />
               ))}
@@ -121,7 +127,7 @@ const HomePage = (): React.JSX.Element => {
                     <BentoGridItem
                       key={index}
                       title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
-                      description={<p className="text-lg text-white font-medium">{item.description}</p>}
+                      description={<div className="text-lg text-white font-medium">{item.description}</div>}
                       className="bg-[#191919] rounded-lg p-4 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                     />
                   ))}
