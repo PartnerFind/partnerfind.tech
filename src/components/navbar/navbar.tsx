@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import NavBarElement from "./navbar-element";
 import { NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import UserButton from "@/components/user-button";
@@ -23,7 +22,7 @@ export function Navbar() {
         }}
       >
         <div className="flex space-x-4 items-center justify-center pb-16">
-          <Link href="/" prefetch={false} className="flex items-center space-x-4">
+          <Link href="/" className="flex items-center space-x-4">
             <Image
               src={partnerfind}
               alt="PartnerFind Logo"
@@ -33,36 +32,60 @@ export function Navbar() {
             <div className="font-semibold text-6xl font-teachers">PartnerFind</div>
           </Link>
         </div>
-        <Link href="/explore" prefetch={false} className="text-4xl font-semibold">
+        <Link href="/explore" className="text-4xl font-semibold">
           Explore
         </Link>
-        <Link href="/my-list" prefetch={false} className="text-4xl font-semibold">
+        <Link href="/my-list" className="text-4xl font-semibold">
           My List
         </Link>
-        <Link href="/add-partner" prefetch={false} className="text-4xl font-semibold">
+        <Link href="/add-partner" className="text-4xl font-semibold">
           Add Partner
         </Link>
-        <Link href="/legal/privacy-policy" prefetch={false} className="text-4xl font-semibold">
+        <Link href="/legal/privacy-policy" className="text-4xl font-semibold">
           Privacy Policy
         </Link>
       </div>
       <NavigationMenu>
         <NavigationMenuList className="fixed top-0 right-0 left-0 flex justify-between h-16 bg-background backdrop-blur-lg md:px-12 px-2 border-b-2 border-gray-300">
           <div className="flex h-full space-x-4">
-            <Link href="/" prefetch={false} className="flex items-center">
+            <Link href="/" className="flex items-center">
               <div className="flex items-center h-full">
                 <div className="flex h-12 items-center p-2">
-                  <Image src={partnerfind} alt="PartnerFind Logo" className="h-9 w-9 bg-white rounded-full" />
+                  <Image src={partnerfind} priority alt="PartnerFind Logo" className="h-9 w-9 bg-white rounded-full" />
                 </div>
                 <span className="text-xl font-semibold font-teachers">PartnerFind</span>
               </div>
             </Link>
 
             <div className="md:w-fit w-0 flex space-x-4 overflow-clip">
-              <NavBarElement link="/explore">Explore</NavBarElement>
-              <NavBarElement link="/my-list">My List</NavBarElement>
-              <NavBarElement link="/add-partner">Add Partner</NavBarElement>
-              <NavBarElement link="/legal/privacy-policy">Privacy Policy</NavBarElement>
+              <Link
+                href="/explore"
+                prefetch={false}
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Explore
+              </Link>
+              <Link
+                prefetch={false}
+                href="/my-list"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                My List
+              </Link>
+              <Link
+                prefetch={false}
+                href="/add-partner"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Add Partner
+              </Link>
+              <Link
+                prefetch={false}
+                href="/legal/privacy-policy"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Privacy Policy
+              </Link>
             </div>
           </div>
           <div className="flex h-full space-x-4 items-center p-3 text-sm">
