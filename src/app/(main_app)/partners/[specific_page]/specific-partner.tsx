@@ -22,6 +22,7 @@ function formatPhoneNumber(phoneNumber: any) {
 
 export default function SpecificPartnerComponent({ data }: { data: any }) {
   const { user, isLoaded } = useUser();
+
   const [clerkUserID, setClerkUserID] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
@@ -39,21 +40,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [newEmail, setNewEmail] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(true); // loading state
-  const [isEditing, setIsEditing] = useState<boolean>(false); // state for edit/save button
   const { toast } = useToast();
-
-  useEffect(() => {
-    setType(data.ragData.type);
-    setDescription(data.ragData.description);
-    setResources(data.ragData.resources);
-    setPhoneNumber(data.ragData.phonenumber);
-    setEmail(data.ragData.email);
-    setNewDescription(data.ragData.description);
-    setNewResources(data.ragData.resources);
-    setNewType(data.ragData.type);
-    setNewPhoneNumber(data.ragData.phonenumber);
-    setNewEmail(data.ragData.email);
-  }, [data]);
 
   useEffect(() => {
     if (user && isLoaded) {
@@ -100,6 +87,19 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
     fetchCurrentNoteandCurrentList();
   }, [clerkUserID, data]);
+
+  useEffect(() => {
+    setType(data.ragData.type);
+    setDescription(data.ragData.description);
+    setResources(data.ragData.resources);
+    setPhoneNumber(data.ragData.phonenumber);
+    setEmail(data.ragData.email);
+    setNewDescription(data.ragData.description);
+    setNewResources(data.ragData.resources);
+    setNewType(data.ragData.type);
+    setNewPhoneNumber(data.ragData.phonenumber);
+    setNewEmail(data.ragData.email);
+  }, [data]);
 
   if (loading) {
     return <Loading3Dots />;

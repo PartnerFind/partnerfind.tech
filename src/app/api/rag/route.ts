@@ -28,7 +28,7 @@ export async function POST(request: Request, res: NextApiResponse) {
 
   let checkIfPartnerInDB = await fetchRAGDataForAPartner(data.business_name);
 
-  if (checkIfPartnerInDB !== null && checkIfPartnerInDB !== undefined) {
+  if (checkIfPartnerInDB.ragData !== null && checkIfPartnerInDB.ragData !== undefined) {
     return NextResponse.json({ error: "Partner already in database" }, { status: 206 });
   }
 
