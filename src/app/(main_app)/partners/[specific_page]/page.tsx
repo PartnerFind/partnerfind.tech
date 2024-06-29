@@ -3,38 +3,26 @@ import SpecificPartnerComponent from "./specific-partner";
 import fetchRAGDataForAPartner from "@/util/fetchRAGDataForAPartner";
 
 export async function generateMetadata({ params }: any) {
+  // read route params
   const specific_page = decodeURIComponent(params.specific_page);
+  // set the title based on the id
   const title = `${specific_page} | PartnerFind`;
   return {
     title: title,
   };
 }
 
-async function fetchWithRetry(name: string, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const data = await fetchRAGDataForAPartner(name);
-      if (data) return data;
-    } catch (error) {
-      console.error(`Attempt ${i + 1} failed:`, error);
-      if (i === retries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 500)); // Wait 0.5 second before retrying
-    }
-  }
-  return null;
-}
-
 export default async function SpecificPartnerPage({ params }: { params: any }) {
   let name = decodeURIComponent(params.specific_page);
-  let data = await fetchWithRetry(name);
+  let result = await fetchRAGDataForAPartner(name);
 
-  if (data === null) {
+  if (!result || !result.ragData) {
     notFound();
-  } else {
-    return (
-      <>
-        <SpecificPartnerComponent data={data} />
-      </>
-    );
   }
+
+  return (
+    <>
+      <SpecificPartnerComponent data={result.ragData} />
+    </>
+  );
 }
