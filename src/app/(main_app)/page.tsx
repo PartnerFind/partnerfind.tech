@@ -4,9 +4,6 @@ import React, { useEffect, useState } from "react";
 import Particles from "@/components/magicui/particles";
 import Meteors from "@/components/magicui/meteors";
 import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
-import { Card, CardSkeletonContainer, CardTitle, CardDescription } from "@/components/aui/cards";
-import { animate, motion } from "framer-motion";
-import { GoCopilot } from "react-icons/go";
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
