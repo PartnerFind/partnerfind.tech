@@ -33,10 +33,14 @@ export function ShareListCopyButton({ value, className, src, variant = "ghost", 
       {...props}
     >
       <span className="sr-only">Copy</span>
-      {hasCopied ? <div style={{ display: "flex", alignItems: "center" }}>
+      {hasCopied ? (
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Clipboard />
           <CheckIcon style={{ marginLeft: "5px" }} />
-        </div> : <h1>Share this List! (Copy)</h1>}
+        </div>
+      ) : (
+        <h1>Share this List! (Copy)</h1>
+      )}
     </Button>
   );
 }

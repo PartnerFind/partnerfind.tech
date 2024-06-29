@@ -398,7 +398,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       <div className="container mx-auto p-12 md:p-32 lg:p-20">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
-            <div>  
+            <div>
               <Card className=" bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
@@ -720,7 +720,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
                   return (
                     <div key={index} className="flex items-center justify-between mb-4">
-                      <div >
+                      <div>
                         <strong style={{ color: "#22B357" }}>{result.title}</strong>
                         <br />
                         <a
