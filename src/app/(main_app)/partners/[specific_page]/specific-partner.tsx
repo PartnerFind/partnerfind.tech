@@ -258,7 +258,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           throw new Error("Error removing user ID and name.");
         }
       } catch (error) {
-        throw new Error("An error occurred while removing user ID and name.");
+        throw new Error("An erro2`r occurred while removing user ID and name.");
       }
     }
   };
@@ -399,7 +399,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <div>  
-              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className=" bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     {data.ragData.name}
@@ -520,11 +520,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     )}
                   </p>
                   <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
+                    <div className="absolute inset-0 flex items-center mt-10">
                       <span className="w-full border-t" />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 gap-6">
+                  <div className="grid grid-cols-1 gap-6 mt-10">
                     <p>
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Phone Number:
@@ -543,6 +543,8 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                         <div>{formatPhoneNumber(phoneNumber)}</div>
                       )}
                     </p>
+                    <div className="mt-4">
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -563,7 +565,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   </div>
                   <div className="mt-4">
                     {fullEditMode ? (
-                      <Button className="mt-1" style={{ color: "#000000" }} onClick={handleFullSaveClick}>
+                      <Button className="mt-7" style={{ color: "#000000" }} onClick={handleFullSaveClick}>
                         Save
                       </Button>
                     ) : (
