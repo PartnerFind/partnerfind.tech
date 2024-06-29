@@ -529,16 +529,31 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       </strong>
                       <br />
                       {fullEditMode ? (
-                        <div className="grid gap-2 mt-4">
-                          <Label htmlFor="new-note"></Label>
-                          <Textarea
-                            id="new-note"
-                            value={newPhoneNumber}
-                            onChange={(e) => setNewPhoneNumber(e.target.value)}
-                          />
-                        </div>
+                        data.ragData.phonenumber ? (
+                          <div className="grid gap-2 mt-4">
+                            <Label htmlFor="new-note"></Label>
+                            <Textarea
+                              id="new-note"
+                              value={newPhoneNumber}
+                              onChange={(e) => setNewPhoneNumber(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="grid gap-2 mt-4">
+                            <Label htmlFor="new-note"></Label>
+                            <Textarea
+                              id="new-note"
+                              value={"Not Available"}
+                              onChange={(e) => setNewPhoneNumber(e.target.value)}
+                            />
+                          </div>
+                        )
                       ) : (
-                        <div>{formatPhoneNumber(phoneNumber)}</div>
+                        data.ragData.phonenumber ? (
+                          <div>{formatPhoneNumber(phoneNumber)}</div>
+                        ) : (
+                          "Not Available"
+                        )
                       )}
                     </div>
                   </div>
