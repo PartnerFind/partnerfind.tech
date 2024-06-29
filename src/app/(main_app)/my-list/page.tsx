@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import MyListTable from "./my-list-table";
 import { headers } from "next/headers";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
-import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner} from "@/util/fetchRAGDataForAPartner";
+import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
 
 export const metadata = {
   title: "PartnerFind | My-List",
@@ -24,7 +24,7 @@ export default async function MyListPage() {
   }
 
   async function fetchRAGDataForAPartner(partnerName: string) {
-    "use server"
+    "use server";
 
     try {
       const ragData = await backendFetchRAGDataForAPartner(partnerName);
@@ -45,7 +45,11 @@ export default async function MyListPage() {
 
   return (
     <div className="space-y-4">
-      <MyListTable fetchUserFavorites={fetchUserFavorites} fetchRAGDataForAPartner={fetchRAGDataForAPartner} userID={userId} />
+      <MyListTable
+        fetchUserFavorites={fetchUserFavorites}
+        fetchRAGDataForAPartner={fetchRAGDataForAPartner}
+        userID={userId}
+      />
       <ShareListCopyButton value={fullUrl} />
       <div></div>
     </div>

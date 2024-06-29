@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Loading3Dots from "@/components/Loading3Dots"; // Create this component
 import { fetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
 import { notFound } from "next/navigation";
-import { unstable_noStore as noStore } from 'next/cache';
+import { unstable_noStore as noStore } from "next/cache";
 import SpecificPartnerComponent from "./specific-partner";
 
 export default async function SpecificPartnerPage({ params }: { params: any }) {

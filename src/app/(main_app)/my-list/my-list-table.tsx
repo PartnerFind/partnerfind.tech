@@ -31,7 +31,7 @@ export default function ExploreTable({
       const fetchExportData = async () => {
         const exportDataTemp: any = {};
         for (const item of data) {
-          if (item && item.name) {
+          if (item?.name) {
             const ragData = await fetchRAGDataForAPartner(item.name);
             exportDataTemp[item.name] = ragData;
           }

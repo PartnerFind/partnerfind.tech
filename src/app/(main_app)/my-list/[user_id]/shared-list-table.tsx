@@ -10,13 +10,16 @@ import { Button } from "@/components/ui/button";
 export default function SharedListTable({
   fetchUserFavorites,
   userID,
+  fetchRAGDataForAPartner,
   currentUserID,
 }: {
   fetchUserFavorites: any;
   userID: any;
+  fetchRAGDataForAPartner: any;
   currentUserID: any;
 }) {
   const [data, setData] = useState([]);
+  const [exportData, setExportData] = useState<any>({});
   const [modifiedData, setModifiedData] = useState<any[]>([]);
 
   if (userID !== null || !userID) {
@@ -28,10 +31,86 @@ export default function SharedListTable({
       };
 
       fetchData();
-    }, [userID]);
+    }, [fetchUserFavorites, userID]);
+
     useEffect(() => {
       fetchAndModifyData(currentUserID).then((modified) => setModifiedData(modified));
     }, [currentUserID, fetchUserFavorites, data]);
+
+    // Function to fetch current user's favorites and modify if they match with the shared user's list
+    const fetchAndModifyData = async (userID: string) => {
+      try {
+        const currentUserFavorites = await fetchUserFavorites(userID);
+
+        // Extract names from currentUserFavorites for fast lookup
+        const favoriteNames = currentUserFavorites.list.data.map((favorite: any) => favorite.name);
+
+        // Modify data based on existence of favorite names
+        const modifiedData = data.map((item: any) => {
+          if (favoriteNames.includes(item.name)) {
+            // Update userID to current user's ID
+            return {
+              ...item,
+              userID: userID,
+            };
+          } else {
+            // Remove userID property if name is not a favorite
+            const { userID, ...rest } = item;
+            return rest;
+          }
+        });
+
+        setExportData(modifiedData);
+        return modifiedData;
+      } catch (error) {
+        console.error("Error fetching and modifying data:", error);
+        return data; // Return original data if an error occurs
+      }
+    };
+
+    const handleJSONExport = () => {
+      const categoryMapping: any = {
+        FPO: "For-Profit (FPO)",
+        NPO: "Non-Profit (NPO)",
+        GA: "Government Association (GA)",
+        LB: "Local Business (LB)",
+        CB: "Corporate Business (CB)",
+      };
+
+      const updatedData = modifiedData.map((item) => ({
+        category: categoryMapping[item.category],
+        name: item.name,
+        type: item.type,
+        description: item.description,
+        resources: item.resources,
+        phonenumber: item.phonenumber,
+        email: item.email,
+        summary: item.genpage?.summary,
+        reasons: item.genpage?.reasons,
+        flaws: item.genpage?.flaws,
+        process: item.genpage?.process,
+        sources: item.sources,
+      }));
+
+      const exportDataJSON = JSON.stringify(updatedData, null, 2); // format nicely
+      const blob = new Blob([exportDataJSON], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `shared_list_partnerfind.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    };
+
+    return (
+      <div className="container px-4 pt-24 md:pl-20 md:pt-40">
+        {/* Render DataTable with modifiedData */}
+        <DataTable columns={columns} data={modifiedData} />
+        <Button variant="outline" onClick={handleJSONExport}>
+          Export This Data to JSON!
+        </Button>
+      </div>
+    );
   } else {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-0 pt-20">
@@ -54,41 +133,4 @@ export default function SharedListTable({
       </div>
     );
   }
-
-  // Function to fetch current user's favorites and modify if they match with the shared user's list
-  const fetchAndModifyData = async (userID: string) => {
-    try {
-      const currentUserFavorites = await fetchUserFavorites(userID);
-
-      // Extract names from currentUserFavorites for fast lookup
-      const favoriteNames = currentUserFavorites.list.data.map((favorite: any) => favorite.name);
-
-      // Modify data based on existence of favorite names
-      const modifiedData = data.map((item: any) => {
-        if (favoriteNames.includes(item.name)) {
-          // Update userID to current user's ID
-          return {
-            ...item,
-            userID: userID,
-          };
-        } else {
-          // Remove userID property if name is not a favorite
-          const { userID, ...rest } = item;
-          return rest;
-        }
-      });
-
-      return modifiedData;
-    } catch (error) {
-      console.error("Error fetching and modifying data:", error);
-      return data; // Return original data if an error occurs
-    }
-  };
-
-  return (
-    <div className="container px-4 pt-24 md:pl-20 md:pt-40">
-      {/* Render DataTable with modifiedData */}
-      <DataTable columns={columns} data={modifiedData} />
-    </div>
-  );
 }
