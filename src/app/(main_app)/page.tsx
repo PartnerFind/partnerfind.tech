@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Particles from "@/components/magicui/particles";
 import Meteors from "@/components/magicui/meteors";
 import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
-import { Card, CardSkeletonContainer, CardTitle, CardDescription } from "@/components/aui/cards";
-import { animate, motion } from "framer-motion";
-import { GoCopilot } from "react-icons/go";
 
 const HomePage = (): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -98,7 +95,7 @@ const HomePage = (): React.JSX.Element => {
                 <BentoGridItem
                   key={index}
                   title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
-                  description={<p className="text-lg text-white font-medium">{item.description}</p>}
+                  description={<div className="text-lg text-white font-medium">{item.description}</div>}
                   className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                 />
               ))}
@@ -124,7 +121,7 @@ const HomePage = (): React.JSX.Element => {
                     <BentoGridItem
                       key={index}
                       title={<h3 className="text-2xl font-bold text-green-500">{item.title}</h3>}
-                      description={<p className="text-lg text-white font-medium">{item.description}</p>}
+                      description={<div className="text-lg text-white font-medium">{item.description}</div>}
                       className="bg-[#191919] rounded-lg p-4 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl"
                     />
                   ))}

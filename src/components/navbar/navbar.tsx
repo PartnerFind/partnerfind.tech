@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import NavBarElement from "./navbar-element";
 import { NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import UserButton from "@/components/user-button";
-import SignInAndSignUp from "./signin-and-signup";
+import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import partnerfind from "public/image/android-chrome-512x512.png";
 import Image from "next/image";
 import Link from "next/link";
+
+// Dynamically import components to avoid SSR mismatches
+const UserButton = dynamic(() => import("@/components/user-button"), { ssr: false });
+const SignInAndSignUp = dynamic(() => import("./signin-and-signup"), { ssr: false });
 
 export function Navbar() {
   const [isMenuOut, setIsMenuOut] = useState(false);
@@ -52,17 +54,41 @@ export function Navbar() {
             <Link href="/" prefetch={false} className="flex items-center">
               <div className="flex items-center h-full">
                 <div className="flex h-12 items-center p-2">
-                  <Image src={partnerfind} alt="PartnerFind Logo" className="h-9 w-9 bg-white rounded-full" />
+                  <Image src={partnerfind} priority alt="PartnerFind Logo" className="h-9 w-9 bg-white rounded-full" />
                 </div>
                 <span className="text-xl font-semibold font-teachers">PartnerFind</span>
               </div>
             </Link>
 
             <div className="md:w-fit w-0 flex space-x-4 overflow-clip">
-              <NavBarElement link="/explore">Explore</NavBarElement>
-              <NavBarElement link="/my-list">My List</NavBarElement>
-              <NavBarElement link="/add-partner">Add Partner</NavBarElement>
-              <NavBarElement link="/legal/privacy-policy">Privacy Policy</NavBarElement>
+              <Link
+                href="/explore"
+                prefetch={false}
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Explore
+              </Link>
+              <Link
+                prefetch={false}
+                href="/my-list"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                My List
+              </Link>
+              <Link
+                prefetch={false}
+                href="/add-partner"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Add Partner
+              </Link>
+              <Link
+                prefetch={false}
+                href="/legal/privacy-policy"
+                className="flex items-center tracking-wider text-sm h-full font-light p-2 hover:text-white text-slate-300 transition-colors duration-500"
+              >
+                Privacy Policy
+              </Link>
             </div>
           </div>
           <div className="flex h-full space-x-4 items-center p-3 text-sm">

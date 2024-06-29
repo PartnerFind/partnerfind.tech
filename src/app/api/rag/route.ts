@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextApiResponse } from "next";
 import { elaborateCompanies } from "@/server/db/schema";
-import fetchRAGDataForAPartner from "@/util/fetchRAGDataForAPartner";
+import { fetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
 import { db } from "@/server/index";
 import Groq from "groq-sdk";
 

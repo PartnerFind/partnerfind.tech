@@ -1,7 +1,7 @@
 import { db } from "@/server/index";
 import { elaborateCompanies } from "@/server/db/schema";
 
-export default async function fetchRAGDataForAPartner(name: string) {
+export async function fetchRAGDataForAPartner(name: string) {
   // Full data for the elaborateCompanies table, using this table you can create objects for each individual row (aka Bombay Bazar for example)
   const allData = await db
     .select({
