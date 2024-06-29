@@ -19,13 +19,13 @@ const Error: React.FC<ErrorProps> = ({ error }) => {
         left: "50%",
         top: "50%",
         transform: "translate(-50%, -50%)",
-        color: "red",
+        color: "white",
       }}
     >
-      <h1>500 Server Error </h1>
+      <h1>Loading </h1>
       <h3>
-        Something went wrong! |{" "}
-        <Link href="/" style={{ color: "red", textDecoration: "underline" }}>
+        Please wait |{" "}
+        <Link href="/" style={{ color: "white", textDecoration: "underline" }}>
           <strong>Go Back Home</strong>
         </Link>
       </h3>
