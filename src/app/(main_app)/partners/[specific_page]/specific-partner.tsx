@@ -44,8 +44,6 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [loading, setLoading] = useState(true); // loading state
   const { toast } = useToast();
 
-  console.log(data);
-
   useEffect(() => {
     if (user && isLoaded) {
       // Set the clerkUserID only when user and isLoaded are available
@@ -401,7 +399,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <div>
-              <Card className=" bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className=" bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     {data.ragData.name}
@@ -480,7 +478,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           </div>
           <div>
             <div className="">
-              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl shadow-input dark:shadow-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     Contact
@@ -552,7 +550,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           </div>
           <div>
             <div>
-              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl shadow-input dark:shadow-none">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Manage List</CardTitle>
                 </CardHeader>
@@ -580,7 +578,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
           </div>
           <div className="md:col-span-1 md:col-start-2">
             <div className="">
-              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className="bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl shadow-input dark:shadow-none">
                 <CardHeader>
                   {note ? (
                     <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
@@ -632,7 +630,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
         <div>
           <div>
             <div className="py-10">
-              <Card className="w-full md:col-span-2 bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl transition duration-200 shadow-input dark:shadow-none">
+              <Card className="w-full md:col-span-2 bg-[#191919] rounded-lg p-6 shadow-md transition duration-300 ease-in-out transform hover:shadow-xl shadow-input dark:shadow-none">
                 <CardHeader>
                   <CardTitle className="text-2xl" style={{ color: "#22B357" }}>
                     Detailed AI Description of {data.ragData.name}

@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import MyListTable from "./my-list-table";
 import { headers } from "next/headers";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
+import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner} from "@/util/fetchRAGDataForAPartner";
 
 export const metadata = {
   title: "PartnerFind | My-List",
@@ -22,6 +23,18 @@ export default async function MyListPage() {
     }
   }
 
+  async function fetchRAGDataForAPartner(partnerName: string) {
+    "use server"
+
+    try {
+      const ragData = await backendFetchRAGDataForAPartner(partnerName);
+      return ragData;
+    } catch (error: any) {
+      console.error("Error when getting RAG data for a partner", error);
+      throw error; // Rethrow the error after logging it
+    }
+  }
+
   // Get the host dynamically
   const headersList = headers();
   const host = headersList.get("host") || "";
@@ -32,7 +45,7 @@ export default async function MyListPage() {
 
   return (
     <div className="space-y-4">
-      <MyListTable fetchUserFavorites={fetchUserFavorites} userID={userId} />
+      <MyListTable fetchUserFavorites={fetchUserFavorites} fetchRAGDataForAPartner={fetchRAGDataForAPartner} userID={userId} />
       <ShareListCopyButton value={fullUrl} />
       <div></div>
     </div>
