@@ -22,9 +22,5 @@ export default async function ExplorePage() {
     }
   }
 
-  return (
-    <>
-      <ExploreTable fetchAllPartners={fetchAllPartners} userID={userId} />
-    </>
-  );
+  return <ExploreTable fetchAllPartners={fetchAllPartners} userID={userId} />;
 }

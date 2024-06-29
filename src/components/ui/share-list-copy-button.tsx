@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, Clipboard } from "lucide-react";
 import { Button, ButtonProps } from "@/components/ui/button";
 
 interface CopyButtonProps extends ButtonProps {
@@ -25,7 +25,7 @@ export function ShareListCopyButton({ value, className, src, variant = "ghost", 
   return (
     <Button
       size="lg"
-      variant={variant}
+      style={{ color: "#000000" }}
       onClick={() => {
         copyToClipboardWithMeta(value);
         setHasCopied(true);
@@ -33,7 +33,14 @@ export function ShareListCopyButton({ value, className, src, variant = "ghost", 
       {...props}
     >
       <span className="sr-only">Copy</span>
-      {hasCopied ? <CheckIcon /> : <h1>Share this List! (Copy)</h1>}
+      {hasCopied ? (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Clipboard />
+          <CheckIcon style={{ marginLeft: "5px" }} />
+        </div>
+      ) : (
+        <h1>Share this List! (Copy)</h1>
+      )}
     </Button>
   );
 }

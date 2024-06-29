@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/columns";
+import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
 
 export default function ExploreTable({ fetchUserFavorites, userID }: { fetchUserFavorites: any; userID: any }) {
   const [data, setData] = useState([]);

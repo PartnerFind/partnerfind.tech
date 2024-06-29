@@ -12,7 +12,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
         </div>
         <div className="flex flex-col md:flex-row">
-          <div className="mt-20 flex-1 md:mt-5 lg:ml-20 lg:mt-0">{children}</div>
+          <div className="mt-20 flex-1 md:mt-5 lg:mt-0">{children}</div>
         </div>
       </div>
     </>
