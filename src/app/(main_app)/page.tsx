@@ -73,7 +73,7 @@ const HomePage = (): React.JSX.Element => {
 
   return (
     <>
-      <div>
+      <div className="container mx-auto px-4">
         <main className="flex min-h-screen flex-col items-center justify-center relative">
           {/* Full-page Particles */}
           <Particles className="absolute inset-0 z-0 pointer-events-none" quantity={125} ease={80} size={0.5} refresh />

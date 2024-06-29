@@ -33,10 +33,8 @@ export default async function MyListPage() {
   return (
     <div className="space-y-4">
       <MyListTable fetchUserFavorites={fetchUserFavorites} userID={userId} />
-
-      <div className="flex justify-end">
-        <ShareListCopyButton value={fullUrl} />
-      </div>
+      <ShareListCopyButton value={fullUrl} />
+      <div></div>
     </div>
   );
 }
