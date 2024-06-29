@@ -14,15 +14,22 @@ export async function generateMetadata({ params }: any) {
 
 export default async function SpecificPartnerPage({ params }: { params: any }) {
   let name = decodeURIComponent(params.specific_page);
-  let data = await fetchRAGDataForAPartner(name);
 
-  if (data === null) {
+  try {
+    let data = await fetchRAGDataForAPartner(name);
+    console.log(data);
+    if (!data?.ragData) {
+      console.error("No data found for:", name);
+      notFound();
+    } else {
+      return (
+        <>
+          <SpecificPartnerComponent data={data.ragData} />
+        </>
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching partner data:", error);
     notFound();
-  } else {
-    return (
-      <>
-        <SpecificPartnerComponent data={data} />
-      </>
-    );
   }
 }

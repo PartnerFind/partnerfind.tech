@@ -39,7 +39,6 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [newEmail, setNewEmail] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(true); // loading state
-  const [isEditing, setIsEditing] = useState<boolean>(false); // state for edit/save button
   const { toast } = useToast();
 
   useEffect(() => {
