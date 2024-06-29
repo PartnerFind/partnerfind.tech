@@ -16,7 +16,7 @@ export default async function SpecificPartnerPage({ params }: { params: any }) {
   let name = decodeURIComponent(params.specific_page);
   let result = await fetchRAGDataForAPartner(name);
 
-  if (!result || !result.ragData) {
+  if (!result?.ragData) {
     notFound();
   }
 
