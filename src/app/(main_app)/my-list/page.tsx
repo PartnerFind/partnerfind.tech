@@ -50,7 +50,9 @@ export default async function MyListPage() {
         fetchRAGDataForAPartner={fetchRAGDataForAPartner}
         userID={userId}
       />
-      <ShareListCopyButton value={fullUrl} />
+      <div className="container px-4 md:pl-20">
+        <ShareListCopyButton value={fullUrl} />
+      </div>
       <div></div>
     </div>
   );
