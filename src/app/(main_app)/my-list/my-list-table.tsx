@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { unstable_noStore as noStore } from 'next/cache';
 import { DataTable } from "@/components/table/data-table";
 import { columns } from "@/components/table/columns";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,6 @@ export default function MyListTable({
   fetchRAGDataForAPartner: any;
   userID: any;
 }) {
-  noStore();
   const [data, setData] = useState<any[]>([]);
   const [exportData, setExportData] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
