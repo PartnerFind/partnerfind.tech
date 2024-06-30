@@ -12,6 +12,7 @@ import { CircleProgress } from "@/components/ui/progress";
 import ExcelJS from "exceljs";
 import Loading3Dots from "@/components/Loading3Dots";
 import { BentoGrid, BentoGridItem } from "@/components/aui/bento-grid";
+import { ComboboxDemo } from "@/components/ui/combobox";
 //import { Card, CardSkeletonContainer, CardTitle, CardDescription } from "@/components/aui/cards";
 
 function formatPhoneNumber(phoneNumber: any) {
@@ -32,6 +33,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [resources, setResources] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [fullEditMode, setFullEditMode] = useState<boolean>(false);
   const [newNote, setNewNote] = useState<string>("");
@@ -40,11 +42,10 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
   const [newResources, setNewResources] = useState<string>("");
   const [newPhoneNumber, setNewPhoneNumber] = useState<string>("");
   const [newEmail, setNewEmail] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(true); // loading state
   const { toast } = useToast();
-
-  console.log(data);
 
   useEffect(() => {
     if (user && isLoaded) {
@@ -98,11 +99,13 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
     setResources(data.ragData.resources);
     setPhoneNumber(data.ragData.phonenumber);
     setEmail(data.ragData.email);
+    setCategory(data.ragData.category);
     setNewDescription(data.ragData.description);
     setNewResources(data.ragData.resources);
     setNewType(data.ragData.type);
     setNewPhoneNumber(data.ragData.phonenumber);
     setNewEmail(data.ragData.email);
+    setNewCategory(data.ragData.category);
   }, [data]);
 
   if (loading) {
@@ -116,11 +119,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
   const handleFullEditClick = () => {
     setFullEditMode(true);
-    setNewType(data.ragData.type || "");
-    setNewDescription(data.ragData.description || "");
-    setNewResources(data.ragData.resources || "");
-    setNewPhoneNumber(data.ragData.phonenumber || "");
-    setNewEmail(data.ragData.email || "");
+    setNewType(type || "");
+    setNewDescription(description || "");
+    setNewResources(resources || "");
+    setNewPhoneNumber(phoneNumber || "");
+    setNewEmail(email || "");
   };
 
   const handleSaveClick = async () => {
@@ -183,6 +186,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
       setResources(newResources);
       setPhoneNumber(newPhoneNumber);
       setEmail(newEmail);
+      setCategory(newCategory);
       setFullEditMode(false);
     } catch (error) {
       //Error message
@@ -432,7 +436,17 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Partner Category:
                       </strong>
-                      <br /> {data.ragData.category}
+                      <br /> 
+                      {fullEditMode ? (
+                      <div className="grid gap-2 mt-2">
+                          <ComboboxDemo 
+                          value={newCategory}
+                          onChange={(value) => setNewCategory(value)}
+                          />
+                        </div>
+                      ) : (
+                        <div>{category}</div>
+                      )}
                     </div>
                     <div>
                       <strong className="underline" style={{ color: "#22B357" }}>
