@@ -45,6 +45,13 @@ export default function ExploreTable({
     }, [data, fetchRAGDataForAPartner]);
 
     if (data === null || data.length === 0) {
+      if (!userID) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <h1 className="text-3xl font-bold">No Favorites! (Please Sign In)</h1>
+          </div>
+        );
+      }
       return (
         <div className="flex justify-center items-center h-screen">
           <h1 className="text-3xl font-bold">No Favorites!</h1>

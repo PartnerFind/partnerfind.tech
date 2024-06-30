@@ -1,12 +1,12 @@
 import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUserFavorites";
 import { auth } from "@clerk/nextjs/server";
-import MyListTable from "./my-list-table";
 import { headers } from "next/headers";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
 import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
+import MyListTable from "./my-list-table";
 
 export const metadata = {
-  title: "PartnerFind | My-List",
+  title: "My List | PartnerFind",
 };
 
 export default async function MyListPage() {

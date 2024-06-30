@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/navbar/navbar";
 
 export const metadata = {
-  title: "PartnerFind | Home",
+  title: "PartnerFind",
 };
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {

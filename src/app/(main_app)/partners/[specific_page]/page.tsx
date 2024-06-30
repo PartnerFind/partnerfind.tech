@@ -5,6 +5,17 @@ import { notFound } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
 import SpecificPartnerComponent from "./specific-partner";
 
+export async function generateMetadata({ params }: any) {
+  // read route params
+  const specific_page = decodeURIComponent(params.specific_page);
+
+  // set the title to the specific partner's name
+  const title = `${specific_page} | PartnerFind`;
+  return {
+    title: title,
+  };
+}
+
 export default async function SpecificPartnerPage({ params }: { params: any }) {
   let name = decodeURIComponent(params.specific_page);
 

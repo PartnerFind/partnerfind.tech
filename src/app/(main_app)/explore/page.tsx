@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "PartnerFind | Explore",
+  title: "Explore Partners | PartnerFind",
 };
 
 export default async function ExplorePage() {
