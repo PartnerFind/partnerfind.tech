@@ -4,7 +4,6 @@ import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUse
 import SharedListTable from "./shared-list-table";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
 import { headers } from "next/headers";
-import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -30,8 +29,14 @@ export default async function SharedListPage({ params }: { params: any }) {
 
   let user_id = decodeURIComponent(params.user_id);
 
+  const userObject = await clerkClient.users.getUser(user_id);
+  if (!userObject || user_id === null || !user_id) {
+    notFound();
+  }
+
   async function fetchUserFavorites(userID: string) {
     "use server";
+    
     try {
       const partners = await backendFetchUserFavorites(userID);
       return partners;
@@ -39,22 +44,6 @@ export default async function SharedListPage({ params }: { params: any }) {
       console.error("Error when getting all partners", error);
       throw error; // Rethrow the error after logging it
     }
-  }
-
-  async function fetchRAGDataForAPartner(partnerName: string) {
-    "use server";
-
-    try {
-      const ragData = await backendFetchRAGDataForAPartner(partnerName);
-      return ragData;
-    } catch (error: any) {
-      console.error("Error when getting RAG data for a partner", error);
-      throw error; // Rethrow the error after logging it
-    }
-  }
-
-  if (user_id === null || !user_id) {
-    notFound();
   }
 
   // Get the host dynamically
@@ -70,7 +59,6 @@ export default async function SharedListPage({ params }: { params: any }) {
       {/* will show a nice "No Results Found" table if no data */}
       <SharedListTable
         fetchUserFavorites={fetchUserFavorites}
-        fetchRAGDataForAPartner={fetchRAGDataForAPartner}
         userID={user_id}
         currentUserID={userId}
       />
