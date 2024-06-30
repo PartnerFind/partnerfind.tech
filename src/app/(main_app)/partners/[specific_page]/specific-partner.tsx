@@ -749,6 +749,29 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                     return url.substr(0, maxLength - 3) + "...";
                   };
 
+                  const getTruncateLength = () => {
+                    if (window.screen.width < 400) {
+                      return 30; // Small screen
+                    } else if (window.screen.width < 768) {
+                      return 2; // Medium screen
+                    } else {
+                      return 100; // Large screen
+                    }
+                  };
+
+                  const updateTruncateUrl = () => {
+                    const truncateLength = getTruncateLength();
+                    const urlElements = document.querySelectorAll('.truncate-url');
+                  
+                    urlElements.forEach(element => {
+                      const originalUrl = element.getAttribute('data-url');
+                      element.textContent = truncateUrl(result.url, truncateLength);
+                    });
+                  };
+
+                  window.addEventListener('resize', updateTruncateUrl);
+                  window.addEventListener('load', updateTruncateUrl);
+
                   return (
                     <div key={index} className="flex items-center justify-between mb-4">
                       <div>
@@ -761,7 +784,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                           rel="noopener noreferrer"
                           style={{ maxWidth: "50%" }}
                         >
-                          {truncateUrl(result.url, 100)}
+                          {truncateUrl(result.url, getTruncateLength())}
                         </a>
                       </div>
                       <div className="flex items-center">
