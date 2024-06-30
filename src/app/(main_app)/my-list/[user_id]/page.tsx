@@ -68,7 +68,12 @@ export default async function SharedListPage({ params }: { params: any }) {
   return (
     <div className="space-y-4">
       {/* will show a nice "No Results Found" table if no data */}
-      <SharedListTable fetchUserFavorites={fetchUserFavorites} fetchRAGDataForAPartner={fetchRAGDataForAPartner} userID={user_id} currentUserID={userId} />
+      <SharedListTable
+        fetchUserFavorites={fetchUserFavorites}
+        fetchRAGDataForAPartner={fetchRAGDataForAPartner}
+        userID={user_id}
+        currentUserID={userId}
+      />
 
       <div className="flex justify-end">
         <ShareListCopyButton value={fullUrl} />

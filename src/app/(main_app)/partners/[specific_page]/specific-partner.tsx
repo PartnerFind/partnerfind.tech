@@ -436,13 +436,10 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                       <strong className="underline" style={{ color: "#22B357" }}>
                         Partner Category:
                       </strong>
-                      <br /> 
+                      <br />
                       {fullEditMode ? (
-                      <div className="grid gap-2 mt-2">
-                          <ComboboxDemo 
-                          value={newCategory}
-                          onChange={(value) => setNewCategory(value)}
-                          />
+                        <div className="grid gap-2 mt-2">
+                          <ComboboxDemo value={newCategory} onChange={(value) => setNewCategory(value)} />
                         </div>
                       ) : (
                         <div>{category}</div>
@@ -566,12 +563,10 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                             />
                           </div>
                         )
+                      ) : data.ragData.phonenumber ? (
+                        <div>{formatPhoneNumber(phoneNumber)}</div>
                       ) : (
-                        data.ragData.phonenumber ? (
-                          <div>{formatPhoneNumber(phoneNumber)}</div>
-                        ) : (
-                          "Not Available"
-                        )
+                        "Not Available"
                       )}
                     </div>
                   </div>
@@ -749,6 +744,11 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   const score = parseFloat(result.score); // Ensure score is a float
                   const progressValue = !isNaN(score) ? score * 100 : 0; // Multiply by 100 if valid number, otherwise 0
 
+                  const truncateUrl = (url: string, maxLength: number) => {
+                    if (url.length <= maxLength) return url;
+                    return url.substr(0, maxLength - 3) + "...";
+                  };
+
                   return (
                     <div key={index} className="flex items-center justify-between mb-4">
                       <div>
@@ -761,7 +761,7 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                           rel="noopener noreferrer"
                           style={{ maxWidth: "50%" }}
                         >
-                          {result.url}
+                          {truncateUrl(result.url, 100)}
                         </a>
                       </div>
                       <div className="flex items-center">
