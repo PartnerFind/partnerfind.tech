@@ -4,6 +4,7 @@ import { fetchUserFavorites as backendFetchUserFavorites } from "@/util/fetchUse
 import SharedListTable from "./shared-list-table";
 import { ShareListCopyButton } from "@/components/ui/share-list-copy-button";
 import { headers } from "next/headers";
+import { fetchRAGDataForAPartner as backendFetchRAGDataForAPartner } from "@/util/fetchRAGDataForAPartner";
 
 export async function generateMetadata({ params }: any) {
   // read route params
@@ -40,6 +41,18 @@ export default async function SharedListPage({ params }: { params: any }) {
     }
   }
 
+  async function fetchRAGDataForAPartner(partnerName: string) {
+    "use server";
+
+    try {
+      const ragData = await backendFetchRAGDataForAPartner(partnerName);
+      return ragData;
+    } catch (error: any) {
+      console.error("Error when getting RAG data for a partner", error);
+      throw error; // Rethrow the error after logging it
+    }
+  }
+
   if (user_id === null || !user_id) {
     notFound();
   }
@@ -55,7 +68,7 @@ export default async function SharedListPage({ params }: { params: any }) {
   return (
     <div className="space-y-4">
       {/* will show a nice "No Results Found" table if no data */}
-      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} currentUserID={userId} />
+      <SharedListTable fetchUserFavorites={fetchUserFavorites} fetchRAGDataForAPartner={fetchRAGDataForAPartner} userID={user_id} currentUserID={userId} />
 
       <div className="flex justify-end">
         <ShareListCopyButton value={fullUrl} />
