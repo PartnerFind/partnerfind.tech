@@ -168,6 +168,8 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       const [checked, setChecked] = useState(false);
       const [clerkUserID, setClerkUserID] = useState(null);
       const [loading, setLoading] = useState(true); // loading state
+      const [loadingClerkID, setLoadingClerkID] = useState(true); // loading state for clerk user id
+      const [loadingRowData, setLoadingRowData] = useState(true); // loading state for row data
 
       useEffect(() => {
         const fetchClerkUserID = async () => {
@@ -183,6 +185,8 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
             setClerkUserID(getClerkUserIDResponse?.userID);
           } catch (error) {
             console.error("An error occurred while querying userID.", error);
+          } finally {
+            setLoadingClerkID(false);
           }
         };
 
@@ -190,14 +194,12 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
       }, []);
 
       useEffect(() => {
-        // if the field is empty, null or does not exist, set the checkbox to false
         if (!row.getValue("userID") || row.getValue("userID") === "" || row.getValue("userID") === "null") {
           setChecked(false);
         } else {
-          // if it exists, then set checkbox to true
           setChecked(true);
         }
-        setLoading(false); // Set loading to false after checking the row value
+        setLoadingRowData(false);
       }, [row]);
 
       const handleCheckboxChange = async () => {
@@ -269,22 +271,27 @@ export const columns: ColumnDef<ColumnsPartnerDef>[] = [
         }
       };
 
+      const isLoading = loadingClerkID || loadingRowData;
+
+      if (isLoading) {
+        return (
+          <div className="flex items-center">
+            <Skeleton className="h-3.5 w-3.5 rounded-sm border" />
+          </div>
+        );
+      }
+
       if (clerkUserID === null || !clerkUserID) {
         return (
           <div className="flex items-center">
-            {loading ? <Skeleton className="h-3.5 w-3.5 rounded-sm border" /> : <h1>Sign in to add to list</h1>}
+            <h1>Sign in to add to list</h1>
           </div>
         );
       }
 
       return (
         <div className="flex items-center">
-          {/* Conditional rendering of skeleton or checkbox based on loading state */}
-          {loading ? (
-            <Skeleton className="h-3.5 w-3.5 rounded-sm border" />
-          ) : (
-            <Checkbox className="h-3.5 w-3.5" checked={checked} onCheckedChange={handleCheckboxChange} />
-          )}
+          <Checkbox className="h-3.5 w-3.5" checked={checked} onCheckedChange={handleCheckboxChange} />
         </div>
       );
     },
