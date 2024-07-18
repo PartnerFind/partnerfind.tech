@@ -48,7 +48,7 @@ export default function ExploreTable({ fetchAllPartners, userID }: { fetchAllPar
           <h1 className="text-3xl font-bold">No Partners Found</h1>
         </div>
       ) : (
-        <DataTable columns={columns} data={data}/>
+        <DataTable columns={columns} data={data} />
       )}
       <div className="mt-16"></div>
     </div>

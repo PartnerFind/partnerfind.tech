@@ -761,16 +761,16 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
 
                   const updateTruncateUrl = () => {
                     const truncateLength = getTruncateLength();
-                    const urlElements = document.querySelectorAll('.truncate-url');
-                  
-                    urlElements.forEach(element => {
-                      const originalUrl = element.getAttribute('data-url');
+                    const urlElements = document.querySelectorAll(".truncate-url");
+
+                    urlElements.forEach((element) => {
+                      const originalUrl = element.getAttribute("data-url");
                       element.textContent = truncateUrl(result.url, truncateLength);
                     });
                   };
 
-                  window.addEventListener('resize', updateTruncateUrl);
-                  window.addEventListener('load', updateTruncateUrl);
+                  window.addEventListener("resize", updateTruncateUrl);
+                  window.addEventListener("load", updateTruncateUrl);
 
                   return (
                     <div key={index} className="flex items-center justify-between mb-4">

@@ -36,7 +36,7 @@ export default async function SharedListPage({ params }: { params: any }) {
 
   async function fetchUserFavorites(userID: string) {
     "use server";
-    
+
     try {
       const partners = await backendFetchUserFavorites(userID);
       return partners;
@@ -57,11 +57,7 @@ export default async function SharedListPage({ params }: { params: any }) {
   return (
     <div className="space-y-4">
       {/* will show a nice "No Results Found" table if no data */}
-      <SharedListTable
-        fetchUserFavorites={fetchUserFavorites}
-        userID={user_id}
-        currentUserID={userId}
-      />
+      <SharedListTable fetchUserFavorites={fetchUserFavorites} userID={user_id} currentUserID={userId} />
 
       <div className="container px-4 md:pl-20">
         <ShareListCopyButton value={fullUrl} />

@@ -80,14 +80,14 @@ export default function MyListTable({
   return (
     <div className="container px-4 pt-24 md:pl-20 md:pt-40">
       {isLoading ? (
-        <TweakedLoadingSpinner/>
+        <TweakedLoadingSpinner />
       ) : data.length === 0 ? (
         <div className="flex justify-center items-center h-screen">
           <h1 className="text-3xl font-bold">No Favorites!</h1>
         </div>
       ) : (
         <>
-          <DataTable columns={columns} data={data}/>
+          <DataTable columns={columns} data={data} />
           <Button variant="outline" onClick={handleJSONExport}>
             Export This Data to JSON!
           </Button>

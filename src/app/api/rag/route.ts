@@ -70,7 +70,7 @@ export async function POST(request: Request, res: NextApiResponse) {
     // Check if Tavily API call was successful
     if (!tavilyAPI.ok) {
       return NextResponse.json({ error: `Failed to query Tavily API: ${tavilyAPI.statusText}` }, { status: 500 });
-    } 
+    }
 
     const tavilyResponse = await tavilyAPI.json(); // Parse the response from Tavily API
 
