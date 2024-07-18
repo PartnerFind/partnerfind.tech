@@ -50,6 +50,7 @@ export default function ExploreTable({ fetchAllPartners, userID }: { fetchAllPar
       ) : (
         <DataTable columns={columns} data={data}/>
       )}
+      <div className="mt-16"></div>
     </div>
   );
 }

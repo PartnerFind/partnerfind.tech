@@ -63,9 +63,10 @@ export default async function SharedListPage({ params }: { params: any }) {
         currentUserID={userId}
       />
 
-      <div className="flex justify-end">
+      <div className="container px-4 md:pl-20">
         <ShareListCopyButton value={fullUrl} />
       </div>
+      <div></div>
     </div>
   );
 }

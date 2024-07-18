@@ -750,9 +750,9 @@ export default function SpecificPartnerComponent({ data }: { data: any }) {
                   };
 
                   const getTruncateLength = () => {
-                    if (window.screen.width < 400) {
-                      return 30; // Small screen
-                    } else if (window.screen.width < 768) {
+                    if (window.innerWidth < 0) {
+                      return 2; // Small screen
+                    } else if (window.screen.width < 1000) {
                       return 2; // Medium screen
                     } else {
                       return 100; // Large screen
